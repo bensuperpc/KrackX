@@ -5,9 +5,6 @@
 #include "core.h"
 //#include<stdio.h> //    //system("google-chrome");
 //#include<iostream>
-
-
-
 //#include "debug.h"
 static CoreProcessing CoreApp;
 
@@ -56,28 +53,39 @@ void MainWindow::on_actionDivers_2_triggered()
     msgBox.exec();
 }
 
-void MainWindow::on_CoreUse_horizontalSlider_sliderMoved(int position)
+void MainWindow::on_CoreUse_horizontalSlider_sliderMoved(int position)//position est la position p-1
 {
-    qDebug() << "CoreUse_horizontalSlider_sliderMoved :"+ QString::fromStdString(std::to_string(position));
-    CoreApp.UseCore = (unsigned int)position;
-    QString s = QString::fromStdString(std::to_string(position));
-    ui->CoreUse_Label->setText("Nbr Core : " + s);
-
+    qDebug() << "CoreUse_horizontalSlider_sliderMoved :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
 }
 
 void MainWindow::on_CoreUse_horizontalSlider_actionTriggered(int action)
 {
-    qDebug() << "CoreUse_horizontalSlider_actionTriggered :"+ QString::fromStdString(std::to_string(action));
-    qDebug() << "CoreUse_horizontalSlider_actionTriggered2 :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
+    qDebug() << "CoreUse_horizontalSlider_actionTriggered :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
+    if(ui->CoreUse_horizontalSlider->value() != 1){
+        ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
+    }
+
 }
-
-
-
-
 
 void MainWindow::on_CoreUse_horizontalSlider_sliderPressed()
 {
     qDebug() <<"CoreUse_horizontalSlider_sliderPressed :" + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
-    CoreApp.UseCore = (unsigned int)ui->CoreUse_horizontalSlider->value();
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
+}
+
+
+void MainWindow::on_UTF8_CheckBox_clicked()
+{
+    //qDebug() <<"CoreUse_horizontalSlider_sliderPressed :" + QString::fromStdString(std::to_string(arg1));
+    CoreApp.UTF8_Password = ui->UTF8_CheckBox->isTristate();
+}
+
+void MainWindow::on_CharSpe_CheckBox_clicked()
+{
+    CoreApp.CharSpe_Password = ui->CharSpe_CheckBox->isTristate();
+}
+
+void MainWindow::on_AttaqueDico_CheckBox_clicked()
+{
+    CoreApp.AttacByDico = ui->AttaqueDico_CheckBox->isTristate();
 }

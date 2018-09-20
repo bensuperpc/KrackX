@@ -21,6 +21,10 @@ public:
     std::string CurrentFileOpen();
     void exec();
     [[ noreturn ]] void call_from_thread(int tid);
+    bool UTF8_Password;//si le MDP utilise de l'UTF-8
+    bool CharSpe_Password;//Si le MDP contient des charactères spéciaux
+    bool AttacByDico;//Une attaque par le dictionaire
+
 
 };
 

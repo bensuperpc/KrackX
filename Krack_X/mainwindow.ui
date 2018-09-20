@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Options</string>
+     <string>Principal</string>
     </property>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>Divers</string>
+     <string>Options</string>
     </property>
     <widget class="QSlider" name="CoreUse_horizontalSlider">
      <property name="geometry">
@@ -90,17 +90,43 @@
       <string>Nbr Core :</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioButton">
+    <widget class="QCheckBox" name="UTF8_CheckBox">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>70</y>
-       <width>100</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
      <property name="text">
-      <string>RadioButton</string>
+      <string>UTF-8</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="CharSpe_CheckBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Char. Spécial</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="AttaqueDico_CheckBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Attaque dico</string>
      </property>
     </widget>
    </widget>

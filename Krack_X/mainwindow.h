@@ -26,6 +26,12 @@ private slots:
 
     void on_CoreUse_horizontalSlider_sliderPressed();
 
+    void on_UTF8_CheckBox_clicked();
+
+    void on_CharSpe_CheckBox_clicked();
+
+    void on_AttaqueDico_CheckBox_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
