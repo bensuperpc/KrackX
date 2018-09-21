@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    qDebug() <<"CoreApp.UseCore" + QString::fromStdString(std::to_string(CoreApp.UseCore));
     qDebug() << "Bouton OK";
     qDebug() << "============================================================";
     CoreApp.exec();
@@ -56,6 +57,9 @@ void MainWindow::on_actionDivers_2_triggered()
 void MainWindow::on_CoreUse_horizontalSlider_sliderMoved(int position)//position est la position p-1
 {
     qDebug() << "CoreUse_horizontalSlider_sliderMoved :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
+    ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
+    CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
+
 }
 
 void MainWindow::on_CoreUse_horizontalSlider_actionTriggered(int action)
@@ -63,6 +67,7 @@ void MainWindow::on_CoreUse_horizontalSlider_actionTriggered(int action)
     qDebug() << "CoreUse_horizontalSlider_actionTriggered :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
     if(ui->CoreUse_horizontalSlider->value() != 1){
         ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
+        CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
     }
 
 }
@@ -71,12 +76,13 @@ void MainWindow::on_CoreUse_horizontalSlider_sliderPressed()
 {
     qDebug() <<"CoreUse_horizontalSlider_sliderPressed :" + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
+    CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
+
 }
 
 
 void MainWindow::on_UTF8_CheckBox_clicked()
 {
-    //qDebug() <<"CoreUse_horizontalSlider_sliderPressed :" + QString::fromStdString(std::to_string(arg1));
     CoreApp.UTF8_Password = ui->UTF8_CheckBox->isTristate();
 }
 
