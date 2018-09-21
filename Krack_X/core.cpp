@@ -1,10 +1,12 @@
 #include "core.h"
+#include "core_add.h"
+
 #include <iostream>
 #include <thread>
 #include<qprocess.h>
 
-#include<chrono>
-#include<random>
+//#include<chrono>
+//#include<random>
 
 
 #include <cstdio>
@@ -17,7 +19,7 @@
 #include <QProcess>
 #include <QtDebug>
 //QProcess::execute("google-chrome");
-
+static CoreAdd coreadd;
 
 // Date constructor
 CoreProcessing::CoreProcessing()
@@ -46,28 +48,11 @@ void CoreProcessing::exec(){
 }
 
 [[ noreturn ]] void CoreProcessing::call_from_thread(int tid) {
-    typedef std::chrono::high_resolution_clock myclock;
-    myclock::time_point beginning = myclock::now();
-
-    // obtain a seed from a user string:
-    std::string str;
-
-    qDebug() << "Please, enter a seed: ";
-    //std::getline(std::cin,str);
-    //std::seed_seq seed1 (str.begin(),str.end());
-
-    // obtain a seed from the timer
-    myclock::duration d = myclock::now() - beginning;
-    unsigned seed2 = d.count();
-
-    std::mt19937 generator (seed2);   // mt19937 is a standard mersenne_twister_engine
-    //qDebug() << "Your seed produced: " << generator();
-    //generator.seed (seed2);
-    qDebug() << "A time seed produced: " << generator();
 
     //std::thread::id this_id = std::this_thread::get_id();
     //int random = std::rand();//Ne plus utiliser
     qDebug() << "Launched by thread " << tid;
+    qDebug() << "Launched by thread " << coreadd.RandomNbrs();
     //for(;;){}
 }
 

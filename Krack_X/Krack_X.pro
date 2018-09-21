@@ -26,12 +26,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     core.cpp \
-    debug.cpp
+    debug.cpp \
+    core_add.cpp
 
 HEADERS += \
         mainwindow.h \
     core.h \
-    debug.h
+    debug.h \
+    core_add.h
 
 FORMS += \
         mainwindow.ui

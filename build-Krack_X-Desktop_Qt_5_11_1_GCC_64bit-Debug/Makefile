@@ -53,11 +53,13 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Krack_X/main.cpp \
 		../Krack_X/mainwindow.cpp \
 		../Krack_X/core.cpp \
-		../Krack_X/debug.cpp moc_mainwindow.cpp
+		../Krack_X/debug.cpp \
+		../Krack_X/core_add.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		core.o \
 		debug.o \
+		core_add.o \
 		moc_mainwindow.o
 DIST          = ../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/common/unix.conf \
@@ -228,6 +230,7 @@ DIST          = ../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_post.prf \
+		../Krack_X/.qmake.stash \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/toolchain.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -249,10 +252,12 @@ DIST          = ../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/lex.prf \
 		../Krack_X/Krack_X.pro ../Krack_X/mainwindow.h \
 		../Krack_X/core.h \
-		../Krack_X/debug.h ../Krack_X/main.cpp \
+		../Krack_X/debug.h \
+		../Krack_X/core_add.h ../Krack_X/main.cpp \
 		../Krack_X/mainwindow.cpp \
 		../Krack_X/core.cpp \
-		../Krack_X/debug.cpp
+		../Krack_X/debug.cpp \
+		../Krack_X/core_add.cpp
 QMAKE_TARGET  = Krack_X
 DESTDIR       = 
 TARGET        = Krack_X
@@ -433,6 +438,7 @@ Makefile: ../Krack_X/Krack_X.pro ../../../Qt/5.11.1/gcc_64/mkspecs/linux-g++/qma
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/toolchain.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -626,6 +632,7 @@ Makefile: ../Krack_X/Krack_X.pro ../../../Qt/5.11.1/gcc_64/mkspecs/linux-g++/qma
 ../../../Qt/5.11.1/gcc_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.11.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.11.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.11.1/gcc_64/mkspecs/features/toolchain.prf:
 ../../../Qt/5.11.1/gcc_64/mkspecs/features/default_pre.prf:
@@ -664,8 +671,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt/5.11.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Krack_X/mainwindow.h ../Krack_X/core.h ../Krack_X/debug.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Krack_X/main.cpp ../Krack_X/mainwindow.cpp ../Krack_X/core.cpp ../Krack_X/debug.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Krack_X/mainwindow.h ../Krack_X/core.h ../Krack_X/debug.h ../Krack_X/core_add.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Krack_X/main.cpp ../Krack_X/mainwindow.cpp ../Krack_X/core.cpp ../Krack_X/debug.cpp ../Krack_X/core_add.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Krack_X/mainwindow.ui $(DISTDIR)/
 
 
@@ -1061,6 +1068,47 @@ mainwindow.o: ../Krack_X/mainwindow.cpp ../../../Qt/5.11.1/gcc_64/include/QtCore
 		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../Qt/5.11.1/gcc_64/include/QtGui/qicon.h \
 		ui_mainwindow.h \
+		../../../Qt/5.11.1/gcc_64/include/QtCore/QVariant \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QAction \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qaction.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QApplication \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qapplication.h \
+		../../../Qt/5.11.1/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../Qt/5.11.1/gcc_64/include/QtCore/qeventloop.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qguiapplication.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qinputmethod.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QCheckBox \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qcheckbox.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QGroupBox \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qgroupbox.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qframe.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QLabel \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qlabel.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QLineEdit \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qlineedit.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qtextcursor.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qtextformat.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qpen.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qtextoption.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QMenu \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qmenu.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QMenuBar \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qmenubar.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QProgressBar \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qprogressbar.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QPushButton \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qpushbutton.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QSlider \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qslider.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QTextEdit \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qtextedit.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../Qt/5.11.1/gcc_64/include/QtGui/qtextdocument.h \
+		../../../Qt/5.11.1/gcc_64/include/QtWidgets/QWidget \
 		../Krack_X/core.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Krack_X/mainwindow.cpp
@@ -1098,6 +1146,7 @@ core.o: ../Krack_X/core.cpp ../Krack_X/core.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qstringalgorithms.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qstringview.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qstringbuilder.h \
+		../Krack_X/core_add.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qprocess.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qiodevice.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qobject.h \
@@ -1137,6 +1186,9 @@ core.o: ../Krack_X/core.cpp ../Krack_X/core.h \
 
 debug.o: ../Krack_X/debug.cpp ../Krack_X/debug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug.o ../Krack_X/debug.cpp
+
+core_add.o: ../Krack_X/core_add.cpp ../Krack_X/core_add.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o core_add.o ../Krack_X/core_add.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
