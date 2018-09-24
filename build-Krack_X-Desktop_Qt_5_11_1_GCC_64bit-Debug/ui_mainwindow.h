@@ -35,6 +35,9 @@ public:
     QAction *actionDivers_2;
     QAction *actionBug;
     QAction *actionAuteurs;
+    QAction *actionOuvrir_un_fichier;
+    QAction *actionQuitter;
+    QAction *actionEnregister_les_Log;
     QWidget *centralWidget;
     QGroupBox *groupBox;
     QPushButton *pushButton;
@@ -68,6 +71,12 @@ public:
         actionBug->setObjectName(QStringLiteral("actionBug"));
         actionAuteurs = new QAction(MainWindow);
         actionAuteurs->setObjectName(QStringLiteral("actionAuteurs"));
+        actionOuvrir_un_fichier = new QAction(MainWindow);
+        actionOuvrir_un_fichier->setObjectName(QStringLiteral("actionOuvrir_un_fichier"));
+        actionQuitter = new QAction(MainWindow);
+        actionQuitter->setObjectName(QStringLiteral("actionQuitter"));
+        actionEnregister_les_Log = new QAction(MainWindow);
+        actionEnregister_les_Log->setObjectName(QStringLiteral("actionEnregister_les_Log"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         groupBox = new QGroupBox(centralWidget);
@@ -130,6 +139,10 @@ public:
 
         menuBar->addAction(menuFichier->menuAction());
         menuBar->addAction(menuAide->menuAction());
+        menuFichier->addAction(actionOuvrir_un_fichier);
+        menuFichier->addSeparator();
+        menuFichier->addAction(actionEnregister_les_Log);
+        menuFichier->addAction(actionQuitter);
         menuAide->addAction(actionDivers_2);
         menuAide->addAction(actionBug);
         menuAide->addAction(actionAuteurs);
@@ -147,6 +160,9 @@ public:
         actionDivers_2->setText(QApplication::translate("MainWindow", "Divers", nullptr));
         actionBug->setText(QApplication::translate("MainWindow", "Signaler un bug...", nullptr));
         actionAuteurs->setText(QApplication::translate("MainWindow", "A propos", nullptr));
+        actionOuvrir_un_fichier->setText(QApplication::translate("MainWindow", "Ouvrir un fichier", nullptr));
+        actionQuitter->setText(QApplication::translate("MainWindow", "Quitter", nullptr));
+        actionEnregister_les_Log->setText(QApplication::translate("MainWindow", "Enregister les Log", nullptr));
         groupBox->setTitle(QApplication::translate("MainWindow", "Principal", nullptr));
         pushButton->setText(QApplication::translate("MainWindow", "Lancer", nullptr));
         groupBox_2->setTitle(QApplication::translate("MainWindow", "Options", nullptr));

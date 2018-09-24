@@ -53,12 +53,10 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Krack_X/main.cpp \
 		../Krack_X/mainwindow.cpp \
 		../Krack_X/core.cpp \
-		../Krack_X/debug.cpp \
 		../Krack_X/core_add.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		core.o \
-		debug.o \
 		core_add.o \
 		moc_mainwindow.o
 DIST          = ../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_pre.prf \
@@ -252,11 +250,9 @@ DIST          = ../../../Qt/5.11.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.11.1/gcc_64/mkspecs/features/lex.prf \
 		../Krack_X/Krack_X.pro ../Krack_X/mainwindow.h \
 		../Krack_X/core.h \
-		../Krack_X/debug.h \
 		../Krack_X/core_add.h ../Krack_X/main.cpp \
 		../Krack_X/mainwindow.cpp \
 		../Krack_X/core.cpp \
-		../Krack_X/debug.cpp \
 		../Krack_X/core_add.cpp
 QMAKE_TARGET  = Krack_X
 DESTDIR       = 
@@ -671,8 +667,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt/5.11.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Krack_X/mainwindow.h ../Krack_X/core.h ../Krack_X/debug.h ../Krack_X/core_add.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Krack_X/main.cpp ../Krack_X/mainwindow.cpp ../Krack_X/core.cpp ../Krack_X/debug.cpp ../Krack_X/core_add.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Krack_X/mainwindow.h ../Krack_X/core.h ../Krack_X/core_add.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Krack_X/main.cpp ../Krack_X/mainwindow.cpp ../Krack_X/core.cpp ../Krack_X/core_add.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Krack_X/mainwindow.ui $(DISTDIR)/
 
 
@@ -1183,9 +1179,6 @@ core.o: ../Krack_X/core.cpp ../Krack_X/core.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qsharedpointer.h \
 		../../../Qt/5.11.1/gcc_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o core.o ../Krack_X/core.cpp
-
-debug.o: ../Krack_X/debug.cpp ../Krack_X/debug.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug.o ../Krack_X/debug.cpp
 
 core_add.o: ../Krack_X/core_add.cpp ../Krack_X/core_add.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o core_add.o ../Krack_X/core_add.cpp

@@ -212,6 +212,10 @@
     <property name="title">
      <string>Fichier</string>
     </property>
+    <addaction name="actionOuvrir_un_fichier"/>
+    <addaction name="separator"/>
+    <addaction name="actionEnregister_les_Log"/>
+    <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -247,6 +251,21 @@
   <action name="actionAuteurs">
    <property name="text">
     <string>A propos</string>
+   </property>
+  </action>
+  <action name="actionOuvrir_un_fichier">
+   <property name="text">
+    <string>Ouvrir un fichier</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionEnregister_les_Log">
+   <property name="text">
+    <string>Enregister les Log</string>
    </property>
   </action>
  </widget>
