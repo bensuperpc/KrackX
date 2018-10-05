@@ -51,9 +51,23 @@ void CoreProcessing::exec(){
 
     //std::thread::id this_id = std::this_thread::get_id();
     //int random = std::rand();//Ne plus utiliser
-    qDebug() << "Launched by thread " << tid;
-    qDebug() << "Launched by thread " << coreadd.RandomNbrs();
+    //qDebug() << "Launched by thread " << tid;
+    //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
     //for(;;){}
+    qDebug() << "Launched by thread :" << tid;
+    //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
+    QProcess process;
+    process.start("firefox");
+    process.waitForFinished(-1); // will wait forever until finished
+
+    QString stdout = process.readAllStandardOutput();
+    QString stderr = process.readAllStandardError();
+
+    qDebug() << "#########################";
+    qDebug() << stdout;
+    qDebug() << "*************************";
+    qDebug() << stderr;
+    qDebug() << "#########################";
 }
 
 

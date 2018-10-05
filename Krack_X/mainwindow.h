@@ -32,6 +32,8 @@ private slots:
 
     void on_AttaqueDico_CheckBox_clicked();
 
+    void on_CoreUse_horizontalSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
 };
