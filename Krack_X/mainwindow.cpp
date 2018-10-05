@@ -54,41 +54,18 @@ void MainWindow::on_actionDivers_2_triggered()
     msgBox.exec();
 }
 
-void MainWindow::on_CoreUse_horizontalSlider_sliderMoved(int position)//position est la position p-1
-{
-  // qDebug() << "CoreUse_horizontalSlider_sliderMoved :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
-   // ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
-  //  CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
-
-}
-
-void MainWindow::on_CoreUse_horizontalSlider_actionTriggered(int action)
-{
-   // qDebug() << "CoreUse_horizontalSlider_actionTriggered :"+ QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
-    //if(ui->CoreUse_horizontalSlider->value() != 1){
-      //  ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
-       // CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
-    //}
-
-}
-
-void MainWindow::on_CoreUse_horizontalSlider_sliderPressed()
-{
-    //qDebug() <<"CoreUse_horizontalSlider_sliderPressed :" + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value()));
-    //ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
-    //CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
-
-}
-
 
 void MainWindow::on_UTF8_CheckBox_clicked()
 {
     CoreApp.UTF8_Password = ui->UTF8_CheckBox->isTristate();
+    qDebug() << "UTF-8 Bouton";
+    qDebug() << "UTF-8 Bouton";
 }
 
 void MainWindow::on_CharSpe_CheckBox_clicked()
 {
     CoreApp.CharSpe_Password = ui->CharSpe_CheckBox->isTristate();
+    qDebug() << "UTF-8 Bouton";
 }
 
 void MainWindow::on_AttaqueDico_CheckBox_clicked()

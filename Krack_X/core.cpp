@@ -55,9 +55,11 @@ void CoreProcessing::exec(){
     //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
     //for(;;){}
     qDebug() << "Launched by thread :" << tid;
+    qDebug() << "Launched by thread :" << tid;
+
     //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
     QProcess process;
-    process.start("firefox");
+    process.start("google-chrome");
     process.waitForFinished(-1); // will wait forever until finished
 
     QString stdout = process.readAllStandardOutput();
