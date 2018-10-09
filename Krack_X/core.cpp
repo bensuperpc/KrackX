@@ -26,6 +26,7 @@ using namespace std;
 CoreProcessing::CoreProcessing()
 {
     UseCore = std::thread::hardware_concurrency();//Retourne le nombre de coeur sur la machine et mettre dans UseCore
+    OuputConsole = "Test";
 }
 
 unsigned int CoreProcessing::CPUThreadCount(){
@@ -52,7 +53,7 @@ void CoreProcessing::exec(string LauncedP){
 
     qDebug() << "Launched by thread " << tid;
     qDebug() << "Program Launch :" << QString::fromStdString(_LauncedP);
-    //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
+    //qDebug() << "Launched by thread " << coreadd.RandomNbrs();outputoutput
 
     QProcess process;
 

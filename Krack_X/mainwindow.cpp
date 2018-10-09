@@ -7,6 +7,7 @@
 //#include<stdio.h> //    //system("google-chrome");
 //#include<iostream>
 //#include "debug.h"
+
 static CoreProcessing CoreApp;
 
 
@@ -19,6 +20,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(CoreApp.UseCore)));
     ui->CoreUse_horizontalSlider->setSliderPosition(CoreApp.UseCore);
+    //connect(object_ptr, &OutputConsole::variableChanged, [=](int i){
+     //   ui->OutputConsole->setText("Number = " + QString::number(i));
+    //});
+    //connect(CoreApp.OuputConsole,SIGNAL(valueChanged(int)),ui->OutputConsole,SLOT(),);
+    ui->OutputConsole->setText(*CoreApp.OuputConsole);
+    //connect(CoreApp.OuputConsole, SIGNAL(changeText(QString)), ui->OutputConsole, SLOT(labelChangeText(QString)));
+
 }
 
 MainWindow::~MainWindow()
@@ -33,10 +41,10 @@ void MainWindow::on_pushButton_clicked()
     qDebug() << "===========================================================";
     QString CommandLaunchDate = QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
     ui->OutputConsole->setText(ui->OutputConsole->toPlainText()+CommandLaunchDate + " " +"Lancement de google-chrome"+"\n");
+    QString* OuputConsole = &CoreApp.OuputConsole;
+    //ui->OutputConsole->setText(OuputConsole);
 
 
-
-    //qDebug() << ui->OutputConsole->toPlainText();
     CoreApp.exec("google-chrome");
     qDebug() << QString::fromStdString("");
     qDebug() << "============================================================";
