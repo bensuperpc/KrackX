@@ -1,4 +1,5 @@
 #include <QtDebug>
+#include <QDate>
 #include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -18,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(CoreApp.UseCore)));
     ui->CoreUse_horizontalSlider->setSliderPosition(CoreApp.UseCore);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -32,12 +31,15 @@ void MainWindow::on_pushButton_clicked()
     qDebug() <<"CoreApp.UseCore" + QString::fromStdString(std::to_string(CoreApp.UseCore));
     qDebug() << "Bouton OK";
     qDebug() << "===========================================================";
-    //CoreApp.exec();
-    ui->OutputConsole->setText("Lancement de google-chrome");
+    QString CommandLaunchDate = QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
+    ui->OutputConsole->setText(ui->OutputConsole->toPlainText()+CommandLaunchDate + " " +"Lancement de google-chrome"+"\n");
+
+
+
+    //qDebug() << ui->OutputConsole->toPlainText();
     CoreApp.exec("google-chrome");
     qDebug() << QString::fromStdString("");
     qDebug() << "============================================================";
-
     ui->progressBar->setValue(ui->progressBar->value()+1);
 }
 
@@ -45,14 +47,15 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_actionDivers_2_triggered()
 {
     const std::string Compilator_Version = std::to_string(__GNUC__) + "." + std::to_string(__GNUC_MINOR__) + "." + std::to_string(__GNUC_PATCHLEVEL__);
-    QString CPP_Info = QString::fromStdString(std::to_string(__cplusplus));
+    const QString CPP_Info = QString::fromStdString(std::to_string(__cplusplus));
 
-    QString QCompilator_Version = "Compiler Version :" + QString::fromStdString(Compilator_Version);
-
+    const QString QCompilator_Version = "Compiler Version :" + QString::fromStdString(Compilator_Version);
+    //QString sDate = QDateTime::currentDateTime().toString("dddd dd MMMM yyyy hh:mm:ss.zzz");
+    const QString sDate = QDateTime::currentDateTime().toString("dd/MM/yyyy");
     QMessageBox msgBox;
 
     msgBox.setText("<b>Build informations</b>");
-    QString Message = QString("Build by: ") + QCompilator_Version + "\n" + "C++ version: " + CPP_Info;
+    const QString Message = QString("Build by: ") + QCompilator_Version + "\n" + "C++ version: " + CPP_Info + "\n" + "Build date :" + sDate;
     msgBox.setInformativeText(Message);
     msgBox.exec();
 }
@@ -82,3 +85,7 @@ void MainWindow::on_CoreUse_horizontalSlider_valueChanged(int value)
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(ui->CoreUse_horizontalSlider->value())));
     CoreApp.UseCore = (unsigned)ui->CoreUse_horizontalSlider->value();
 }
+
+/* Sources */
+//http://www.electro-info.ovh/index.php?id=213
+//http://doc.qt.io/qt-5/qdatetime.html
