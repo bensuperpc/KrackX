@@ -48,10 +48,10 @@ public:
     QCheckBox *CharSpe_CheckBox;
     QCheckBox *AttaqueDico_CheckBox;
     QGroupBox *groupBox_3;
-    QTextEdit *textEdit;
     QLineEdit *lineEdit;
     QProgressBar *progressBar;
     QLabel *label;
+    QTextEdit *OutputConsole;
     QMenuBar *menuBar;
     QMenu *menuFichier;
     QMenu *menuAide;
@@ -60,7 +60,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(630, 323);
+        MainWindow->resize(784, 315);
         actionDivers = new QAction(MainWindow);
         actionDivers->setObjectName(QStringLiteral("actionDivers"));
         actionTest = new QAction(MainWindow);
@@ -110,27 +110,25 @@ public:
         AttaqueDico_CheckBox->setGeometry(QRect(10, 110, 121, 21));
         groupBox_3 = new QGroupBox(centralWidget);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
-        groupBox_3->setGeometry(QRect(320, 10, 291, 271));
-        textEdit = new QTextEdit(groupBox_3);
-        textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(10, 30, 271, 171));
-        textEdit->setAcceptDrops(false);
-        textEdit->setReadOnly(true);
+        groupBox_3->setGeometry(QRect(320, 10, 451, 271));
         lineEdit = new QLineEdit(groupBox_3);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(50, 240, 231, 23));
+        lineEdit->setGeometry(QRect(50, 240, 391, 23));
         lineEdit->setReadOnly(true);
         progressBar = new QProgressBar(groupBox_3);
         progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setGeometry(QRect(10, 210, 271, 23));
+        progressBar->setGeometry(QRect(10, 210, 431, 23));
         progressBar->setValue(0);
         label = new QLabel(groupBox_3);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 240, 41, 21));
+        OutputConsole = new QTextEdit(groupBox_3);
+        OutputConsole->setObjectName(QStringLiteral("OutputConsole"));
+        OutputConsole->setGeometry(QRect(10, 30, 431, 171));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 630, 20));
+        menuBar->setGeometry(QRect(0, 0, 784, 20));
         menuFichier = new QMenu(menuBar);
         menuFichier->setObjectName(QStringLiteral("menuFichier"));
         menuAide = new QMenu(menuBar);
@@ -145,6 +143,7 @@ public:
         menuFichier->addAction(actionQuitter);
         menuAide->addAction(actionDivers_2);
         menuAide->addAction(actionBug);
+        menuAide->addSeparator();
         menuAide->addAction(actionAuteurs);
 
         retranslateUi(MainWindow);
@@ -157,9 +156,9 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         actionDivers->setText(QApplication::translate("MainWindow", "Divers", nullptr));
         actionTest->setText(QApplication::translate("MainWindow", "Test", nullptr));
-        actionDivers_2->setText(QApplication::translate("MainWindow", "Divers", nullptr));
+        actionDivers_2->setText(QApplication::translate("MainWindow", "A Propos", nullptr));
         actionBug->setText(QApplication::translate("MainWindow", "Signaler un bug...", nullptr));
-        actionAuteurs->setText(QApplication::translate("MainWindow", "A propos", nullptr));
+        actionAuteurs->setText(QApplication::translate("MainWindow", "Divers", nullptr));
         actionOuvrir_un_fichier->setText(QApplication::translate("MainWindow", "Ouvrir un fichier", nullptr));
         actionQuitter->setText(QApplication::translate("MainWindow", "Quitter", nullptr));
         actionEnregister_les_Log->setText(QApplication::translate("MainWindow", "Enregister les Log", nullptr));

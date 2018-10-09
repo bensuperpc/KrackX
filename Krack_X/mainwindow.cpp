@@ -24,7 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
      //   ui->OutputConsole->setText("Number = " + QString::number(i));
     //});
     //connect(CoreApp.OuputConsole,SIGNAL(valueChanged(int)),ui->OutputConsole,SLOT(),);
-    ui->OutputConsole->setText(*CoreApp.OuputConsole);
+
+    ui->OutputConsole->setText(&CoreApp.OutputConsole);
     //connect(CoreApp.OuputConsole, SIGNAL(changeText(QString)), ui->OutputConsole, SLOT(labelChangeText(QString)));
 
 }
@@ -41,7 +42,7 @@ void MainWindow::on_pushButton_clicked()
     qDebug() << "===========================================================";
     QString CommandLaunchDate = QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
     ui->OutputConsole->setText(ui->OutputConsole->toPlainText()+CommandLaunchDate + " " +"Lancement de google-chrome"+"\n");
-    QString* OuputConsole = &CoreApp.OuputConsole;
+    QString* OuputConsole = &CoreApp.OutputConsole;
     //ui->OutputConsole->setText(OuputConsole);
 
 

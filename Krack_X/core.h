@@ -19,7 +19,7 @@ public:
     unsigned int CPUThreadCount();
     unsigned int UseCore;
     std::string CurrentFileOpen();
-    QString OuputConsole;
+    QString OutputConsole;
     void exec(string LauncedP);
     [[ noreturn ]] void call_from_thread(int tid, string _LauncedP);
 

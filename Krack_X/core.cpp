@@ -26,7 +26,7 @@ using namespace std;
 CoreProcessing::CoreProcessing()
 {
     UseCore = std::thread::hardware_concurrency();//Retourne le nombre de coeur sur la machine et mettre dans UseCore
-    OuputConsole = "Test";
+    OutputConsole = "Test";
 }
 
 unsigned int CoreProcessing::CPUThreadCount(){
