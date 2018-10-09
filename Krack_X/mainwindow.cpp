@@ -29,13 +29,13 @@ void MainWindow::on_pushButton_clicked()
 {
     qDebug() <<"CoreApp.UseCore" + QString::fromStdString(std::to_string(CoreApp.UseCore));
     qDebug() << "Bouton OK";
-    qDebug() << "============================================================";
-    CoreApp.exec();
-    //QString tt = CoreApp.exec("p7zip -h");
+    qDebug() << "===========================================================";
+    //CoreApp.exec();
+    CoreApp.exec("google-chrome");
     qDebug() << QString::fromStdString("");
     qDebug() << "============================================================";
+
     ui->progressBar->setValue(ui->progressBar->value()+1);
-    //qDebug() << QString::number(CoreApp.CPUThreadCount());
 }
 
 

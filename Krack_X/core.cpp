@@ -20,8 +20,9 @@
 #include <QtDebug>
 //QProcess::execute("google-chrome");
 static CoreAdd coreadd;
-
 // Date constructor
+using namespace std;
+
 CoreProcessing::CoreProcessing()
 {
     UseCore = std::thread::hardware_concurrency();//Retourne le nombre de coeur sur la machine et mettre dans UseCore
@@ -35,10 +36,10 @@ std::string CurrentFileOpen(){
     return "";
 }
 
-void CoreProcessing::exec(){
+void CoreProcessing::exec(string LauncedP){
     std::thread *tt = new std::thread[UseCore];//On créer les Threads
     for (unsigned int i = 0; i < UseCore; ++i) {
-        tt[i] = std::thread(&CoreProcessing::call_from_thread,this,i);
+        tt[i] = std::thread(&CoreProcessing::call_from_thread,this,i,LauncedP);
     }
     for (unsigned int i = 0; i < UseCore; ++i){
         tt[i].join();
@@ -47,20 +48,18 @@ void CoreProcessing::exec(){
 
 }
 
-[[ noreturn ]] void CoreProcessing::call_from_thread(int tid) {
+[[ noreturn ]] void CoreProcessing::call_from_thread(int tid, string _LauncedP) {
 
-    //std::thread::id this_id = std::this_thread::get_id();
-    //int random = std::rand();//Ne plus utiliser
-    //qDebug() << "Launched by thread " << tid;
+    qDebug() << "Launched by thread " << tid;
+    qDebug() << "Program Launch :" << QString::fromStdString(_LauncedP);
     //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
-    //for(;;){}
-    qDebug() << "Launched by thread :" << tid;
-    qDebug() << "Launched by thread :" << tid;
 
-    //qDebug() << "Launched by thread " << coreadd.RandomNbrs();
     QProcess process;
-    process.start("google-chrome");
-    process.waitForFinished(-1); // will wait forever until finished
+
+    //process.start(QString::fromStdString(_LauncedP));
+    //process.waitForFinished(-1); // will wait forever until finished
+
+    process.startDetached(QString::fromStdString(_LauncedP));
 
     QString stdout = process.readAllStandardOutput();
     QString stderr = process.readAllStandardError();
