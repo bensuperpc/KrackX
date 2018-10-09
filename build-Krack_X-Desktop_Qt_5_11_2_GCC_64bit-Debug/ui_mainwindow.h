@@ -48,10 +48,10 @@ public:
     QCheckBox *CharSpe_CheckBox;
     QCheckBox *AttaqueDico_CheckBox;
     QGroupBox *groupBox_3;
-    QTextEdit *textEdit;
     QLineEdit *lineEdit;
     QProgressBar *progressBar;
     QLabel *label;
+    QTextEdit *OutputConsole;
     QMenuBar *menuBar;
     QMenu *menuFichier;
     QMenu *menuAide;
@@ -111,11 +111,6 @@ public:
         groupBox_3 = new QGroupBox(centralWidget);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         groupBox_3->setGeometry(QRect(320, 10, 291, 271));
-        textEdit = new QTextEdit(groupBox_3);
-        textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(10, 30, 271, 171));
-        textEdit->setAcceptDrops(false);
-        textEdit->setReadOnly(true);
         lineEdit = new QLineEdit(groupBox_3);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
         lineEdit->setGeometry(QRect(50, 240, 231, 23));
@@ -127,6 +122,9 @@ public:
         label = new QLabel(groupBox_3);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 240, 41, 21));
+        OutputConsole = new QTextEdit(groupBox_3);
+        OutputConsole->setObjectName(QStringLiteral("OutputConsole"));
+        OutputConsole->setGeometry(QRect(10, 30, 271, 171));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));

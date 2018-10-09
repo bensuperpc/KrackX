@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(CoreApp.UseCore)));
     ui->CoreUse_horizontalSlider->setSliderPosition(CoreApp.UseCore);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -31,6 +33,7 @@ void MainWindow::on_pushButton_clicked()
     qDebug() << "Bouton OK";
     qDebug() << "===========================================================";
     //CoreApp.exec();
+    ui->OutputConsole->setText("Lancement de google-chrome");
     CoreApp.exec("google-chrome");
     qDebug() << QString::fromStdString("");
     qDebug() << "============================================================";
