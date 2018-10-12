@@ -23,6 +23,14 @@ static CoreAdd coreadd;
 // Date constructor
 using namespace std;
 
+void StringWrapper::SetString(const QString &str)
+{
+    if (str != m_str) {
+        m_str = str;
+        emit TextChanged(m_str);
+    }
+}
+
 CoreProcessing::CoreProcessing()
 {
     UseCore = std::thread::hardware_concurrency();//Retourne le nombre de coeur sur la machine et mettre dans UseCore

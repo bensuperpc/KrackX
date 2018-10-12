@@ -9,6 +9,7 @@
 //#include "debug.h"
 
 static CoreProcessing CoreApp;
+static StringWrapper m_strWrapper;
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,12 +21,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->CoreUse_Label->setText("Nbr Core : " + QString::fromStdString(std::to_string(CoreApp.UseCore)));
     ui->CoreUse_horizontalSlider->setSliderPosition(CoreApp.UseCore);
+
+    connect(&m_strWrapper, SIGNAL(TextChanged(QString)), ui->OutputConsole, SLOT(setText(QString)));
+    m_strWrapper.SetString("dd");
     //connect(object_ptr, &OutputConsole::variableChanged, [=](int i){
      //   ui->OutputConsole->setText("Number = " + QString::number(i));
     //});
     //connect(CoreApp.OuputConsole,SIGNAL(valueChanged(int)),ui->OutputConsole,SLOT(),);
 
-    ui->OutputConsole->setText(&CoreApp.OutputConsole);
+
     //connect(CoreApp.OuputConsole, SIGNAL(changeText(QString)), ui->OutputConsole, SLOT(labelChangeText(QString)));
 
 }
@@ -43,6 +47,7 @@ void MainWindow::on_pushButton_clicked()
     QString CommandLaunchDate = QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
     ui->OutputConsole->setText(ui->OutputConsole->toPlainText()+CommandLaunchDate + " " +"Lancement de google-chrome"+"\n");
     QString* OuputConsole = &CoreApp.OutputConsole;
+    m_strWrapper.SetString("dd");
     //ui->OutputConsole->setText(OuputConsole);
 
 

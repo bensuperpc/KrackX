@@ -3,6 +3,8 @@
 #include <numeric>
 #include <chrono>
 #include <QString>
+#include <QMainWindow>
+#include <QObject>
 //#include <thread>
 using namespace std;
 #ifndef CORE_H
@@ -29,6 +31,25 @@ public:
 
 
 };
+class StringWrapper : public QObject
+{
+   Q_OBJECT
+public:
+    explicit StringWrapper(QObject *parent = nullptr);
+
+    void SetString(const QString& str);
+
+private:
+    QString m_str;
+
+signals:
+    void TextChanged(QString str);
+
+public slots:
+};
+
+
+
 
 #endif // CORE_H
 
