@@ -1,6 +1,4 @@
 # Krack_X
-Bonjour,
-
 Voici un petit programme pour casser des clés de sécurité sur des fichiers(7z,Zip ou autre archive avec un MDP).
 Ce logiciel est à usage PERSONNEL et pour mon apprentissage du C++14 sous Qt.
 Il support j'usqu'a 128 Coeurs mais il n'est pas tres optimisé pour l'instant ^^.
