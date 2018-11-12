@@ -12,15 +12,16 @@ using namespace std;
 
 class CoreProcessing
 {
-private:
-
 
 public:
+    QString _CurrentFileOpen;
+
+
     CoreProcessing();//Pas de crochet !
     auto GetTime();// { return std::chrono::system_clock::now(); }
     unsigned int CPUThreadCount();
     unsigned int UseCore;
-    std::string CurrentFileOpen();
+    QString CurrentFileOpen();
     QString OutputConsole;
     void exec(string LauncedP);
     [[ noreturn ]] void call_from_thread(int tid, string _LauncedP);
@@ -28,25 +29,10 @@ public:
     bool UTF8_Password;//si le MDP utilise de l'UTF-8
     bool CharSpe_Password;//Si le MDP contient des charactères spéciaux
     bool AttacByDico;//Une attaque par le dictionaire
-
-
-};
-class StringWrapper : public QObject
-{
-   Q_OBJECT
-public:
-    explicit StringWrapper(QObject *parent = nullptr);
-
-    void SetString(const QString& str);
-
 private:
-    QString m_str;
 
-signals:
-    void TextChanged(QString str);
-
-public slots:
 };
+
 
 
 

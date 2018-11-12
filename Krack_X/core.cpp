@@ -18,18 +18,12 @@
 #include <QString>
 #include <QProcess>
 #include <QtDebug>
+#include <iostream>
+#include <core.h>
 //QProcess::execute("google-chrome");
 static CoreAdd coreadd;
 // Date constructor
 using namespace std;
-
-void StringWrapper::SetString(const QString &str)
-{
-    if (str != m_str) {
-        m_str = str;
-        emit TextChanged(m_str);
-    }
-}
 
 CoreProcessing::CoreProcessing()
 {
@@ -41,8 +35,8 @@ unsigned int CoreProcessing::CPUThreadCount(){
     return std::thread::hardware_concurrency();//Retourne le nombre de coeur sur la machine
 }
 
-std::string CurrentFileOpen(){
-    return "";
+    QString CoreProcessing::CurrentFileOpen(){
+    return _CurrentFileOpen;
 }
 
 void CoreProcessing::exec(string LauncedP){
@@ -54,7 +48,6 @@ void CoreProcessing::exec(string LauncedP){
         tt[i].join();
     }
     delete [] tt;//On nettoie la Memoire
-
 }
 
 [[ noreturn ]] void CoreProcessing::call_from_thread(int tid, string _LauncedP) {
