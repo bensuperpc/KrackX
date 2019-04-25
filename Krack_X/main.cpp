@@ -1,5 +1,6 @@
 //https://github.com/andrewrjones/qml2-to-cpp-and-back-signals
 //https://stackoverflow.com/questions/40407583/how-to-send-a-signal-from-one-qml-to-another
+//https://forum.qt.io/topic/94159/signal-slot-system-inside-qml
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
