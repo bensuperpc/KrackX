@@ -10,8 +10,8 @@ ApplicationWindow {
     id: window
 
     visible: true
-    width: 360
-    height: 520
+    width: 480
+    height: 720
     title: qsTr("Side Panel")
 
     readonly property bool inPortrait: window.width < window.height
