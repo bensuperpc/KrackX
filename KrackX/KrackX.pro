@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         applicationui.cpp \
+        cpuinfo.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -32,7 +33,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    applicationui.h
+    applicationui.h \
+    cpuinfo.h
 
 DISTFILES += \
     android/AndroidManifest.xml \

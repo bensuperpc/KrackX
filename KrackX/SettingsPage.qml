@@ -19,5 +19,17 @@ Page {
             placeholderText: qsTr("Enter name 2")
             text: myApp.author
         }
+        Row {
+
+            Slider {
+                value: myApp.threadSupport()
+                from: 1
+                to: 100
+            }
+            Label {
+                text: qsTr("1")
+                anchors.centerIn: parent
+            }
+        }
     }
 }

@@ -63,6 +63,7 @@ ApplicationWindow {
             text: "Paramètres"
             onTriggered: {
                 console.log("onTriggered " + parametres.text)
+                stackView.push("SettingsPage.qml")
             }
         }
         MenuItem {

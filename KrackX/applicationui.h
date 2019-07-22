@@ -5,8 +5,13 @@
 #include <QQmlContext>
 #include <QDebug>
 
+#include "cpuinfo.h"
+
+
 class Applicationui : public QObject
 {
+    cpuinfo processorInfo;
+
     Q_OBJECT
     Q_PROPERTY(QString author READ author WRITE setAuthor NOTIFY authorChanged)
 
@@ -19,6 +24,7 @@ public:
             emit authorChanged();
         }
     }
+
     QString author() const {
         return m_author;
     }
@@ -31,6 +37,13 @@ public:
 
     Q_INVOKABLE
     QString text = "";
+
+
+    Q_INVOKABLE
+    unsigned threadSupport(){
+        return processorInfo.concurentThreadsSupported;
+    }
+
 
 
 signals:
