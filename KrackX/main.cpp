@@ -1,8 +1,11 @@
-#include <QGuiApplication>
+//#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
 #include "applicationui.h"
+
+#include <QStringList>
 
 int main(int argc, char *argv[])
 {
@@ -10,11 +13,26 @@ int main(int argc, char *argv[])
     //for theme
     qputenv("QT_QUICK_CONTROLS_STYLE", "material");
 
-    QGuiApplication app(argc, argv);
+    //If you use QML app (without QtWidgets)
+    //QGuiApplication app(argc, argv);
+
+    //If you use QML and QtWidgets app
+    QApplication app(argc, argv);
+    //QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+    //QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
     QQmlApplicationEngine engine;
 
     Applicationui appui;
+
+    //For combobox
+    QStringList tmp;
+    tmp << "1" << "2" << "3" << "4" << "5" << "6" << "7";
+    appui.setComboList(tmp);
+
+    QQmlContext *ownContext = engine.rootContext();
+    ownContext->setContextProperty("myModel", QVariant::fromValue(appui.comboList()));
+
 
     //Add C++ instance in QML engine
     QQmlContext* context = engine.rootContext();

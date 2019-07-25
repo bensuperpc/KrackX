@@ -1,10 +1,14 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.13
-import QtQuick.Controls.Material 2.12
+import QtQuick.Controls.Material 2.13
 import QtQuick.Layouts 1.13
+import QtQuick.Window 2.13
 
 ApplicationWindow {
     property bool isOpened: false
+
+    //property int y: Screen.desktopAvailableHeight - height
+    //property int x: Screen.desktopAvailableWidth - width
     Material.theme: Material.Dark
     Material.primary: Material.Amber
     id: window
@@ -12,43 +16,34 @@ ApplicationWindow {
     visible: true
     width: 480
     height: 720
-    title: qsTr("Side Panel")
 
-    readonly property bool inPortrait: window.width < window.height
+    title: qsTr("Side Panel")
 
     header: ToolBar {
         RowLayout {
-            spacing: 20
             anchors.fill: parent
             ToolButton {
                 id: toolButton1
-                //text: "\u2630" // symbole représentant le panneau ou "\u2261"
-                text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-                font.pixelSize: Qt.application.font.pixelSize * 1.6
+                text: qsTr("\u2630")
                 onClicked: {
-                    console.log("onClicked " + toolButton1.text)
-                    if (stackView.depth > 1) {
-                        stackView.pop()
+                    if (isOpened) {
+                        console.log("drawer close()")
+                        drawer.close()
                     } else {
-                        if (isOpened) {
-                            console.log("drawer close()")
-                            drawer.close()
-                        } else {
-                            console.log("drawer open()")
-                            drawer.open()
-                        }
+                        console.log("drawer open()")
+                        drawer.open()
                     }
                 }
             }
             Label {
-                text: qsTr("Mon Application")
+                text: "Title"
+                elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }
             ToolButton {
-                id: toolButton2
-                text: "\u22ee" // symbole représentant le menu options ou qsTr("⋮")
+                text: qsTr("⋮")
                 onClicked: menu.open()
             }
         }
@@ -115,6 +110,23 @@ ApplicationWindow {
                 id: idContentColumn
                 ItemDelegate {
                     id: choix1
+
+                    Text {
+                        text: "MainPage"
+                        font.family: "Helvetica"
+                        font.pointSize: 24
+                        color: "red"
+                    }
+
+                    width: parent.width // toute la largeur du tiroir
+                    onClicked: {
+                        console.log("onClicked " + choix1.text)
+                        stackView.push("mainPage.qml")
+                        drawer.close() // et on referme le tiroir
+                    }
+                }
+                ItemDelegate {
+                    id: choix2
                     text: qsTr("Settings")
                     width: parent.width // toute la largeur du tiroir
                     onClicked: {
@@ -123,12 +135,13 @@ ApplicationWindow {
                         drawer.close() // et on referme le tiroir
                     }
                 }
+
                 ItemDelegate {
-                    id: choix2
+                    id: choix3
                     text: qsTr("KrackPasswordPage")
                     width: parent.width
                     onClicked: {
-                        console.log("onClicked " + choix2.text)
+                        console.log("onClicked " + choix3.text)
                         stackView.push("KrackPasswordPage.qml")
                         drawer.close() // et on referme le tiroir
                     }
@@ -136,26 +149,69 @@ ApplicationWindow {
             }
         }
     }
-
     Flickable {
         id: flickable
 
         anchors.fill: parent
+        focus: true
         //anchors.topMargin: overlayHeader.height
-        anchors.leftMargin: !inPortrait ? drawer.width : undefined
-
         topMargin: 20
         bottomMargin: 20
         //contentHeight: column.height
         contentHeight: stackView.height
-        StackView {
-            id: stackView
-            initialItem: "mainPage.qml"
-            anchors.fill: parent
+
+        //boundsBehavior: Flickable.StopAtBounds
+        ScrollBar.vertical: ScrollBar {
+            id: scroller
         }
 
+        /*
+        MouseArea {
+            anchors.fill: parent
+            onWheel: {
+                console.log("onWheel")
+                if (wheel.angleDelta.y > 0) {
+                    scroller.decrease()
+                } else {
+                    scroller.increase()
+                }
+            }
+            onClicked: {
+                console.log("onClicked")
+            }
+        }
+        */
+
         //initialItem: qrc:/config_app.qml:6 Expected type name
-        ScrollIndicator.vertical: ScrollIndicator {
+    }
+}
+
+/*
+header: ToolBar {
+    RowLayout {
+        spacing: 20
+        anchors.fill: parent
+        ToolButton {
+            id: toolButton1
+            //text: "\u2630" // symbole représentant le panneau ou "\u2261"
+            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
+            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            onClicked: {
+                console.log("onClicked " + toolButton1.text)
+                if (stackView.depth > 1) {
+                    stackView.pop()
+                } else {
+                    if (isOpened) {
+                        console.log("drawer close()")
+                        drawer.close()
+                    } else {
+                        console.log("drawer open()")
+                        drawer.open()
+                    }
+                }
+            }
         }
     }
 }
+*/
+

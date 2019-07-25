@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlContext>
 #include <QDebug>
+#include <QStringList>
 
 #include "cpuinfo.h"
 
@@ -13,11 +14,19 @@ class Applicationui : public QObject
     cpuinfo processorInfo;
 
     Q_OBJECT
+
+    //For textbox
     Q_PROPERTY(QString author READ author WRITE setAuthor NOTIFY authorChanged)
+
+    //For combobox
+    Q_PROPERTY(QStringList comboList READ comboList WRITE setComboList NOTIFY comboListChanged)
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+
 
 public:
     explicit Applicationui(QObject *parent = nullptr);
 
+    //For textbox
     void setAuthor(const QString &a) {
         if (a != m_author) {
             m_author = a;
@@ -25,6 +34,7 @@ public:
         }
     }
 
+    //For textbox
     QString author() const {
         return m_author;
     }
@@ -38,19 +48,38 @@ public:
     Q_INVOKABLE
     QString text = "";
 
-
     Q_INVOKABLE
     unsigned threadSupport(){
         return processorInfo.concurentThreadsSupported;
     }
 
+    //For combobox
+    const QStringList comboList();
+    void setComboList(const QStringList &comboList);
+
+    int count();
+    void setCount(int cnt);
+
+    Q_INVOKABLE void addElement(const QString &element);
+    Q_INVOKABLE void removeElement(int index);
+
 
 
 signals:
+    //For textbox
     void authorChanged();
 
+    //For combobox
+    void comboListChanged();
+    void countChanged();
+
+
 private:
+    //For textbox
     QString m_author;
+    //For comobobox
+    QStringList m_comboList;
+    int         m_count;
 public slots:
 };
 

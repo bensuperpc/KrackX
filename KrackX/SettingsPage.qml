@@ -6,30 +6,67 @@ import QtQuick.Controls.Material 2.13
 Page {
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
-        TextField {
-            id: textfield1
-            placeholderText: qsTr("Enter name 1")
-            onTextChanged: {
-                myApp.author = textfield1.text
-                //textfield2.text = textfield1.text
+        spacing: 5
+        GroupBox {
+            title: qsTr("Password")
+            Column {
+                Row {
+                    CheckBox {
+                        text: qsTr("abc")
+                        checked: true
+                    }
+                    CheckBox {
+                        text: qsTr("ABC")
+                        checked: false
+                    }
+                }
+                CheckBox {
+                    text: qsTr("Special characters")
+                    checked: false
+                }
             }
         }
-        TextField {
-            id: textfield2
-            placeholderText: qsTr("Enter name 2")
-            text: myApp.author
+        GroupBox {
+            title: qsTr("Hardware")
+            Column {
+                Row {
+                    RadioButton {
+                        checked: true
+                        text: qsTr("CPU    ")
+                    }
+                    RadioButton {
+                        enabled: false
+                        text: qsTr("CPU/GPU")
+                    }
+                    RadioButton {
+                        enabled: false
+                        text: qsTr("GPU    ")
+                    }
+                }
+                Row {
+                    Label {
+                        text: qsTr("CPU core :")
+                    }
+                    Slider {
+                        id: cpucorecount_slider
+                        value: myApp.threadSupport()
+                        stepSize: 1.0
+                        from: 1
+                        to: 64
+                        onValueChanged: {
+                            cpucorecount_label.text = cpucorecount_slider.value
+                            console.log("cpucorecount_slider moved")
+                        }
+                    }
+                    Label {
+                        id: cpucorecount_label
+                        text: myApp.threadSupport()
+                    }
+                }
+            }
         }
-        Row {
-
-            Slider {
-                value: myApp.threadSupport()
-                from: 1
-                to: 100
-            }
-            Label {
-                text: qsTr("1")
-                anchors.centerIn: parent
-            }
+        GroupBox {
+            title: qsTr("Hardware")
         }
     }
 }

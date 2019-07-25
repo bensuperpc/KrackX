@@ -4,7 +4,7 @@
 #include <iostream>
 #include <thread>
 #include<qprocess.h>
-#include<cpuid.h>
+//#include<cpuid.h>
 
 class cpuinfo
 {
