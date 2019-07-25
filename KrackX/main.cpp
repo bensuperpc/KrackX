@@ -30,14 +30,15 @@ int main(int argc, char *argv[])
     tmp << "1" << "2" << "3" << "4" << "5" << "6" << "7";
     appui.setComboList(tmp);
 
-    QQmlContext *ownContext = engine.rootContext();
-    ownContext->setContextProperty("myModel", QVariant::fromValue(appui.comboList()));
-
 
     //Add C++ instance in QML engine
     QQmlContext* context = engine.rootContext();
     context->setContextProperty("myApp", &appui);
 
+
+    // some more context properties
+    appui.addContextProperty(context);
+    context->setContextProperty("myModel", QVariant::fromValue(appui.comboList()));
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
 

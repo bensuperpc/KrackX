@@ -4,6 +4,7 @@ import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.13
 
 Page {
+    title: qsTr("Settings")
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: 5
@@ -22,6 +23,10 @@ Page {
                 }
                 CheckBox {
                     text: qsTr("Special characters")
+                    checked: false
+                }
+                CheckBox {
+                    text: qsTr("UTF-8")
                     checked: false
                 }
             }

@@ -5,6 +5,7 @@ import QtCharts 2.13
 
 Page {
     title: qsTr("KrackPasswordPage")
+
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
         ComboBox {

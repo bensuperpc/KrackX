@@ -7,6 +7,10 @@ import QtQuick.Window 2.13
 ApplicationWindow {
     property bool isOpened: false
 
+    //! [orientation]
+    property bool inPortrait: window.width < window.height
+    //! [orientation]
+
     //property int y: Screen.desktopAvailableHeight - height
     //property int x: Screen.desktopAvailableWidth - width
     Material.theme: Material.Dark
@@ -36,7 +40,8 @@ ApplicationWindow {
                 }
             }
             Label {
-                text: "Title"
+                id: title_label
+                text: stackView.currentItem.title
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -154,34 +159,18 @@ ApplicationWindow {
 
         anchors.fill: parent
         focus: true
-        //anchors.topMargin: overlayHeader.height
         topMargin: 20
         bottomMargin: 20
-        //contentHeight: column.height
         contentHeight: stackView.height
 
         //boundsBehavior: Flickable.StopAtBounds
-        ScrollBar.vertical: ScrollBar {
-            id: scroller
-        }
-
-        /*
-        MouseArea {
+        StackView {
+            id: stackView
+            initialItem: "mainPage.qml"
             anchors.fill: parent
-            onWheel: {
-                console.log("onWheel")
-                if (wheel.angleDelta.y > 0) {
-                    scroller.decrease()
-                } else {
-                    scroller.increase()
-                }
-            }
-            onClicked: {
-                console.log("onClicked")
-            }
         }
-        */
-
+        ScrollIndicator.vertical: ScrollIndicator {
+        }
         //initialItem: qrc:/config_app.qml:6 Expected type name
     }
 }

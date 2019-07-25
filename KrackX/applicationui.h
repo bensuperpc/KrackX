@@ -49,6 +49,9 @@ public:
     QString text = "";
 
     Q_INVOKABLE
+    QString text2 = "";
+
+    Q_INVOKABLE
     unsigned threadSupport(){
         return processorInfo.concurentThreadsSupported;
     }

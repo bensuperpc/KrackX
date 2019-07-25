@@ -6,6 +6,7 @@ Applicationui::Applicationui(QObject *parent) : QObject(parent)
 }
 void Applicationui::addContextProperty(QQmlContext *context)
 {
+    //context->setContextProperty("DataManager", text2);
 }
 
 void Applicationui::console(QString st){
