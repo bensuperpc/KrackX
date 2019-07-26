@@ -30,8 +30,8 @@ void core::exec(string LauncedP){
 
     process.startDetached(QString::fromStdString(_LauncedP));
 
-    QString stdout = process.readAllStandardOutput();
-    QString stderr = process.readAllStandardError();
+    //QString stdout = process.readAllStandardOutput();
+    //QString stderr = process.readAllStandardError();
 
     qDebug() << "#########################";
     qDebug() << stdout;

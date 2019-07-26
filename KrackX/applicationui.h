@@ -6,13 +6,11 @@
 #include <QDebug>
 #include <QStringList>
 
-#include "cpuinfo.h"
 #include "core.h"
 
 
 class Applicationui : public QObject
 {
-    cpuinfo processorInfo;
     core coreapp;
 
     Q_OBJECT
@@ -55,7 +53,7 @@ public:
 
     Q_INVOKABLE
     unsigned threadSupport(){
-        return processorInfo.concurentThreadsSupported;
+        return std::thread::hardware_concurrency();
     }
 
     //For combobox

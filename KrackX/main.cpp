@@ -3,27 +3,37 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include <QQuickStyle>
+#include <QStringList>
+
 #include "applicationui.h"
 
-#include <QStringList>
+#include "about_compilation.h"
+
 
 int main(int argc, char *argv[])
 {
+    Applicationui appui;
+
+    about_compilation ac;
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     //for theme
-    qputenv("QT_QUICK_CONTROLS_STYLE", "material");
+    //qputenv("QT_QUICK_CONTROLS_STYLE", "material");
+    QQuickStyle::setStyle("Material");
 
     //If you use QML app (without QtWidgets)
     //QGuiApplication app(argc, argv);
 
-    //If you use QML and QtWidgets app
+    //If you use QML and QtWidgets app(Graphics)
     QApplication app(argc, argv);
     //QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     //QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
     QQmlApplicationEngine engine;
 
-    Applicationui appui;
+
 
     //For combobox
     QStringList tmp;
@@ -39,6 +49,9 @@ int main(int argc, char *argv[])
     // some more context properties
     //appui.addContextProperty(context);
     context->setContextProperty("myModel", QVariant::fromValue(appui.comboList()));
+    //engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
+    context->setContextProperty("qtversion", QString(qVersion()));
+    context->setContextProperty("about_compilation", &ac);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
 

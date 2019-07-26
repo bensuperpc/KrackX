@@ -13,17 +13,21 @@ ApplicationWindow {
 
     //property int y: Screen.desktopAvailableHeight - height
     //property int x: Screen.desktopAvailableWidth - width
-    Material.theme: Material.Dark
-    Material.primary: Material.Amber
+    //Material.theme: Material.Dark
+    Material.theme: "Dark"
+    Material.primary: "Amber"
+    Material.accent: "Teal"
+    //Material.primary: Material.Amber
     id: window
 
     visible: true
     width: 480
     height: 720
 
-    title: qsTr("Side Panel")
+    title: qsTr("KrackX")
 
     header: ToolBar {
+        id: toolbar
         RowLayout {
             anchors.fill: parent
             ToolButton {
@@ -195,11 +199,13 @@ ApplicationWindow {
         id: flickable
 
         anchors.fill: parent
+
         focus: true
         topMargin: 20
         bottomMargin: 20
         contentHeight: stackView.height
         clip: true
+
         //boundsBehavior: Flickable.StopAtBounds
         StackView {
             id: stackView
