@@ -28,7 +28,15 @@ ApplicationWindow {
             anchors.fill: parent
             ToolButton {
                 id: toolButton1
-                text: qsTr("\u2630")
+                //text: qsTr("\u2630")
+                Image {
+                    id: iconmenu
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: 24
+                    width: 24
+                    source: "qrc:images/icons/menu@4x.png"
+                }
                 onClicked: {
                     if (isOpened) {
                         console.log("drawer close()")
@@ -66,6 +74,7 @@ ApplicationWindow {
                 stackView.push("SettingsPage.qml")
             }
         }
+
         MenuItem {
             id: about
             text: "À propos"
@@ -96,7 +105,7 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        width: window.width * 0.66 // occupera 66% de la largeur
+        width: window.width * 0.60 // occupera 66% de la largeur
         height: window.height // et sur toute la hauteur
         onOpened: {
             console.log("drawer onOpened")
@@ -109,22 +118,15 @@ ApplicationWindow {
         Flickable {
             contentHeight: idContentColumn.height
             anchors.fill: parent
+            clip: true
             Column {
                 width: parent.width
                 height: parent.height
                 id: idContentColumn
 
-
                 ItemDelegate {
                     id: choix1
-
-                    Text {
-                        text: "MainPage"
-                        font.family: "Helvetica"
-                        font.pointSize: 24
-                        color: "red"
-                    }
-
+                    text: qsTr("MainPage")
                     width: parent.width // toute la largeur du tiroir
                     onClicked: {
                         console.log("onClicked " + choix1.text)
@@ -132,6 +134,18 @@ ApplicationWindow {
                         drawer.close() // et on referme le tiroir
                     }
                 }
+                ItemDelegate {
+                    width: parent.width
+                    height: menu_separator.height
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    enabled: false
+                    MenuSeparator {
+                        id: menu_separator
+                        width: parent.width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
                 ItemDelegate {
                     id: choix2
                     text: qsTr("Settings")
@@ -153,6 +167,27 @@ ApplicationWindow {
                         drawer.close() // et on referme le tiroir
                     }
                 }
+                ItemDelegate {
+                    width: parent.width
+                    height: menu_separator1.height
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    enabled: false
+                    MenuSeparator {
+                        id: menu_separator1
+                        width: parent.width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+                ItemDelegate {
+                    id: choix4
+                    text: qsTr("About")
+                    width: parent.width
+                    onClicked: {
+                        console.log("onClicked " + choix4.text)
+                        stackView.push("AboutPage.qml")
+                        drawer.close() // et on referme le tiroir
+                    }
+                }
             }
         }
     }
@@ -164,12 +199,13 @@ ApplicationWindow {
         topMargin: 20
         bottomMargin: 20
         contentHeight: stackView.height
-
+        clip: true
         //boundsBehavior: Flickable.StopAtBounds
         StackView {
             id: stackView
             initialItem: "mainPage.qml"
             anchors.fill: parent
+            anchors.centerIn: parent
         }
         ScrollIndicator.vertical: ScrollIndicator {
         }

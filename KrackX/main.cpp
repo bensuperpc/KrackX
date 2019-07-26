@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
 
     // some more context properties
-    appui.addContextProperty(context);
+    //appui.addContextProperty(context);
     context->setContextProperty("myModel", QVariant::fromValue(appui.comboList()));
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

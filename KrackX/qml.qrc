@@ -4,5 +4,6 @@
         <file>SettingsPage.qml</file>
         <file>mainPage.qml</file>
         <file>KrackPasswordPage.qml</file>
+        <file>AboutPage.qml</file>
     </qresource>
 </RCC>
