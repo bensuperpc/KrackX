@@ -19,7 +19,8 @@ SOURCES += \
         cpuinfo.cpp \
         main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    resource_file.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML2_IMPORT_PATH += $$PWD
@@ -30,7 +31,6 @@ QML_IMPORT_PATH += $$PWD
 QML2_DESIGNER_IMPORT_PATH += $$PWD
 
 
-QT_OPENGL=angle
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -73,5 +73,16 @@ Page {
         GroupBox {
             title: qsTr("Hardware")
         }
+
+        Image {
+            fillMode: Image.PreserveAspectFit
+            source: "qrc:images/qt-logo@4x.png"
+            MouseArea {
+                onClicked: {
+
+                }
+            }
+        }
+        //https://stackoverflow.com/questions/23667088/qtquick-dynamic-images-and-c/
     }
 }

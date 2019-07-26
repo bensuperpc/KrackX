@@ -7,11 +7,13 @@
 #include <QStringList>
 
 #include "cpuinfo.h"
+#include "core.h"
 
 
 class Applicationui : public QObject
 {
     cpuinfo processorInfo;
+    core coreapp;
 
     Q_OBJECT
 

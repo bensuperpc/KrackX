@@ -113,6 +113,8 @@ ApplicationWindow {
                 width: parent.width
                 height: parent.height
                 id: idContentColumn
+
+
                 ItemDelegate {
                     id: choix1
 
