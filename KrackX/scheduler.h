@@ -2,11 +2,16 @@
 #define SCHEDULER_H
 
 #include <QObject>
-#include <thread>
+
 #include <QtDebug>
 #include <iostream>
 
+#include <mutex>
+#include <thread>
+
 #include "instructions.h"
+
+
 
 
 class scheduler : public QObject
@@ -25,8 +30,7 @@ public:
 
     std::thread *threads = new std::thread[maxThreadSupport()];
 
-
-
+    std::mutex g_pages_mutex;
 signals:
 
 public slots:

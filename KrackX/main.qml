@@ -6,18 +6,14 @@ import QtQuick.Window 2.13
 
 ApplicationWindow {
     property bool isOpened: false
-
-    //! [orientation]
     property bool inPortrait: window.width < window.height
-    //! [orientation]
 
-    //property int y: Screen.desktopAvailableHeight - height
-    //property int x: Screen.desktopAvailableWidth - width
     //Material.theme: Material.Dark
+    //Material.primary: Material.Amber
     Material.theme: "Dark"
     Material.primary: "Amber"
     Material.accent: "Teal"
-    //Material.primary: Material.Amber
+
     id: window
 
     visible: true
@@ -28,6 +24,7 @@ ApplicationWindow {
 
     header: ToolBar {
         id: toolbar
+
         RowLayout {
             anchors.fill: parent
             ToolButton {
@@ -117,10 +114,14 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        width: window.width * 0.60 // Occupera 66% de la largeur
-        height: window.height // et sur toute la hauteur
+        //In portrait mode
+        //y: toolbar.height
 
-        dragMargin: 60
+        //!inPortrait ? idContentColumn.height : idContentColumn.width
+        //y: inPortrait ? toolbar.height : toolbar.width
+        width: window.width * 0.60
+        height: window.height
+
         onOpened: {
             console.log("drawer onOpened")
             isOpened = true
@@ -143,11 +144,11 @@ ApplicationWindow {
                 ItemDelegate {
                     id: choix1
                     text: qsTr("MainPage")
-                    width: parent.width // toute la largeur du tiroir
+                    width: parent.width
                     onClicked: {
                         console.log("onClicked " + choix1.text)
                         stackView.push("mainPage.qml")
-                        drawer.close() // et on referme le tiroir
+                        drawer.close()
                     }
                 }
                 ItemDelegate {
@@ -209,9 +210,7 @@ ApplicationWindow {
     }
     Flickable {
         id: flickable
-
         anchors.fill: parent
-
         focus: true
         topMargin: 20
         bottomMargin: 20
@@ -231,33 +230,3 @@ ApplicationWindow {
         }
     }
 }
-
-/*
-header: ToolBar {
-    RowLayout {
-        spacing: 20
-        anchors.fill: parent
-        ToolButton {
-            id: toolButton1
-            //text: "\u2630" // symbole représentant le panneau ou "\u2261"
-            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            onClicked: {
-                console.log("onClicked " + toolButton1.text)
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    if (isOpened) {
-                        console.log("drawer close()")
-                        drawer.close()
-                    } else {
-                        console.log("drawer open()")
-                        drawer.open()
-                    }
-                }
-            }
-        }
-    }
-}
-*/
-

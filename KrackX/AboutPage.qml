@@ -17,12 +17,14 @@ Page {
                     color: "white"
                     font.bold: true
                     font.pointSize: 10
+                    wrapMode: Text.WordWrap
                 }
                 Text {
                     text: "Source: <a href='https://github.com/Bensuperpc/KrackX'>Click here</a>"
                     color: "white"
                     font.bold: true
                     font.pointSize: 10
+                    wrapMode: Text.WordWrap
                     onLinkActivated: Qt.openUrlExternally(link)
 
                     MouseArea {

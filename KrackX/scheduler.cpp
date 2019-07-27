@@ -2,9 +2,8 @@
 
 scheduler::scheduler(QObject *parent) : QObject(parent)
 {
-    for(unsigned long long i = 0 ; i<=10;i++){
-        instructions_list.emplace_back();
-    }
+    instructions_list.emplace_back();
+    //for(unsigned long long i = 0 ; i<=10;i++){}
 
     for (unsigned int i = 0; i < maxThreadSupport(); ++i) {
         threads[i] = std::thread(&scheduler::cpu,this,i);
@@ -17,4 +16,12 @@ scheduler::scheduler(QObject *parent) : QObject(parent)
 
 void scheduler::cpu(int threadid){
     qDebug() << "thread id: " << threadid;
+    for(unsigned long long i = 0 ; i<=10;i++){
+        //Use ry_unlock later
+        g_pages_mutex.lock();
+       instructions_list[0].i = instructions_list[0].i + 1;
+       qDebug() << "i =" << instructions_list[0].i;
+       g_pages_mutex.unlock();
+    }
+
 }

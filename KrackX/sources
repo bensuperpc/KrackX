@@ -22,3 +22,7 @@ https://blog.shantanu.io/2015/02/15/creating-working-hyperlinks-in-qtquick-text/
 # Vector
 https://stackoverflow.com/questions/875103/how-do-i-erase-an-element-from-stdvector-by-index
 http://www.cplusplus.com/reference/vector/vector/erase/
+
+#Mutex
+https://en.cppreference.com/w/cpp/thread/mutex/try_lock
+
