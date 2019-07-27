@@ -55,7 +55,6 @@ Page {
             text: myApp.author
         }
 
-
         ChartView {
             title: "Line"
             antialiasing: true

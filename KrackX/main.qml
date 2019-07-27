@@ -78,6 +78,14 @@ ApplicationWindow {
                 stackView.push("SettingsPage.qml")
             }
         }
+        MenuItem {
+            width: parent.width
+            height: children[0].height
+            enabled: false
+            MenuSeparator {
+                width: parent.width
+            }
+        }
 
         MenuItem {
             id: about
@@ -109,8 +117,10 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        width: window.width * 0.60 // occupera 66% de la largeur
+        width: window.width * 0.60 // Occupera 66% de la largeur
         height: window.height // et sur toute la hauteur
+
+        dragMargin: 60
         onOpened: {
             console.log("drawer onOpened")
             isOpened = true
@@ -119,8 +129,10 @@ ApplicationWindow {
             console.log("drawer onClosed")
             isOpened = false
         }
+
         Flickable {
-            contentHeight: idContentColumn.height
+            //Fix issue with wrong Flickable size in !inPortrait
+            contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
             anchors.fill: parent
             clip: true
             Column {
@@ -203,7 +215,9 @@ ApplicationWindow {
         focus: true
         topMargin: 20
         bottomMargin: 20
-        contentHeight: stackView.height
+        //Fix issue with wrong Flickable size in !inPortrait
+        contentHeight: !inPortrait ? stackView.height : stackView.width
+
         clip: true
 
         //boundsBehavior: Flickable.StopAtBounds
@@ -211,11 +225,10 @@ ApplicationWindow {
             id: stackView
             initialItem: "mainPage.qml"
             anchors.fill: parent
-            anchors.centerIn: parent
+            //anchors.centerIn: parent
         }
         ScrollIndicator.vertical: ScrollIndicator {
         }
-        //initialItem: qrc:/config_app.qml:6 Expected type name
     }
 }
 

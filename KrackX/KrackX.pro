@@ -18,7 +18,9 @@ SOURCES += \
         about_compilation.cpp \
         applicationui.cpp \
         core.cpp \
-        main.cpp
+        instructions.cpp \
+        main.cpp \
+        scheduler.cpp
 
 RESOURCES += qml.qrc \
     resource_file.qrc
@@ -41,7 +43,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     about_compilation.h \
     applicationui.h \
-    core.h
+    core.h \
+    instructions.h \
+    scheduler.h
 
 DISTFILES += \
     android/AndroidManifest.xml \

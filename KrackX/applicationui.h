@@ -5,14 +5,16 @@
 #include <QQmlContext>
 #include <QDebug>
 #include <QStringList>
+#include <thread>
 
-#include "core.h"
+#include "scheduler.h"
+
 
 
 class Applicationui : public QObject
 {
-    core coreapp;
-
+    //core coreapp;
+    scheduler schedule;
     Q_OBJECT
 
     //For textbox
