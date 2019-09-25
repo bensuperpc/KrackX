@@ -15,12 +15,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        Core/Scheduler/scheduler.cpp \
+        Core/core.cpp \
         about_compilation.cpp \
         applicationui.cpp \
-        core.cpp \
         instructions.cpp \
-        main.cpp \
-        scheduler.cpp
+        main.cpp
 
 RESOURCES += qml.qrc \
     resource_file.qrc
@@ -41,11 +41,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Core/Scheduler/scheduler.h \
+    Core/core.h \
     about_compilation.h \
     applicationui.h \
-    core.h \
-    instructions.h \
-    scheduler.h
+    instructions.h
 
 DISTFILES += \
     android/AndroidManifest.xml \

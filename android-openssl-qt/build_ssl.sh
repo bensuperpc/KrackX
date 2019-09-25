@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=1.1.1c
+VERSION=1.1.1d
 export ANDROID_NDK_HOME=/home/bensuperpc/android-ndk-r20/
 ANDROID_API=21
 
