@@ -1,5 +1,0 @@
-# ignore all generated and downloaded files and folder
-
-prebuilt
-openssl*
-

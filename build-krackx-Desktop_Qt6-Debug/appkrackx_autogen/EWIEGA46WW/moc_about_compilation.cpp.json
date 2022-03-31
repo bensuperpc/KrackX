@@ -1,0 +1,44 @@
+{
+    "classes": [
+        {
+            "className": "about_compilation",
+            "methods": [
+                {
+                    "access": "public",
+                    "name": "return_Compiler_version",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "name": "return_Compiler_name",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "name": "return_Cplusplus_used",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "name": "return_BuildDate",
+                    "returnType": "QString"
+                },
+                {
+                    "access": "public",
+                    "name": "return_BuildTime",
+                    "returnType": "QString"
+                }
+            ],
+            "object": true,
+            "qualifiedClassName": "about_compilation",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "about_compilation.h",
+    "outputRevision": 68
+}

@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="/krackx/">
+    <file alias="main.qml">/run/media/bensuperpc/MainT7/Depot_git/repos_perso/KrackX/krackx/main.qml</file>
+    <file alias="AboutPage.qml">/run/media/bensuperpc/MainT7/Depot_git/repos_perso/KrackX/krackx/AboutPage.qml</file>
+    <file alias="KrackPasswordPage.qml">/run/media/bensuperpc/MainT7/Depot_git/repos_perso/KrackX/krackx/KrackPasswordPage.qml</file>
+    <file alias="mainPage.qml">/run/media/bensuperpc/MainT7/Depot_git/repos_perso/KrackX/krackx/mainPage.qml</file>
+    <file alias="SettingsPage.qml">/run/media/bensuperpc/MainT7/Depot_git/repos_perso/KrackX/krackx/SettingsPage.qml</file>
+  </qresource>
+</RCC>
+
