@@ -1,7 +1,7 @@
-import QtQuick 2.13
-import QtQuick.Window 2.13
-import QtQuick.Controls 2.13
-import QtQuick.Controls.Material 2.13
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Controls.Material
 
 Page {
     title: qsTr("Settings")
