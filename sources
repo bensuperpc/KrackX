@@ -26,3 +26,5 @@ http://www.cplusplus.com/reference/vector/vector/erase/
 #Mutex
 https://en.cppreference.com/w/cpp/thread/mutex/try_lock
 
+# QML
+https://raymii.org/s/snippets/Cpp_QT_QML_Signals_and_Slots.html
