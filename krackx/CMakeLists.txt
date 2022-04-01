@@ -12,7 +12,6 @@ qt_add_executable(appkrackx
     counter.cpp counter.h
     about_compilation.cpp about_compilation.h
     applicationui.cpp applicationui.h
-    data.h data.cpp
 )
 
 qt_add_qml_module(appkrackx
