@@ -5,13 +5,14 @@ project(krackx VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick Core Qml REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts REQUIRED)
 
 qt_add_executable(appkrackx
     main.cpp
     counter.cpp counter.h
     about_compilation.cpp about_compilation.h
     applicationui.cpp applicationui.h
+    data.h data.cpp
 )
 
 qt_add_qml_module(appkrackx
@@ -31,4 +32,4 @@ set_target_properties(appkrackx PROPERTIES
 target_compile_definitions(appkrackx
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(appkrackx
-    PRIVATE Qt6::Quick Qt6::Core Qt6::Qml)
+    PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts)
