@@ -12,12 +12,13 @@ qt_add_executable(appkrackx
     counter.cpp counter.h
     about_compilation.cpp about_compilation.h
     applicationui.cpp applicationui.h
+    chartdatamodel.h chartdatamodel.cpp
 )
 
 qt_add_qml_module(appkrackx
     URI krackx
     VERSION 1.0
-    QML_FILES main.qml AboutPage.qml KrackPasswordPage.qml mainPage.qml SettingsPage.qml
+    QML_FILES main.qml AboutPage.qml KrackPasswordPage.qml mainPage.qml SettingsPage.qml counter.qml
 )
 
 set_target_properties(appkrackx PROPERTIES

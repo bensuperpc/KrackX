@@ -5,9 +5,11 @@ import QtCharts
 
 Page {
     title: qsTr("KrackPasswordPage")
+    property int timeStep: 0
 
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
+
         ComboBox {
             id: comboBox1
             model: myApp.comboList
@@ -54,40 +56,42 @@ Page {
         }
 
         ChartView {
-            title: "Line"
+            id: chartView
             antialiasing: true
-            width: 400
-            height: 300
+            width: Window.width * 0.8
+            height: Window.height * 0.6
+
+            ValueAxis {
+                id: axisX
+                min: 0
+                max: 400
+            }
+
+            Component.onCompleted: {
+                mapper.series = series2
+            }
+
             LineSeries {
-                name: "LineSeries"
-                XYPoint {
-                    x: 0
-                    y: 0
-                }
-                XYPoint {
-                    x: 1.1
-                    y: 2.1
-                }
-                XYPoint {
-                    x: 1.9
-                    y: 3.3
-                }
-                XYPoint {
-                    x: 2.1
-                    y: 2.1
-                }
-                XYPoint {
-                    x: 2.9
-                    y: 4.9
-                }
-                XYPoint {
-                    x: 3.4
-                    y: 3.0
-                }
-                XYPoint {
-                    x: 4.1
-                    y: 3.3
-                }
+                id: series1
+                axisX: axisX
+                name: "From QML"
+            }
+
+            LineSeries {
+                id: series2
+                axisX: axisX
+                name: "From C++"
+            }
+        }
+
+        Timer {
+            interval: 100
+            repeat: true
+            running: true
+            onTriggered: {
+                timeStep++
+                var y = (1 + Math.cos(timeStep / 10.0)) / 2.0
+                series1.append(timeStep, y)
             }
         }
     }

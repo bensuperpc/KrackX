@@ -30,6 +30,9 @@ ApplicationWindow {
             ToolButton {
                 id: toolButton1
                 text: qsTr("\u2630")
+
+
+                /*
                 Image {
                     id: iconmenu
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -38,6 +41,7 @@ ApplicationWindow {
                     width: 24
                     source: "qrc:images/icons/menu@4x.png"
                 }
+                */
                 onClicked: {
                     if (isOpened) {
                         console.log("drawer close()")
@@ -66,13 +70,22 @@ ApplicationWindow {
     Menu {
         id: menu
         x: parent.width - width
-        transformOrigin: Menu.TopRight
+        width: window.width * 0.37
+        // transformOrigin: Menu.TopRight
         MenuItem {
             id: parametres
             text: "Paramètres"
             onTriggered: {
                 console.log("onTriggered " + parametres.text)
                 stackView.push("SettingsPage.qml")
+            }
+        }
+        MenuItem {
+            id: quit
+            text: "Quit"
+            onTriggered: {
+                console.log("onTriggered " + quit.text)
+                Qt.quit()
             }
         }
         MenuItem {
@@ -86,7 +99,7 @@ ApplicationWindow {
 
         MenuItem {
             id: about
-            text: "À propos"
+            text: "About"
             onTriggered: {
                 console.log("onTriggered " + about.text)
                 aPropos.open()
@@ -119,9 +132,19 @@ ApplicationWindow {
 
         //!inPortrait ? idContentColumn.height : idContentColumn.width
         //y: inPortrait ? toolbar.height : toolbar.width
-        width: window.width * 0.60
+
+
+        /*
+        width: window.width * 0.66
+        height: window.height
+        */
+
+        //dragMargin: window.height * 0.1
+        y: header.height
+        width: window.width * 0.6
         height: window.height
 
+        // dragMargin: window.height * 0.03
         onOpened: {
             console.log("drawer onOpened")
             isOpened = true
@@ -142,11 +165,9 @@ ApplicationWindow {
                 id: idContentColumn
 
                 ItemDelegate {
-                    id: choix1
                     text: qsTr("MainPage")
                     width: parent.width
                     onClicked: {
-                        console.log("onClicked " + choix1.text)
                         stackView.push("mainPage.qml")
                         drawer.close()
                     }
@@ -162,25 +183,27 @@ ApplicationWindow {
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
-
                 ItemDelegate {
-                    id: choix2
                     text: qsTr("Settings")
                     width: parent.width // toute la largeur du tiroir
                     onClicked: {
-                        console.log("onClicked " + choix1.text)
                         stackView.push("SettingsPage.qml")
                         drawer.close() // et on referme le tiroir
                     }
                 }
-
                 ItemDelegate {
-                    id: choix3
                     text: qsTr("KrackPasswordPage")
                     width: parent.width
                     onClicked: {
-                        console.log("onClicked " + choix3.text)
                         stackView.push("KrackPasswordPage.qml")
+                        drawer.close() // et on referme le tiroir
+                    }
+                }
+                ItemDelegate {
+                    text: qsTr("Counter")
+                    width: parent.width // toute la largeur du tiroir
+                    onClicked: {
+                        stackView.push("counter.qml")
                         drawer.close() // et on referme le tiroir
                     }
                 }
@@ -212,21 +235,67 @@ ApplicationWindow {
         id: flickable
         anchors.fill: parent
         focus: true
-        topMargin: 20
-        bottomMargin: 20
+        topMargin: window.height * 0.02
+        bottomMargin: window.height * 0.02
+
         //Fix issue with wrong Flickable size in !inPortrait
-        contentHeight: !inPortrait ? stackView.height : stackView.width
+        // contentHeight: !inPortrait ? stackView.height : stackView.width
+        contentWidth: window.width
+        contentHeight: window.height - (toolbar.height * 0.5)
+
+        ScrollBar.horizontal: ScrollBar {
+            active: flick.moving || !flick.moving
+
+            // The one below does not nork more than once and the scrollbar
+            // goes invisible after the first move
+            //active:true
+        }
+        ScrollBar.vertical: ScrollBar {
+            active: flick.moving || !flick.moving
+        }
 
         clip: true
 
-        //boundsBehavior: Flickable.StopAtBounds
+        // remove bounds effect
+        // boundsBehavior: Flickable.StopAtBounds
         StackView {
             id: stackView
             initialItem: "mainPage.qml"
             anchors.fill: parent
+
             //anchors.centerIn: parent
-        }
-        ScrollIndicator.vertical: ScrollIndicator {
+            pushEnter: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 200
+                }
+            }
+            pushExit: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 200
+                }
+            }
+            popEnter: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 200
+                }
+            }
+            popExit: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 200
+                }
+            }
         }
     }
 }
