@@ -13,21 +13,55 @@ Page {
             Column {
                 Row {
                     CheckBox {
-                        text: qsTr("abc")
-                        checked: true
+                        id: enableNumber
+                        text: qsTr("123")
+                        checked: myApp.enableNumber
+                        onToggled: {
+                            myApp.enableNumber = enableNumber.checkState
+                        }
                     }
                     CheckBox {
+                        id: enableSmallAlphabet
+                        text: qsTr("abc")
+                        checked: myApp.enableSmallAlphabet
+                        onToggled: {
+                            myApp.enableSmallAlphabet = enableSmallAlphabet.checkState
+                        }
+                    }
+                    CheckBox {
+                        id: enableBigAlphabet
                         text: qsTr("ABC")
-                        checked: false
+                        checked: myApp.enableBigAlphabet
+                        onToggled: {
+                            myApp.enableBigAlphabet = enableBigAlphabet.checkState
+                        }
                     }
                 }
+
                 CheckBox {
-                    text: qsTr("Special characters")
-                    checked: false
+                    id: enableSpecialCharacter
+                    text: qsTr("Special character")
+                    checked: myApp.enableSpecialCharacter
+                    onToggled: {
+
+                        // myApp.enableSpecialCharacter = enableSpecialCharacter.checkState
+                    }
                 }
+
+                Binding {
+                    target: myApp
+                    property: "enableSpecialCharacter"
+                    value: enableSpecialCharacter.checkState
+                }
+
                 CheckBox {
+                    id: enableUTF8
                     text: qsTr("UTF-8")
-                    checked: false
+                    checked: myApp.enableUTF8
+                    enabled: false
+                    onToggled: {
+                        myApp.enableUTF8 = enableUTF8.checkState
+                    }
                 }
             }
         }
@@ -37,6 +71,7 @@ Page {
                 Row {
                     RadioButton {
                         checked: true
+                        enabled: true
                         text: qsTr("CPU    ")
                     }
                     RadioButton {

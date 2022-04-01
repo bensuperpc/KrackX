@@ -98,11 +98,19 @@ ApplicationWindow {
         }
 
         MenuItem {
+            id: help
+            text: "Help"
+            onTriggered: {
+                console.log("onTriggered " + help.text)
+                aPropos.open()
+            }
+        }
+        MenuItem {
             id: about
             text: "About"
             onTriggered: {
                 console.log("onTriggered " + about.text)
-                aPropos.open()
+                stackView.push("AboutPage.qml")
             }
         }
     }
@@ -110,7 +118,7 @@ ApplicationWindow {
         id: aPropos
         modal: true
         focus: true
-        title: "À propos"
+        title: "About"
         x: (window.width - width) / 2
         y: window.height / 6
         width: Math.min(window.width, window.height) / 3 * 2
@@ -118,7 +126,7 @@ ApplicationWindow {
         Label {
             id: message
             width: aPropos.availableWidth
-            text: "Application réalisée en Qt avec le module Quick Controls 2."
+            text: "Application built with Qt quick."
             wrapMode: Label.Wrap
             font.pixelSize: 12
         }
@@ -140,7 +148,7 @@ ApplicationWindow {
         */
 
         //dragMargin: window.height * 0.1
-        y: header.height
+        // y: header.height
         width: window.width * 0.6
         height: window.height
 
@@ -243,15 +251,17 @@ ApplicationWindow {
         contentWidth: window.width
         contentHeight: window.height - (toolbar.height * 0.5)
 
+        // contentWidth: parent.width
+        // contentHeight: parent.height
         ScrollBar.horizontal: ScrollBar {
-            active: flick.moving || !flick.moving
+            active: false
 
             // The one below does not nork more than once and the scrollbar
             // goes invisible after the first move
             //active:true
         }
         ScrollBar.vertical: ScrollBar {
-            active: flick.moving || !flick.moving
+            active: flickable.moving || !flickable.moving
         }
 
         clip: true

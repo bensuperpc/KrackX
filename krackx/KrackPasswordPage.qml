@@ -44,6 +44,7 @@ Page {
         TextField {
             id: textfield1
             placeholderText: qsTr("Enter name 1")
+            text: myApp.author
             onTextChanged: {
                 myApp.author = textfield1.text
                 //textfield2.text = textfield1.text
@@ -53,6 +54,10 @@ Page {
             id: textfield2
             placeholderText: qsTr("Enter name 2")
             text: myApp.author
+            onTextChanged: {
+                myApp.author = textfield2.text
+                //textfield2.text = textfield1.text
+            }
         }
 
         ChartView {
@@ -64,7 +69,7 @@ Page {
             ValueAxis {
                 id: axisX
                 min: 0
-                max: 400
+                max: 200
             }
 
             Component.onCompleted: {

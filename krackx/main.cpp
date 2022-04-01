@@ -18,7 +18,7 @@
 #include "chartdatamodel.h"
 
 void point_generator_proc(MyDataModel *model) {
-  for (double t = 0;; t += 1) {
+  for (double t = 0; t < 200; t += 1) {
     double y = (1 + sin(t / 10.0)) / 2.0;
 
     model->handleNewPoint(QPointF(t, y));

@@ -75,8 +75,7 @@ Page {
                 text: MyCounter.value
             }
 
-            // Bi-directional binding, entering a number in the textarea updates the
-            // C++ class, if the C++ class is updated, the textarea is updated as well.
+            // Bi-directional binding
             Binding {
                 target: MyCounter
                 property: "value"
