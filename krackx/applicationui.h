@@ -6,6 +6,7 @@
 #include <QQmlContext>
 #include <QStringList>
 #include <thread>
+#include <iostream>
 
 class Applicationui : public QObject {
   Q_OBJECT
@@ -43,6 +44,10 @@ public:
     return m_enableSpecialCharacter;
   };
   Q_INVOKABLE bool enableUTF8() const { return m_enableUTF8; };
+
+
+  Q_INVOKABLE void quitSignalInvokable();
+  Q_SLOT void quitSignalSlot();
 
   // For textbox
   void setAuthor(const QString &a) {

@@ -41,6 +41,17 @@ void Applicationui::setEnableUTF8(bool newValue) {
   }
 }
 
+
+void Applicationui::quitSignalInvokable()
+{
+    std::cout << "quitSignalInvokable" << std::endl;
+}
+
+void Applicationui::quitSignalSlot()
+{
+    std::cout << "quitSignalSlot" << std::endl;
+}
+
 void Applicationui::console(const QString st) { qDebug() << st; }
 
 const QStringList Applicationui::comboList() { return m_comboList; }

@@ -5,7 +5,9 @@ project(krackx VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts WebEngineQuick REQUIRED)
+
+find_package(OpenMP 4.0)
 
 qt_add_executable(appkrackx
     main.cpp
@@ -18,7 +20,7 @@ qt_add_executable(appkrackx
 qt_add_qml_module(appkrackx
     URI krackx
     VERSION 1.0
-    QML_FILES main.qml AboutPage.qml KrackPasswordPage.qml mainPage.qml SettingsPage.qml counter.qml
+    QML_FILES main.qml AboutPage.qml KrackPasswordPage.qml mainPage.qml SettingsPage.qml counter.qml Rectangle_test.qml
 )
 
 set_target_properties(appkrackx PROPERTIES
@@ -31,5 +33,10 @@ set_target_properties(appkrackx PROPERTIES
 
 target_compile_definitions(appkrackx
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(appkrackx
-    PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts)
+if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+  target_link_libraries(appkrackx
+      PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::WebEngineQuick OpenMP::OpenMP_CXX)
+else()
+    target_link_libraries(appkrackx
+        PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::WebEngineQuick)
+endif()

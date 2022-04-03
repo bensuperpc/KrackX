@@ -24,30 +24,17 @@ ApplicationWindow {
 
     header: ToolBar {
         id: toolbar
-
         RowLayout {
             anchors.fill: parent
             ToolButton {
                 id: toolButton1
-                text: qsTr("\u2630")
-
-
-                /*
-                Image {
-                    id: iconmenu
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: 24
-                    width: 24
-                    source: "qrc:images/icons/menu@4x.png"
+                text: {
+                    qsTr(stackView.depth > 1 ? "<" : "\u2630")
                 }
-                */
                 onClicked: {
-                    if (isOpened) {
-                        console.log("drawer close()")
-                        drawer.close()
+                    if (stackView.depth > 1) {
+                        stackView.pop()
                     } else {
-                        console.log("drawer open()")
                         drawer.open()
                     }
                 }
@@ -69,7 +56,7 @@ ApplicationWindow {
 
     Menu {
         id: menu
-        x: parent.width - width
+        x: window.width
         width: window.width * 0.37
         // transformOrigin: Menu.TopRight
         MenuItem {
@@ -114,6 +101,9 @@ ApplicationWindow {
             }
         }
     }
+
+
+    /*
     Dialog {
         id: aPropos
         modal: true
@@ -131,6 +121,18 @@ ApplicationWindow {
             font.pixelSize: 12
         }
     }
+*/
+    Dialog {
+        id: aPropos
+        focus: true
+        title: "About"
+        Label {
+            id: message
+            text: "Application built with Qt quick."
+            wrapMode: Label.Wrap
+            font.pixelSize: 12
+        }
+    }
 
     Drawer {
         id: drawer
@@ -141,14 +143,10 @@ ApplicationWindow {
         //!inPortrait ? idContentColumn.height : idContentColumn.width
         //y: inPortrait ? toolbar.height : toolbar.width
 
-
-        /*
-        width: window.width * 0.66
-        height: window.height
-        */
+        // width: window.width * 0.66
+        // height: window.height
 
         //dragMargin: window.height * 0.1
-        // y: header.height
         width: window.width * 0.6
         height: window.height
 
@@ -156,6 +154,8 @@ ApplicationWindow {
         onOpened: {
             console.log("drawer onOpened")
             isOpened = true
+            myApp.quitSignalSlot()
+            myApp.quitSignalInvokable()
         }
         onClosed: {
             console.log("drawer onClosed")
@@ -164,20 +164,24 @@ ApplicationWindow {
 
         Flickable {
             //Fix issue with wrong Flickable size in !inPortrait
-            contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
+            // contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
+            contentHeight: idContentColumn.height
             anchors.fill: parent
             clip: true
             Column {
                 width: parent.width
                 height: parent.height
                 id: idContentColumn
-
                 ItemDelegate {
                     text: qsTr("MainPage")
                     width: parent.width
                     onClicked: {
-                        stackView.push("mainPage.qml")
-                        drawer.close()
+                        if (stackView.depth > 1) {
+                            stackView.push("mainPage.qml")
+                            drawer.close()
+                        } else {
+                            drawer.close()
+                        }
                     }
                 }
                 ItemDelegate {
@@ -208,6 +212,17 @@ ApplicationWindow {
                     }
                 }
                 ItemDelegate {
+                    width: parent.width
+                    height: menu_separator1.height
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    enabled: false
+                    MenuSeparator {
+                        id: menu_separator1
+                        width: parent.width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+                ItemDelegate {
                     text: qsTr("Counter")
                     width: parent.width // toute la largeur du tiroir
                     onClicked: {
@@ -216,12 +231,20 @@ ApplicationWindow {
                     }
                 }
                 ItemDelegate {
+                    text: qsTr("Rectangle")
+                    width: parent.width // toute la largeur du tiroir
+                    onClicked: {
+                        stackView.push("Rectangle_test.qml")
+                        drawer.close() // et on referme le tiroir
+                    }
+                }
+                ItemDelegate {
                     width: parent.width
-                    height: menu_separator1.height
+                    height: menu_separator3.height
                     anchors.horizontalCenter: parent.horizontalCenter
                     enabled: false
                     MenuSeparator {
-                        id: menu_separator1
+                        id: menu_separator3
                         width: parent.width
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
@@ -239,73 +262,50 @@ ApplicationWindow {
             }
         }
     }
-    Flickable {
-        id: flickable
+
+    StackView {
+        id: stackView
+        initialItem: "mainPage.qml"
         anchors.fill: parent
-        focus: true
-        topMargin: window.height * 0.02
-        bottomMargin: window.height * 0.02
+        width: parent.width
+        height: parent.height
 
-        //Fix issue with wrong Flickable size in !inPortrait
-        // contentHeight: !inPortrait ? stackView.height : stackView.width
-        contentWidth: window.width
-        contentHeight: window.height - (toolbar.height * 0.5)
-
-        // contentWidth: parent.width
-        // contentHeight: parent.height
-        ScrollBar.horizontal: ScrollBar {
-            active: false
-
-            // The one below does not nork more than once and the scrollbar
-            // goes invisible after the first move
-            //active:true
-        }
-        ScrollBar.vertical: ScrollBar {
-            active: flickable.moving || !flickable.moving
-        }
-
-        clip: true
-
-        // remove bounds effect
-        // boundsBehavior: Flickable.StopAtBounds
-        StackView {
-            id: stackView
-            initialItem: "mainPage.qml"
-            anchors.fill: parent
-
-            //anchors.centerIn: parent
-            pushEnter: Transition {
-                PropertyAnimation {
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-            }
-            pushExit: Transition {
-                PropertyAnimation {
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                }
-            }
-            popEnter: Transition {
-                PropertyAnimation {
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-            }
-            popExit: Transition {
-                PropertyAnimation {
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                }
+        // anchors.centerIn: parent
+        pushEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 200
             }
         }
+        pushExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 200
+            }
+        }
+        popEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 200
+            }
+        }
+        popExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 200
+            }
+        }
+    }
+
+    Component.onDestruction: {
+        console.log("Closing app...")
     }
 }
