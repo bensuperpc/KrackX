@@ -2,8 +2,9 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import QtWebEngine
+import MyApp.Images
 
+// import QtWebEngine
 Page {
     title: qsTr("Main Page")
     id: page
@@ -38,6 +39,18 @@ Page {
                 Layout.rowSpan: 2
 
                 color: "green"
+                Column {
+                    Image {
+                        source: "image://colors/red"
+                    }
+                    Image {
+                        source: "image://colors/white"
+                    }
+                    Image {
+                        id: image_timer
+                        source: "image://colors/blue"
+                    }
+                }
             }
 
             ProportionalRect {
@@ -45,6 +58,19 @@ Page {
                 Layout.rowSpan: 3
 
                 color: "blue"
+                LiveImage {
+                    anchors.fill: parent
+
+
+                    /*
+                    width: 480
+                    height: 480
+                    x: 0
+                    y: 0
+                    */
+                    image: LiveImageProvider.image
+                }
+
 
                 /*
                 WebEngineView {

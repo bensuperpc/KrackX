@@ -17,8 +17,8 @@ ApplicationWindow {
     id: window
 
     visible: true
-    width: 480
-    height: 720
+    width: 720
+    height: 1080
 
     title: qsTr("KrackX")
 
@@ -31,6 +31,8 @@ ApplicationWindow {
                 text: {
                     qsTr(stackView.depth > 1 ? "<" : "\u2630")
                 }
+                font.bold: true
+                antialiasing: true
                 onClicked: {
                     if (stackView.depth > 1) {
                         stackView.pop()
@@ -49,6 +51,8 @@ ApplicationWindow {
             }
             ToolButton {
                 text: qsTr("⋮")
+                font.bold: true
+                antialiasing: true
                 onClicked: menu.open()
             }
         }
@@ -126,11 +130,17 @@ ApplicationWindow {
         id: aPropos
         focus: true
         title: "About"
-        Label {
-            id: message
+        anchors.centerIn: parent
+        Text {
+            id: field
+            width: parent.width
+            height: parent.height
             text: "Application built with Qt quick."
-            wrapMode: Label.Wrap
-            font.pixelSize: 12
+            minimumPointSize: 5
+            font.pointSize: 25
+            fontSizeMode: Text.Fit
+            color: 'white'
+            anchors.centerIn: parent
         }
     }
 
@@ -212,6 +222,14 @@ ApplicationWindow {
                     }
                 }
                 ItemDelegate {
+                    text: qsTr("GTA_SA")
+                    width: parent.width
+                    onClicked: {
+                        stackView.push("GTA_SA.qml")
+                        drawer.close() // et on referme le tiroir
+                    }
+                }
+                ItemDelegate {
                     width: parent.width
                     height: menu_separator1.height
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -227,14 +245,6 @@ ApplicationWindow {
                     width: parent.width // toute la largeur du tiroir
                     onClicked: {
                         stackView.push("counter.qml")
-                        drawer.close() // et on referme le tiroir
-                    }
-                }
-                ItemDelegate {
-                    text: qsTr("Rectangle")
-                    width: parent.width // toute la largeur du tiroir
-                    onClicked: {
-                        stackView.push("Rectangle_test.qml")
                         drawer.close() // et on referme le tiroir
                     }
                 }

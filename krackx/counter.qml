@@ -31,7 +31,7 @@ Page {
             // Receive the valueChanged NOTIFY
             Connections {
                 target: MyCounter
-                onValueChanged: {
+                function onValueChanged() {
                     ++labelChanged.changeCount
                 }
             }
