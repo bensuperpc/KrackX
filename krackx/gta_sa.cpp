@@ -20,12 +20,12 @@ void GTA_SA::runner()
 
     if (this->min_range > this->max_range) {
         std::cout << "Min range value: '" << this->min_range
-                  << "' can't be greater than Max range value: '" << std::dec << this->max_range
+                  << "' can't be greater than Max range value: '" << this->max_range
                   << "'" << std::endl;
         return;
     }
 
-    std::cout << "Number of calculations: " << std::dec << (this->max_range - this->min_range)
+    std::cout << "Number of calculations: " << (this->max_range - this->min_range)
               << std::endl;
     std::cout << "" << std::endl;
 
@@ -35,10 +35,11 @@ void GTA_SA::runner()
               << " Alphabetic sequence" << std::endl;
     std::cout << "" << std::endl;
 
+    #if defined(_OPENMP)
     // omp_get_max_threads();
     // omp_set_dynamic(0);
     // omp_set_num_threads(1);
-
+    #  endif
     this->begin_time = std::chrono::high_resolution_clock::now();
 #if defined(_OPENMP)
 #  ifdef _MSC_VER
@@ -69,17 +70,25 @@ void GTA_SA::runner()
         != std::end(this->cheat_list))
     {
 #else
+      const auto && it = std::find(std::begin(this->cheat_list), std::end(this->cheat_list), crc);
+
+/*
     if (std::find(std::begin(this->cheat_list), std::end(this->cheat_list), crc)
-        != std::end(this->cheat_list))
+        != std::end(this->cheat_list))*/
+      if (it != std::end(this->cheat_list))
     {
 #endif
       // If crc is present in Array
       std::reverse(tmp.data(),
                    tmp.data() + strlen(tmp.data()));  // Invert char array
+
+
+      const auto index = it - std::begin(this->cheat_list);
+
       results.emplace_back(std::make_tuple(
           i,
           std::string(tmp.data()),
-          crc));  // Save result: calculation position, Alphabetic sequence, CRC
+          crc, cheat_list_name.at(index)));  // Save result: calculation position, Alphabetic sequence, CRC,
     }
   }
 
@@ -95,9 +104,9 @@ void GTA_SA::runner()
                 << "JAMCRC value" << std::endl;
 
       for (auto& result : results) {
-          std::cout << std::setw(display_val + 3) << std::dec << std::get<0>(result)
+          std::cout << std::setw(display_val + 3) << std::get<0>(result)
                     << std::setw(display_val) << std::get<1>(result) << std::setw(display_val) << "0x"
-                    << std::hex << std::get<2>(result)
+                    << std::hex << std::get<2>(result) << std::dec
                     << std::endl;
       }
       std::cout << "Time: "

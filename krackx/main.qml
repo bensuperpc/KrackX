@@ -187,7 +187,7 @@ ApplicationWindow {
                     width: parent.width
                     onClicked: {
                         if (stackView.depth > 1) {
-                            stackView.push("mainPage.qml")
+                            stackView.push("GTA_SA.qml")
                             drawer.close()
                         } else {
                             drawer.close()
@@ -240,6 +240,9 @@ ApplicationWindow {
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
+
+
+                /*
                 ItemDelegate {
                     text: qsTr("Counter")
                     width: parent.width // toute la largeur du tiroir
@@ -248,6 +251,7 @@ ApplicationWindow {
                         drawer.close() // et on referme le tiroir
                     }
                 }
+                */
                 ItemDelegate {
                     width: parent.width
                     height: menu_separator3.height
@@ -275,7 +279,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: "mainPage.qml"
+        initialItem: "GTA_SA.qml"
         anchors.fill: parent
         width: parent.width
         height: parent.height

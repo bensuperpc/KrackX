@@ -74,7 +74,7 @@ public:
      */
 
 
-    std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t>> results =
+    std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results =
         {};
     uint64_t min_range = 0;  // Alphabetic sequence range min
     uint64_t max_range = 0;
@@ -99,7 +99,6 @@ public:
                                                               0x31F0C3CC, 0xB3B3E72A, 0xC25CDBFF, 0xD5CF4EFF, 0x680416B1, 0xCF5FDA18,
                                                               0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4,
                                                               0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
-    /*
 /// List of cheats codes names
 const std::array<const std::string, 87> cheat_list_name{
     "Weapon Set 1",
@@ -187,7 +186,6 @@ const std::array<const std::string, 87> cheat_list_name{
     "Spawn Dozer",
     "pawn Stunt Plane",
     "Spawn Monster"};
-*/
 
         /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview

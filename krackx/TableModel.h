@@ -22,6 +22,7 @@ public:
                       "Iter. NÂ°",
                       "Code",
                       "JAMCRC value",
+                      "GTA Code",
                       });
     }
 
@@ -57,6 +58,7 @@ public:
         table.append({
                       "Marc",
                       "Fonz",
+                      "25",
                       "25",
                       });
         endInsertRows();

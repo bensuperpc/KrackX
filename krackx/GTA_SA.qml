@@ -117,42 +117,43 @@ Page {
                     }
                 }
             }
-
-            GroupBox {
-                title: qsTr("Result")
+            RowLayout {
                 Layout.alignment: Qt.AlignHCenter
-                ColumnLayout {
+                GroupBox {
+                    title: qsTr("Result")
+                    Layout.alignment: Qt.AlignHCenter
+                    ColumnLayout {
 
-
-                    /*
+                        /*
                     Row {
                         Button {
                             text: qsTr("Update List Model")
                             onClicked: myModel.addPerson()
                         }
                     }*/
-                    RowLayout {
-                        TableView {
-                            Layout.alignment: Qt.AlignHCenter
-                            width: 420
-                            height: 300
-                            columnSpacing: 1
-                            rowSpacing: 1
-                            clip: true
-                            ScrollIndicator.horizontal: ScrollIndicator {}
-                            ScrollIndicator.vertical: ScrollIndicator {}
-                            model: myModel
-                            delegate: Rectangle {
-                                implicitWidth: 140
-                                implicitHeight: 20
-                                border.color: "black"
-                                border.width: 2
-                                color: heading ? 'antiquewhite' : "aliceblue"
-                                Text {
-                                    text: tabledata
-                                    font.pointSize: 10
-                                    font.bold: heading ? true : false
-                                    anchors.centerIn: parent
+                        RowLayout {
+                            TableView {
+                                Layout.alignment: Qt.AlignHCenter
+                                width: 440
+                                height: 360
+                                columnSpacing: 1
+                                rowSpacing: 1
+                                clip: true
+                                ScrollIndicator.horizontal: ScrollIndicator {}
+                                ScrollIndicator.vertical: ScrollIndicator {}
+                                model: myModel
+                                delegate: Rectangle {
+                                    implicitWidth: 110
+                                    implicitHeight: 20
+                                    border.color: "black"
+                                    border.width: 2
+                                    color: heading ? 'antiquewhite' : "aliceblue"
+                                    Text {
+                                        text: tabledata
+                                        font.pointSize: 10
+                                        font.bold: heading ? true : false
+                                        anchors.centerIn: parent
+                                    }
                                 }
                             }
                         }

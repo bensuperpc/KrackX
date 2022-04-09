@@ -54,7 +54,7 @@ void GTA_SA_UI::runOpThread()
     // Store results in TableView Data
     for(const auto &result : this->gta_sa.results)
     {
-        QVector<QString> vect = {QString::number(std::get<0>(result)), QString::fromStdString(std::get<1>(result)),QString::number(std::get<2>(result))};
+        QVector<QString> vect = {QString::number(std::get<0>(result)), QString::fromStdString(std::get<1>(result)),QString::number(std::get<2>(result)), QString::fromStdString(std::get<3>(result))};
         this->tableModel.addPerson(vect);
     }
     this->setButtonValue("  Launch Bruteforce   ");
