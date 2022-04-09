@@ -82,17 +82,20 @@ Page {
                                 id: enableOpenMP
                                 text: qsTr("Enable OpenMP")
                                 // checked: myApp.enableSpecialCharacter
-                                checked: (gta_sa.builtWithOpenMP === true ? true : false)
+                                checked: (gta_sa.builtWithOpenMP ? true : false)
                                 enabled: gta_sa.builtWithOpenMP
                                 onToggled: {
-
+                                    if (enableOpenMP.checkState) {
+                                        nbrThreadValue.value = gta_sa.maxThreadSupport()
+                                    } else {
+                                        nbrThreadValue.value = 1
+                                    }
                                     // myApp.enableSpecialCharacter = enableSpecialCharacter.checkState
                                 }
                             }
                         }
                         RowLayout {
-                            enabled: (gta_sa.builtWithOpenMP
-                                      === true ? enableOpenMP.checkState : false)
+                            enabled: (gta_sa.builtWithOpenMP ? enableOpenMP.checkState : false)
                             Label {
                                 text: qsTr("CPU core :")
                             }
@@ -101,7 +104,7 @@ Page {
                                 value: gta_sa.nbrThreadValue
                                 stepSize: 1
                                 from: 1
-                                to: gta_sa.threadSupport()
+                                to: gta_sa.maxThreadSupport()
                                 snapMode: Slider.SnapAlways
                             }
 

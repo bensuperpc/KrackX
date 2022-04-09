@@ -42,7 +42,7 @@ void GTA_SA_UI::setButtonValue(QString value) {
 
 void GTA_SA_UI::runOpThread()
 {
-
+    this->gta_sa.num_thread = this->nbrThreadValue();
 
     // Clear old data
     this->gta_sa.clear();

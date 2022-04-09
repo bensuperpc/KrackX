@@ -45,10 +45,14 @@ public:
 
 #if defined(_OPENMP)
     Q_INVOKABLE
-    uint64_t threadSupport() { return omp_get_max_threads(); }
+    uint64_t maxThreadSupport() { return omp_get_max_threads(); }
 #else
+    /*
     Q_INVOKABLE
-        uint64_t threadSupport() { return std::thread::hardware_concurrency(); }
+        uint64_t maxThreadSupport() { return std::thread::hardware_concurrency(); }
+    */
+    Q_INVOKABLE
+        uint64_t maxThreadSupport() { return 1; }
 #endif
 
 #if defined(_OPENMP)
@@ -77,7 +81,7 @@ private:
     uint64_t _minRangeValue {0} ;
     uint64_t _maxRangeValue {0} ;
     QString _buttonValue = "Launch Bruteforce";
-    uint64_t _nbrThreadValue = threadSupport();
+    uint64_t _nbrThreadValue = maxThreadSupport();
 
 };
 

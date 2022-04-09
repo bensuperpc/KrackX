@@ -36,9 +36,7 @@ void GTA_SA::runner()
     std::cout << "" << std::endl;
 
     #if defined(_OPENMP)
-    // omp_get_max_threads();
-    // omp_set_dynamic(0);
-    // omp_set_num_threads(this-);
+    omp_set_num_threads(num_thread);
     #  endif
 
     this->begin_time = std::chrono::high_resolution_clock::now();
@@ -78,7 +76,6 @@ void GTA_SA::runner()
 
       std::reverse(tmp.data(),
                    tmp.data() + strlen(tmp.data()));  // Invert char array
-
 
       const auto index = it - std::begin(this->cheat_list);
 
