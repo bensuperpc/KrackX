@@ -82,8 +82,8 @@ Page {
                                 id: enableOpenMP
                                 text: qsTr("Enable OpenMP")
                                 // checked: myApp.enableSpecialCharacter
-                                checked: true
-                                enabled: true
+                                checked: (gta_sa.builtWithOpenMP === true ? true : false)
+                                enabled: gta_sa.builtWithOpenMP
                                 onToggled: {
 
                                     // myApp.enableSpecialCharacter = enableSpecialCharacter.checkState
@@ -91,7 +91,8 @@ Page {
                             }
                         }
                         RowLayout {
-                            enabled: enableOpenMP.checkState
+                            enabled: (gta_sa.builtWithOpenMP
+                                      === true ? enableOpenMP.checkState : false)
                             Label {
                                 text: qsTr("CPU core :")
                             }
@@ -123,6 +124,7 @@ Page {
                     title: qsTr("Result")
                     Layout.alignment: Qt.AlignHCenter
                     ColumnLayout {
+
 
                         /*
                     Row {

@@ -187,10 +187,12 @@ ApplicationWindow {
                     width: parent.width
                     onClicked: {
                         if (stackView.depth > 1) {
-                            stackView.push("GTA_SA.qml")
+                            stackView.push("mainPage.qml")
                             drawer.close()
                         } else {
                             drawer.close()
+                            // To remove later
+                            stackView.push("mainPage.qml")
                         }
                     }
                 }

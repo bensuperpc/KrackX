@@ -23,6 +23,8 @@ class GTA_SA_UI : public QObject
 
     Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY buttonValueChanged)
 
+    Q_PROPERTY(bool builtWithOpenMP READ builtWithOpenMP CONSTANT)
+
     // Q_PROPERTY(bool value READ value WRITE enableOpenMPValue NOTIFY enableOpenMPValueChanged)
     // Q_PROPERTY(bool value READ value WRITE enableOpenMPValue NOTIFY enableOpenMPValueChanged)
 
@@ -41,8 +43,19 @@ public:
     Q_INVOKABLE void runOp ();
     void runOpThread();
 
+#if defined(_OPENMP)
     Q_INVOKABLE
-        unsigned threadSupport() { return std::thread::hardware_concurrency(); }
+    uint64_t threadSupport() { return omp_get_max_threads(); }
+#else
+    Q_INVOKABLE
+        uint64_t threadSupport() { return std::thread::hardware_concurrency(); }
+#endif
+
+#if defined(_OPENMP)
+    const bool builtWithOpenMP() const { return true; };
+#else
+        const bool builtWithOpenMP() const { return false; };
+#endif
 
 public slots:
     void setMinRangeValue(uint64_t value);

@@ -81,12 +81,6 @@ public:
   void console(const QString);
 
   Q_INVOKABLE
-  QString text = "";
-
-  Q_INVOKABLE
-  QString text2 = "";
-
-  Q_INVOKABLE
   unsigned threadSupport() { return std::thread::hardware_concurrency(); }
 
   // For combobox

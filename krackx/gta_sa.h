@@ -76,6 +76,14 @@ public:
 
     std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results =
         {};
+
+
+#if defined(_OPENMP)
+    uint64_t nbr_thread = omp_get_max_threads();
+#else
+    uint64_t nbr_thread = 1;
+#endif
+
     uint64_t min_range = 0;  // Alphabetic sequence range min
     uint64_t max_range = 0;
 

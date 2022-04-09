@@ -38,9 +38,11 @@ void GTA_SA::runner()
     #if defined(_OPENMP)
     // omp_get_max_threads();
     // omp_set_dynamic(0);
-    // omp_set_num_threads(1);
+    // omp_set_num_threads(this-);
     #  endif
+
     this->begin_time = std::chrono::high_resolution_clock::now();
+
 #if defined(_OPENMP)
 #  ifdef _MSC_VER
   std::int64_t i =
@@ -63,22 +65,17 @@ void GTA_SA::runner()
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
      || __cplusplus >= 202002L && !defined(ANDROID) \
          && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-    if (std::find(std::execution::unseq,
-                  std::begin(this->cheat_list),
-                  std::end(this->cheat_list),
-                  crc)
-        != std::end(this->cheat_list))
-    {
+
+    const auto && it = std::find(std::execution::unseq, std::begin(this->cheat_list), std::end(this->cheat_list), crc);
+
 #else
       const auto && it = std::find(std::begin(this->cheat_list), std::end(this->cheat_list), crc);
+#endif
 
-/*
-    if (std::find(std::begin(this->cheat_list), std::end(this->cheat_list), crc)
-        != std::end(this->cheat_list))*/
+        // If crc is present in Array
       if (it != std::end(this->cheat_list))
     {
-#endif
-      // If crc is present in Array
+
       std::reverse(tmp.data(),
                    tmp.data() + strlen(tmp.data()));  // Invert char array
 

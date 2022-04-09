@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
 find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
-
 find_package(OpenMP 4.0)
 
 qt_add_executable(appkrackx
@@ -18,7 +17,6 @@ qt_add_executable(appkrackx
     chartdatamodel.h chartdatamodel.cpp
     liveimage.h liveimage.cpp
     imageprovider.h imageprovider.cpp
-    gta_sa.h gta_sa.cpp
     gta_sa_ui.h gta_sa_ui.cpp
     gta_sa.h gta_sa.cpp
     TableModel.h
@@ -47,5 +45,5 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
       PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia OpenMP::OpenMP_CXX)
 else()
     target_link_libraries(appkrackx
-        PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts k Qt6::Multimedia)
+        PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
 endif()
