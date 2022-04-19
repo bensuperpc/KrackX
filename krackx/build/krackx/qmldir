@@ -1,0 +1,8 @@
+module krackx
+typeinfo appkrackx.qmltypes
+prefer :/krackx/
+AboutPage 1.0 AboutPage.qml
+KrackPasswordPage 1.0 KrackPasswordPage.qml
+SettingsPage 1.0 SettingsPage.qml
+GTA_SA 1.0 GTA_SA.qml
+

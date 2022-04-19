@@ -1,0 +1,60 @@
+{
+    "classes": [
+        {
+            "className": "counter",
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "name": "value",
+                    "notify": "valueChanged",
+                    "read": "value",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "qlonglong",
+                    "user": false,
+                    "write": "setValue"
+                }
+            ],
+            "qualifiedClassName": "counter",
+            "signals": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "newValue",
+                            "type": "qlonglong"
+                        }
+                    ],
+                    "name": "valueChanged",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "value",
+                            "type": "qlonglong"
+                        }
+                    ],
+                    "name": "setValue",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "counter.h",
+    "outputRevision": 68
+}

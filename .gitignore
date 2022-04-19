@@ -1,6 +1,9 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 build-*
+build/*
 krackx/CMakeLists.txt.user.52a86b7
 krackx/CMakeLists.txt.user.e6ff724
 krackx/CMakeLists.txt.user
+build/*
+krackx_new/*

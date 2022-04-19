@@ -1,0 +1,30 @@
+{
+    "classes": [
+        {
+            "className": "MyDataModel",
+            "object": true,
+            "qualifiedClassName": "MyDataModel",
+            "signals": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "point",
+                            "type": "QPointF"
+                        }
+                    ],
+                    "name": "newPointAdded",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QAbstractTableModel"
+                }
+            ]
+        }
+    ],
+    "inputFile": "chartdatamodel.h",
+    "outputRevision": 68
+}

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/krackx">
+    <file alias="qmldir">/run/media/bensuperpc/MainT7/Depot_git/repos_perso/KrackX/krackx/build/krackx/qmldir</file>
+  </qresource>
+</RCC>
+

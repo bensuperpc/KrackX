@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(krackx VERSION 0.1 LANGUAGES CXX)
+project(krackx VERSION 0.1 LANGUAGES C CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

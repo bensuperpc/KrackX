@@ -1,0 +1,33 @@
+{
+    "classes": [
+        {
+            "className": "LiveImage",
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "member": "m_image",
+                    "name": "image",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QImage",
+                    "user": false,
+                    "write": "setImage"
+                }
+            ],
+            "qualifiedClassName": "LiveImage",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QQuickPaintedItem"
+                }
+            ]
+        }
+    ],
+    "inputFile": "liveimage.h",
+    "outputRevision": 68
+}
