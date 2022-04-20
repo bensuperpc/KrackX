@@ -63,6 +63,5 @@ relwithdebinfo:
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
-
 clean:
 	rm -rf build

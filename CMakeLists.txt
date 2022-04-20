@@ -21,18 +21,18 @@ find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
 find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
 find_package(OpenMP 4.0)
 
-#add_library(
-#    krackx_lib OBJECT
-#    source/lib.cpp
-#)
+add_library(
+    krackx_lib OBJECT
+    source/gta_sa.h source/gta_sa.cpp
+)
 
-#target_include_directories(
-#    krackx_lib ${warning_guard}
-#    PUBLIC
-#    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
-#)
+target_include_directories(
+    krackx_lib ${warning_guard}
+    PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
+)
 
-#target_compile_features(krackx_lib PUBLIC cxx_std_17)
+target_compile_features(krackx_lib PUBLIC cxx_std_17)
 
 # ---- Declare executable ----
 
@@ -45,7 +45,6 @@ qt_add_executable(krackx_exe
     source/liveimage.h source/liveimage.cpp
     source/imageprovider.h source/imageprovider.cpp
     source/gta_sa_ui.h source/gta_sa_ui.cpp
-    source/gta_sa.h source/gta_sa.cpp
     source/TableModel.h
     source/utils.h
 )
@@ -77,16 +76,14 @@ target_compile_features(krackx_exe PRIVATE cxx_std_17)
 # Qt6::WebEngineQuic
 target_compile_definitions(krackx_exe
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+
+target_link_libraries(krackx_exe PRIVATE krackx_lib)
+
+target_link_libraries(krackx_exe PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
     
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(krackx_exe
-      PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia OpenMP::OpenMP_CXX)
-else()
-    target_link_libraries(krackx_exe
-        PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+  target_link_libraries(krackx_exe PRIVATE OpenMP::OpenMP_CXX)
 endif()
-
-# target_link_libraries(krackx_exe PRIVATE krackx_lib)
 
 # ---- Install rules ----
 
