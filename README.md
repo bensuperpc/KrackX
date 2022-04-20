@@ -1,20 +1,18 @@
-# Krack_X
-Voici un petit programme pour casser des clés de sécurité sur des fichiers(7z,Zip ou autre archive avec un MDP).
-Ce logiciel est à usage PERSONNEL et pour mon apprentissage du C++17 sous Qt.
+# krackx
 
-Taches deja réalisées :
-- Réaliser l'interface en QML (en cours)
-- Portage du logiciel sous Linuw/Windows
+This is the krackx project.
 
-Les Futures taches à réaliser :
-- Distribution des taches entre les Thread et les commandes avec 7z
-- Intégrer le code de 7z dans celui de Krack X
+# Building and installing
 
-IMPORTANT:
-Le logiciel est en développement, donc il y a de nombreuses fonctions qui ne fonctionnent pas. 
-Ce logiciel est à USAGE PERSONNEL et je ne suis pas responsable de l'utilisation du logiciel par une tierce personne.
+See the [BUILDING](BUILDING.md) document.
 
-Installation de Qt et de l'environnement de dev sous linux:
-Vous devez suivre ce tutoriel pour installer l'environnement : https://wiki.qt.io/Android
+# Contributing
 
-ReadMe: Rev A03
+See the [CONTRIBUTING](CONTRIBUTING.md) document.
+
+# Licensing
+
+<!--
+Please go to https://choosealicense.com/ and choose a license that fits your
+needs. GNU GPLv3 is a pretty nice option ;-)
+-->
