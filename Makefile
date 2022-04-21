@@ -9,7 +9,7 @@
 #//                                                          //
 #//  Script, 2022                                            //
 #//  Created: 19, April, 2022                                //
-#//  Modified: 19, April, 2022                               //
+#//  Modified: 21, April, 2022                               //
 #//  file: -                                                 //
 #//  -                                                       //
 #//  Source:                                                 //
@@ -21,14 +21,20 @@
 CXX_STANDARD := 17
 PARALLEL := 4
 
-.PHONY: all release debug coverage minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang
+.PHONY: all release debug coverage minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang lint format
+
+build: base
+
+all: release debug minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base
+
+base:
+	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	ninja -C build/$@
 
 release:
 	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
-
-all: release debug minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang
 
 release-clang:
 	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
@@ -62,6 +68,13 @@ relwithdebinfo:
 	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
+
+lint:
+	cmake -D FORMAT_COMMAND=clang-format -P cmake/lint.cmake
+	cmake -P cmake/spell.cmake
+
+format:
+	time find . -regex '.*\.\(cpp\|cxx\|hpp\|hxx\|c\|h\|cu\|cuh\|tpp\)' -not -path 'build/*' | parallel clang-format -style=file -i {} \;
 
 clean:
 	rm -rf build

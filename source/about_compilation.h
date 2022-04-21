@@ -4,17 +4,17 @@
 #include <QDateTime>
 #include <QObject>
 #include <QString>
-
 #include <iostream>
 #include <sstream>
 #include <string>
 
 using namespace std;
 
-class about_compilation : public QObject {
+class about_compilation : public QObject
+{
   Q_OBJECT
 public:
-  explicit about_compilation(QObject *parent = nullptr);
+  explicit about_compilation(QObject* parent = nullptr);
 
   std::string ver_string(int a, int b, int c);
 
@@ -33,22 +33,36 @@ public:
 #endif
 
   Q_INVOKABLE
-  QString return_Compiler_version() {
+  QString return_Compiler_version()
+  {
     return QString::fromStdString(true_cxx_ver);
   }
 
   Q_INVOKABLE
-  QString return_Compiler_name() { return QString::fromStdString(true_cxx); }
+  QString return_Compiler_name()
+  {
+    return QString::fromStdString(true_cxx);
+  }
 
   Q_INVOKABLE
-  QString return_Cplusplus_used() { return QString::number(__cplusplus); }
+  QString return_Cplusplus_used()
+  {
+    return QString::number(__cplusplus);
+  }
 
   Q_INVOKABLE
-  QString return_BuildDate() { return QString::fromStdString(__DATE__); }
+  QString return_BuildDate()
+  {
+    return QString::fromStdString(__DATE__);
+  }
   Q_INVOKABLE
-  QString return_BuildTime() { return QString::fromStdString(__TIME__); }
+  QString return_BuildTime()
+  {
+    return QString::fromStdString(__TIME__);
+  }
   Q_INVOKABLE
-  QString openmpIsEnable() {
+  QString openmpIsEnable()
+  {
 #if !defined(_OPENMP)
     return QString::fromStdString("false");
 #else
@@ -56,13 +70,19 @@ public:
 #endif
   }
   Q_INVOKABLE
-  QString cudaIsEnable() { return QString::fromStdString("false"); }
+  QString cudaIsEnable()
+  {
+    return QString::fromStdString("false");
+  }
   Q_INVOKABLE
-  QString openclIsEnable() { return QString::fromStdString("false"); }
+  QString openclIsEnable()
+  {
+    return QString::fromStdString("false");
+  }
 
 signals:
 
 public slots:
 };
 
-#endif // ABOUT_COMPILATION_H
+#endif  // ABOUT_COMPILATION_H

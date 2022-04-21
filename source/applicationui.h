@@ -5,8 +5,8 @@
 #include <QObject>
 #include <QQmlContext>
 #include <QStringList>
-#include <thread>
 #include <iostream>
+#include <thread>
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #  if __has_include("omp.h")
@@ -22,7 +22,8 @@
 #  endif
 #endif
 
-class Applicationui : public QObject {
+class Applicationui : public QObject
+{
   Q_OBJECT
 
   // For Settings
@@ -46,25 +47,36 @@ class Applicationui : public QObject {
   Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 
 public:
-  explicit Applicationui(QObject *parent = nullptr);
+  explicit Applicationui(QObject* parent = nullptr);
 
   // For Settings
-  Q_INVOKABLE bool enableNumber() const { return m_enableNumber; };
-  Q_INVOKABLE bool enableSmallAlphabet() const {
+  Q_INVOKABLE bool enableNumber() const
+  {
+    return m_enableNumber;
+  };
+  Q_INVOKABLE bool enableSmallAlphabet() const
+  {
     return m_enableSmallAlphabet;
   };
-  Q_INVOKABLE bool enableBigAlphabet() const { return m_enableBigAlphabet; };
-  Q_INVOKABLE bool enableSpecialCharacter() const {
+  Q_INVOKABLE bool enableBigAlphabet() const
+  {
+    return m_enableBigAlphabet;
+  };
+  Q_INVOKABLE bool enableSpecialCharacter() const
+  {
     return m_enableSpecialCharacter;
   };
-  Q_INVOKABLE bool enableUTF8() const { return m_enableUTF8; };
-
+  Q_INVOKABLE bool enableUTF8() const
+  {
+    return m_enableUTF8;
+  };
 
   Q_INVOKABLE void quitSignalInvokable();
   Q_SLOT void quitSignalSlot();
 
   // For textbox
-  void setAuthor(const QString &a) {
+  void setAuthor(const QString& a)
+  {
     if (a != m_author) {
       m_author = a;
       emit authorChanged();
@@ -72,31 +84,37 @@ public:
   }
 
   // For textbox
-  QString author() const { return m_author; }
+  QString author() const
+  {
+    return m_author;
+  }
 
   Q_INVOKABLE
-  void addContextProperty(QQmlContext *context);
+  void addContextProperty(QQmlContext* context);
 
   Q_INVOKABLE
   void console(const QString);
 
   Q_INVOKABLE
-  unsigned threadSupport() { return std::thread::hardware_concurrency(); }
+  unsigned threadSupport()
+  {
+    return std::thread::hardware_concurrency();
+  }
 
   // For combobox
   const QStringList comboList();
-  void setComboList(const QStringList &comboList);
+  void setComboList(const QStringList& comboList);
 
   int count();
   void setCount(int cnt);
 
-  Q_INVOKABLE void addElement(const QString &element);
+  Q_INVOKABLE void addElement(const QString& element);
   Q_INVOKABLE void removeElement(int index);
 
 private:
   // For textbox
   QString m_author;
-  // For comobobox
+  // For combo-box
   QStringList m_comboList;
   int m_count = 0;
 
@@ -131,4 +149,4 @@ public slots:
   void setEnableUTF8(bool value);
 };
 
-#endif // APPLICATIONUI_H
+#endif  // APPLICATIONUI_H

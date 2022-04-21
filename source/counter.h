@@ -5,21 +5,23 @@
 
 class counter : public QObject
 {
-    Q_OBJECT
-    Q_PROPERTY(long long value READ value WRITE setValue NOTIFY valueChanged)
+  Q_OBJECT
+  Q_PROPERTY(long long value READ value WRITE setValue NOTIFY valueChanged)
 public:
-    explicit counter(QObject *parent = nullptr);
-    long long value() const { return m_Value; };
+  explicit counter(QObject* parent = nullptr);
+  long long value() const
+  {
+    return m_Value;
+  };
 
 public slots:
-    void setValue(long long value);
+  void setValue(long long value);
 
 signals:
-    void valueChanged(long long newValue);
+  void valueChanged(long long newValue);
 
 private:
-    long long m_Value {0} ;
-
+  long long m_Value {0};
 };
 
-#endif // COUNTER_H
+#endif  // COUNTER_H

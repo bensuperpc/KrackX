@@ -7,27 +7,21 @@
 #include <QtCharts>
 // #include <QtWebEngineQuick>
 
+#include <QQuickImageProvider>
 #include <cmath>
 #include <thread>
 
-#include "applicationui.h"
-
+#include "TableModel.h"
 #include "about_compilation.h"
-
-#include "counter.h"
-
+#include "applicationui.h"
 #include "chartdatamodel.h"
-
-#include <QQuickImageProvider>
-
+#include "counter.h"
+#include "gta_sa_ui.h"
 #include "imageprovider.h"
 #include "liveimage.h"
 
-#include "gta_sa_ui.h"
-
-#include "TableModel.h"
-
-void point_generator_proc(MyDataModel *model) {
+void point_generator_proc(MyDataModel* model)
+{
   for (double t = 0; t < 200; t += 1) {
     double y = (1 + sin(t / 10.0)) / 2.0;
 
@@ -37,39 +31,48 @@ void point_generator_proc(MyDataModel *model) {
   }
 }
 
-class ColorImageProvider : public QQuickImageProvider {
+class ColorImageProvider : public QQuickImageProvider
+{
 public:
-  ColorImageProvider() : QQuickImageProvider(QQuickImageProvider::Pixmap) {}
+  ColorImageProvider()
+      : QQuickImageProvider(QQuickImageProvider::Pixmap)
+  {
+  }
 
-  QPixmap requestPixmap(const QString &id, QSize *size,
-                        const QSize &requestedSize) override {
+  QPixmap requestPixmap(const QString& id,
+                        QSize* size,
+                        const QSize& requestedSize) override
+  {
     int width = 100;
     int height = 50;
 
     if (size)
       *size = QSize(width, height);
-    QPixmap pixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
-                   requestedSize.height() > 0 ? requestedSize.height()
-                                              : height);
+    QPixmap pixmap(
+        requestedSize.width() > 0 ? requestedSize.width() : width,
+        requestedSize.height() > 0 ? requestedSize.height() : height);
     pixmap.fill(QColor(id).rgba());
     return pixmap;
   }
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
   /*
 QCoreApplication::setOrganizationName("QtExamples");
 QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 QtWebEngineQuick::initialize();
 */
 
-#if ((QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)) && (QT_VERSION < QT_VERSION_CHECK(6, 0, 0)))
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#if ((QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)) \
+     && (QT_VERSION < QT_VERSION_CHECK(6, 0, 0)))
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+  QApplication::setHighDpiScaleFactorRoundingPolicy(
+      Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 
   // QGuiApplication app(argc, argv);
@@ -93,35 +96,39 @@ QtWebEngineQuick::initialize();
       << "7";
   appui.setComboList(tmp);
 
-  auto myDataModel = new MyDataModel();
-  auto mapper = new QVXYModelMapper();
-  mapper->setModel(myDataModel);
+  auto my_data_model = new MyDataModel();
+  auto* mapper = new QVXYModelMapper();
+  mapper->setModel(my_data_model);
   mapper->setXColumn(0);
   mapper->setYColumn(1);
 
+  ImageProvider provider {};
 
-  ImageProvider provider{};
+  QTimer::singleShot(500,
+                     [&provider]()
+                     {
+                       QImage image {480, 480, QImage::Format_ARGB32};
+                       image.fill(Qt::yellow);
+                       provider.setImage(std::move(image));
+                     });
 
-  QTimer::singleShot(500, [&provider]() {
-      QImage image{480, 480, QImage::Format_ARGB32};
-      image.fill(Qt::yellow);
-      provider.setImage(std::move(image));
-  });
+  QTimer::singleShot(1500,
+                     [&provider]()
+                     {
+                       std::string str =
+                           "/run/media/bensuperpc/MainT7/0u6xvehkj9r71.jpg";
+                       provider.setImage(str);
+                     });
 
-  QTimer::singleShot(1500, [&provider]() {
-      std::string str = "/run/media/bensuperpc/MainT7/0u6xvehkj9r71.jpg";
-      provider.setImage(str);
-  });
-
-  QQmlApplicationEngine engine; // Create Engine AFTER initializing the classes
-  QQmlContext *context = engine.rootContext();
+  QQmlApplicationEngine engine;  // Create Engine AFTER initializing the classes
+  QQmlContext* context = engine.rootContext();
 
   // Add C++ instance in QML engine
   context->setContextProperty("myApp", &appui);
 
   context->setContextProperty("gta_sa", &gta_sa_ui);
 
-  std::thread point_generator_thread(point_generator_proc, myDataModel);
+  std::thread point_generator_thread(point_generator_proc, my_data_model);
   point_generator_thread.detach();
 
   context->setContextProperty("mapper", mapper);
@@ -144,13 +151,15 @@ QtWebEngineQuick::initialize();
   qmlRegisterType<LiveImage>("MyApp.Images", 1, 0, "LiveImage");
   engine.rootContext()->setContextProperty("LiveImageProvider", &provider);
 
-
   engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
 
   const QUrl url(u"qrc:/qml_files/source/main.qml"_qs);
   QObject::connect(
-      &engine, &QQmlApplicationEngine::objectCreated, &app,
-      [url](const QObject *obj, const QUrl &objUrl) {
+      &engine,
+      &QQmlApplicationEngine::objectCreated,
+      &app,
+      [url](const QObject* obj, const QUrl& objUrl)
+      {
         if (!obj && url == objUrl)
           QCoreApplication::exit(-1);
       },

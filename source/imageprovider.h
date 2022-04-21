@@ -6,7 +6,8 @@
 #include <QString>
 #include <string>
 
-class ImageProvider : public QObject {
+class ImageProvider : public QObject
+{
   Q_OBJECT
   Q_PROPERTY(
       QImage image MEMBER m_image READ image WRITE setImage NOTIFY imageChanged)
@@ -14,10 +15,10 @@ class ImageProvider : public QObject {
   QImage m_image;
 
 public:
-  explicit ImageProvider(QObject *parent = nullptr);
-  void setImage(QImage const &image);
-  void setImage(QString const &image);
-  void setImage(std::string const &image);
+  explicit ImageProvider(QObject* parent = nullptr);
+  void setImage(QImage const& image);
+  void setImage(QString const& image);
+  void setImage(std::string const& image);
 
   QImage image() const;
 
@@ -25,4 +26,4 @@ signals:
   void imageChanged();
 };
 
-#endif // IMAGEPROVIDER_H
+#endif  // IMAGEPROVIDER_H

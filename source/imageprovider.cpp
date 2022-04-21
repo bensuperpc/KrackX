@@ -1,18 +1,23 @@
 #include "imageprovider.h"
 
-ImageProvider::ImageProvider(QObject *parent) : QObject(parent) {}
+ImageProvider::ImageProvider(QObject* parent)
+    : QObject(parent)
+{
+}
 
-void ImageProvider::setImage(QImage const &image) {
+void ImageProvider::setImage(QImage const& image)
+{
   m_image = image;
   emit imageChanged();
 }
 
-void ImageProvider::setImage(std::string const &image) {
+void ImageProvider::setImage(std::string const& image)
+{
   setImage(QString::fromStdString(image));
 }
 
-void ImageProvider::setImage(QString const &image) {
-
+void ImageProvider::setImage(QString const& image)
+{
   QImage _image;
   _image.load(image);
   _image = _image.convertToFormat(QImage::Format_ARGB32);
@@ -21,4 +26,7 @@ void ImageProvider::setImage(QString const &image) {
   emit imageChanged();
 }
 
-QImage ImageProvider::image() const { return m_image; }
+QImage ImageProvider::image() const
+{
+  return m_image;
+}

@@ -1,41 +1,42 @@
 #ifndef GTA_SA_H
 #define GTA_SA_H
 
-#include <algorithm> // std::find
-#include <array>     // std::array
-#include <chrono>    // std::chrono
-#include <cstring>   // strlen
-#include <iomanip>   // std::setw
+#include <algorithm>  // std::find
+#include <array>  // std::array
+#include <chrono>  // std::chrono
+#include <cstring>  // strlen
+#include <iomanip>  // std::setw
 #include <iostream>  // std::cout
-#include <string>    // std::string
-#include <tuple>     // std::pair
-#include <utility>   // std::make_pair
-#include <vector>    // std::vector
+#include <string>  // std::string
+#include <tuple>  // std::pair
+#include <utility>  // std::make_pair
+#include <vector>  // std::vector
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#include <string_view> // std::string_view
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) ||                         \
-     __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) &&   \
-         !defined(__EMSCRIPTEN__) && !defined(__clang__))
-#include <execution> // std::execution
-#endif
+#  include <string_view>  // std::string_view
+#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
+       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
+           && !defined(__EMSCRIPTEN__) && !defined(__clang__))
+#    include <execution>  // std::execution
+#  endif
 #endif
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#if __has_include("omp.h")
-#include <omp.h>
-#endif
+#  if __has_include("omp.h")
+#    include <omp.h>
+#  endif
 #endif
 
 #if !defined(_OPENMP)
-#if _MSC_VER && !__INTEL_COMPILER
-#pragma message("No openMP ! Only use 1 thread.")
-#else
-#warning No openMP ! Only use 1 thread.
-#endif
+#  if _MSC_VER && !__INTEL_COMPILER
+#    pragma message("No openMP ! Only use 1 thread.")
+#  else
+#    warning No openMP ! Only use 1 thread.
+#  endif
 #endif
 
-class GTA_SA {
+class GTA_SA
+{
 public:
   GTA_SA();
   void runner();
@@ -46,24 +47,24 @@ public:
  * @return uint32_t with JAMCRC value
  */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-  auto jamcrc(std::string_view my_string) -> std::uint32_t;
+  static auto jamcrc(std::string_view my_string) -> std::uint32_t;
 #else
 
-#if _MSC_VER && !__INTEL_COMPILER
-#pragma message(                                                               \
-    "NC++17 is not enabled, the program will be less efficient with previous standards")
-#else
+#  if _MSC_VER && !__INTEL_COMPILER
+#    pragma message( \
+        "NC++17 is not enabled, the program will be less efficient with previous standards")
+#  else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
-#endif
+#  endif
 
-  auto jamcrc(const std::string &my_string) -> std::uint32_t;
+  static auto jamcrc(const std::string& my_string) -> std::uint32_t;
 #endif
 
   /**
    * \brief Generate Alphabetic sequence from uint64_t value, A=1, Z=27, AA =
    * 28, AB = 29 \param n index in base 26 \param array return array
    */
-  void find_string_inv(char *array, uint64_t n);
+  static void find_string_inv(char* array, uint64_t n);
 
   /**
    * \brief Source:
@@ -75,17 +76,23 @@ public:
       results = {};
 
 #if defined(_OPENMP)
-  uint64_t maxThreadSupport() const { return omp_get_max_threads(); }
+  uint64_t maxThreadSupport() const
+  {
+    return static_cast<uint64_t>(omp_get_max_threads());
+  }
 #else
   /*
       uint64_t maxThreadSupport() const { return
      std::thread::hardware_concurrency(); }
   */
-  uint64_t maxThreadSupport() const { return 1; }
+  uint64_t maxThreadSupport()
+  {
+    return 1;
+  }
 #endif
   uint64_t num_thread = maxThreadSupport();
 
-  uint64_t min_range = 0; // Alphabetic sequence range min
+  uint64_t min_range = 0;  // Alphabetic sequence range min
   uint64_t max_range = 0;
 
   std::chrono::high_resolution_clock::time_point begin_time =
@@ -94,7 +101,7 @@ public:
   std::chrono::high_resolution_clock::time_point end_time =
       std::chrono::high_resolution_clock::now();
 
-  static constexpr std::array<std::uint32_t, 87> cheat_list{
+  static constexpr std::array<std::uint32_t, 87> cheat_list {
       0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201,
       0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17, 0xFCFF1D08,
       0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E,
@@ -111,7 +118,7 @@ public:
       0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4,
       0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
   /// List of cheats codes names
-  const std::array<const std::string, 87> cheat_list_name{
+  const std::array<const std::string, 87> cheat_list_name {
       "Weapon Set 1",
       "Weapon Set 2",
       "Weapon Set 3",
@@ -250,4 +257,4 @@ public:
   };
 };
 
-#endif // GTA_SA_H
+#endif  // GTA_SA_H

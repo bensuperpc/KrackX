@@ -32,7 +32,13 @@ target_include_directories(
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
 )
 
+# set_target_properties(krackx_lib PROPERTIES AUTOMOC OFF)
+
 target_compile_features(krackx_lib PUBLIC cxx_std_17)
+
+if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+  target_link_libraries(krackx_lib PRIVATE OpenMP::OpenMP_CXX)
+endif()
 
 # ---- Declare executable ----
 

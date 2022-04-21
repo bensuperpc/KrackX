@@ -85,9 +85,11 @@ if(NOT WIN32)
 
   # Add tests
   add_test_fn(find_string_inv_test)
+  add_test_fn(jamcrc_test)
 
   # Add bench
   add_bench_fn(find_string_inv_bench)
+  add_bench_fn(jamcrc_bench)
 
   # Lib: gtest gtest_main benchmark::benchmark benchmark::benchmark_main
 
