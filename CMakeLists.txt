@@ -18,7 +18,7 @@ include(cmake/variables.cmake)
 # ---- Declare library ----
 
 find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
-find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
+# find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
 find_package(OpenMP 4.0)
 
 add_library(
