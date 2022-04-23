@@ -116,7 +116,7 @@ QtWebEngineQuick::initialize();
                      [&provider]()
                      {
                        std::string str =
-                           "/run/media/bensuperpc/MainT7/0u6xvehkj9r71.jpg";
+                           "/run/media/bensuperpc/MainT7/1649100112.png";
                        provider.setImage(str);
                      });
 

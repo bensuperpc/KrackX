@@ -18,6 +18,7 @@ public:
   explicit LiveImage(QQuickItem* parent = nullptr);
   void setImage(const QImage& image);
   void paint(QPainter* painter) override;
+  bool rescale = true;
 };
 
 #endif  // SOURCE_LIVEIMAGE_H_

@@ -8,6 +8,27 @@ LiveImage::LiveImage(QQuickItem* parent)
 
 void LiveImage::paint(QPainter* painter)
 {
+  if (m_image.isNull()) {
+    return;
+  }
+  qDebug() << Q_FUNC_INFO << "paint requested...";
+
+  if (rescale == true) {
+    const auto bounding_rect = boundingRect();  // QRectF
+    const auto scaled =
+        m_image.scaledToHeight(bounding_rect.height());  // QImage
+    auto center = bounding_rect.center() - scaled.rect().center();  // QPointF
+
+    if (center.x() < 0)
+      center.setX(0);
+    if (center.y() < 0)
+      center.setY(0);
+    painter->drawImage(center, scaled);
+  } else {
+    painter->drawImage(0, 0, m_image);
+  }
+
+  /*
   // Update the image
   const auto size = this->size();
   const auto image_size = this->m_image.size();
@@ -31,10 +52,13 @@ void LiveImage::paint(QPainter* painter)
   } else {
     painter->drawImage(0, 0, m_image);
   }
+  */
 }
 
 void LiveImage::setImage(const QImage& image)
 {
+  if (image == m_image)
+    return;
   m_image = image;
 
   std::cout << "Image updated" << std::endl;
