@@ -4,6 +4,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QQuickPaintedItem>
+#include <iostream>
 
 class LiveImage : public QQuickPaintedItem
 {
@@ -19,4 +20,4 @@ public:
   void paint(QPainter* painter) override;
 };
 
-#endif  // LIVEIMAGE_H
+#endif  // SOURCE_LIVEIMAGE_H_

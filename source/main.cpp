@@ -153,7 +153,7 @@ QtWebEngineQuick::initialize();
 
   engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
 
-  const QUrl url(u"qrc:/qml_files/source/main.qml"_qs);
+  const QUrl url(u"qrc:/qml_files/source/qml/main.qml"_qs);
   QObject::connect(
       &engine,
       &QQmlApplicationEngine::objectCreated,

@@ -26,4 +26,4 @@ signals:
   void imageChanged();
 };
 
-#endif  // IMAGEPROVIDER_H
+#endif  // SOURCE_IMAGEPROVIDER_H_

@@ -54,7 +54,7 @@ public:
 #    pragma message( \
         "NC++17 is not enabled, the program will be less efficient with previous standards")
 #  else
-#warning C++17 is not enabled, the program will be less efficient with previous standards.
+#    warning C++17 is not enabled, the program will be less efficient with previous standards.
 #  endif
 
   static auto jamcrc(const std::string& my_string) -> std::uint32_t;
@@ -76,21 +76,22 @@ public:
       results = {};
 
 #if defined(_OPENMP)
-  uint64_t maxThreadSupport() const
+  uint64_t max_thread_support() const
   {
     return static_cast<uint64_t>(omp_get_max_threads());
   }
 #else
   /*
-      uint64_t maxThreadSupport() const { return
+      uint64_t max_thread_support() const { return
      std::thread::hardware_concurrency(); }
   */
-  uint64_t maxThreadSupport()
+  uint64_t max_thread_support() const
   {
     return 1;
   }
+
 #endif
-  uint64_t num_thread = maxThreadSupport();
+  uint64_t num_thread = max_thread_support();
 
   uint64_t min_range = 0;  // Alphabetic sequence range min
   uint64_t max_range = 0;

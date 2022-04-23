@@ -242,9 +242,14 @@ ApplicationWindow {
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
-
-
-                /*
+                ItemDelegate {
+                    text: qsTr("Image_test")
+                    width: parent.width // toute la largeur du tiroir
+                    onClicked: {
+                        stackView.push("image_test.qml")
+                        drawer.close() // et on referme le tiroir
+                    }
+                }
                 ItemDelegate {
                     text: qsTr("Counter")
                     width: parent.width // toute la largeur du tiroir
@@ -253,7 +258,6 @@ ApplicationWindow {
                         drawer.close() // et on referme le tiroir
                     }
                 }
-                */
                 ItemDelegate {
                     width: parent.width
                     height: menu_separator3.height

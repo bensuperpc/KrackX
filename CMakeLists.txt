@@ -42,7 +42,8 @@ endif()
 
 # ---- Declare executable ----
 
-qt_add_executable(krackx_exe 
+# qt_add_executable
+add_executable(krackx_exe 
     source/main.cpp
     source/counter.h source/counter.cpp
     source/about_compilation.h source/about_compilation.cpp
@@ -58,12 +59,18 @@ qt_add_executable(krackx_exe
 qt_add_qml_module(krackx_exe
     URI qml_files
     VERSION 1.0
-    QML_FILES source/main.qml source/AboutPage.qml source/KrackPasswordPage.qml source/mainPage.qml source/SettingsPage.qml source/counter.qml source/GTA_SA.qml
+    QML_FILES 
+    source/qml/main.qml 
+    source/qml/AboutPage.qml 
+    source/qml/KrackPasswordPage.qml 
+    source/qml/mainPage.qml 
+    source/qml/SettingsPage.qml 
+    source/qml/counter.qml 
+    source/qml/image_test.qml 
+    source/qml/GTA_SA.qml
 )
 
 add_executable(krackx::exe ALIAS krackx_exe)
-
-# qt_add_executable
 
 set_target_properties(
     krackx_exe PROPERTIES

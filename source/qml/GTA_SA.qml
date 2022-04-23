@@ -3,6 +3,7 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
+import MyApp.Images
 
 Page {
     title: qsTr("BruteForce GTA SA")
@@ -86,7 +87,7 @@ Page {
                                 enabled: gta_sa.builtWithOpenMP
                                 onToggled: {
                                     if (enableOpenMP.checkState) {
-                                        nbrThreadValue.value = gta_sa.maxThreadSupport()
+                                        nbrThreadValue.value = gta_sa.max_thread_support()
                                     } else {
                                         nbrThreadValue.value = 1
                                     }
@@ -104,7 +105,7 @@ Page {
                                 value: gta_sa.nbrThreadValue
                                 stepSize: 1
                                 from: 1
-                                to: gta_sa.maxThreadSupport()
+                                to: gta_sa.max_thread_support()
                                 snapMode: Slider.SnapAlways
                             }
 

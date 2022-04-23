@@ -37,20 +37,26 @@ void GTA_SA::runner()
 #endif
 
   this->begin_time = std::chrono::high_resolution_clock::now();
+  /*
+  #if defined(_OPENMP)
+  #  ifdef _MSC_VER
+    std::int64_t i =
+        0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
+  #    pragma omp parallel for shared(results) firstprivate(tmp, crc)
+  #  else
+    std::uint64_t i = 0;
+  #    pragma omp parallel for schedule(auto) shared(results) \
+          firstprivate(tmp, crc)
+  #  endif
+  #else
+    std::int64_t i = 0;
+  #endif
+  */
 
-#if defined(_OPENMP)
-#  ifdef _MSC_VER
-  std::int64_t i =
-      0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
-#    pragma omp parallel for shared(results) firstprivate(tmp, crc)
-#  else
-  std::uint64_t i = 0;
-#    pragma omp parallel for schedule(auto) shared(results) \
-        firstprivate(tmp, crc)
-#  endif
-#else
   std::int64_t i = 0;
-#endif
+  //#pragma acc kernels loop gang(32), vector(16)
+
+#pragma acc parallel loop
   for (i = min_range; i <= max_range; i++) {
     GTA_SA::find_string_inv(tmp.data(),
                             i);  // Generate Alphabetic sequence from uint64_t
@@ -127,7 +133,7 @@ auto GTA_SA::jamcrc(std::string_view my_string) -> std::uint32_t
 #    pragma message( \
         "C++17 is not enabled, the program will be less efficient with previous standards")
 #  else
-#warning C++17 is not enabled, the program will be less efficient with previous standards.
+#    warning C++17 is not enabled, the program will be less efficient with previous standards.
 #  endif
 
 auto GTA_SA::jamcrc(const std::string& my_string) -> std::uint32_t

@@ -61,18 +61,19 @@ public:
 
 #if defined(_OPENMP)
   Q_INVOKABLE
-  uint64_t maxThreadSupport()
+  uint64_t max_thread_support()
   {
     return static_cast<uint64_t>(omp_get_max_threads());
   }
 #else
   /*
   Q_INVOKABLE
-      uint64_t maxThreadSupport() { return std::thread::hardware_concurrency();
+      uint64_t max_thread_support() { return
+  std::thread::hardware_concurrency();
   }
   */
   Q_INVOKABLE
-  uint64_t maxThreadSupport()
+  uint64_t max_thread_support()
   {
     return 1;
   }
@@ -110,7 +111,7 @@ private:
   uint64_t _minRangeValue {0};
   uint64_t _maxRangeValue {0};
   QString _buttonValue = "Launch Bruteforce";
-  uint64_t _nbrThreadValue = maxThreadSupport();
+  uint64_t _nbrThreadValue = max_thread_support();
 };
 
 #endif  // GTA_SA_UI_H
