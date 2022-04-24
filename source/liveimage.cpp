@@ -8,7 +8,6 @@ LiveImage::LiveImage(QQuickItem* parent)
 
 void LiveImage::paint(QPainter* painter)
 {
-
   qDebug() << Q_FUNC_INFO;
   if (m_image.isNull()) {
     return;
