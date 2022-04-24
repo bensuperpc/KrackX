@@ -22,10 +22,7 @@ jobs:
           - { image_name: bensuperpc/dev-environment, image_tag: debian-latest }
           - { image_name: bensuperpc/dev-environment, image_tag: alpine-latest }
           - { image_name: bensuperpc/dev-environment, image_tag: ubuntu-latest }
-          - {
-              image_name: bensuperpc/dev-environment,
-              image_tag: archlinux-latest,
-            }
+          - { image_name: bensuperpc/dev-environment, image_tag: archlinux-latest }
           - { image_name: bensuperpc/dev-environment, image_tag: fedora-latest }
     steps:
       - name: "Checkout Code"

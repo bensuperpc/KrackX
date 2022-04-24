@@ -102,7 +102,7 @@ QtWebEngineQuick::initialize();
   mapper->setXColumn(0);
   mapper->setYColumn(1);
 
-  ImageProvider provider {};
+  ImageProvider provider;
 
   QTimer::singleShot(500,
                      [&provider]()

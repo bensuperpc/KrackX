@@ -8,12 +8,12 @@ LiveImage::LiveImage(QQuickItem* parent)
 
 void LiveImage::paint(QPainter* painter)
 {
+
+  qDebug() << Q_FUNC_INFO;
   if (m_image.isNull()) {
     return;
   }
-  qDebug() << Q_FUNC_INFO << "paint requested...";
-
-  if (rescale == true) {
+  if (this->enable_rescale() == true) {
     const auto bounding_rect = boundingRect();  // QRectF
     const auto scaled =
         m_image.scaledToHeight(bounding_rect.height());  // QImage
@@ -57,11 +57,22 @@ void LiveImage::paint(QPainter* painter)
 
 void LiveImage::setImage(const QImage& image)
 {
+  qDebug() << Q_FUNC_INFO;
   if (image == m_image)
     return;
   m_image = image;
 
   std::cout << "Image updated" << std::endl;
   // Redraw the image
+  update();
+}
+
+void LiveImage::set_enable_rescale(bool newValue)
+{
+  qDebug() << Q_FUNC_INFO;
+  if (m_enable_rescale != newValue) {
+    m_enable_rescale = newValue;
+    emit enable_rescale_changed(newValue);
+  }
   update();
 }
