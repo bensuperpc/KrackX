@@ -88,38 +88,38 @@ GroupBox {
                 onToggled: {
                     if (enableOpenMP.checkState)
                     {
-                    nbrThreadValue.value = gta_sa.max_thread_support()
-                } else {
-                nbrThreadValue.value = 1
+                        nbrThreadValue.value = gta_sa.max_thread_support()
+                    } else {
+                    nbrThreadValue.value = 1
+                }
+                // myApp.enableSpecialCharacter = enableSpecialCharacter.checkState
             }
-            // myApp.enableSpecialCharacter = enableSpecialCharacter.checkState
         }
     }
-}
-RowLayout {
-    enabled: (gta_sa.builtWithOpenMP ? enableOpenMP.checkState: false)
-    Label {
-        text: qsTr("CPU core: ")
-    }
-    Slider {
-        id: nbrThreadValue
-        value: gta_sa.nbrThreadValue
-        stepSize: 1
-        from: 1
-        to: gta_sa.max_thread_support()
-        snapMode: Slider.SnapAlways
-    }
+    RowLayout {
+        enabled: (gta_sa.builtWithOpenMP ? enableOpenMP.checkState: false)
+        Label {
+            text: qsTr("CPU core: ")
+        }
+        Slider {
+            id: nbrThreadValue
+            value: gta_sa.nbrThreadValue
+            stepSize: 1
+            from: 1
+            to: gta_sa.max_thread_support()
+            snapMode: Slider.SnapAlways
+        }
 
-    Binding {
-        target: gta_sa
-        property: "nbrThreadValue"
-        value: nbrThreadValue.value
+        Binding {
+            target: gta_sa
+            property: "nbrThreadValue"
+            value: nbrThreadValue.value
+        }
+        Label {
+            text: (gta_sa.nbrThreadValue
+            >= 10) ? gta_sa.nbrThreadValue: "0" + gta_sa.nbrThreadValue
+        }
     }
-    Label {
-        text: (gta_sa.nbrThreadValue
-        >= 10) ? gta_sa.nbrThreadValue: "0" + gta_sa.nbrThreadValue
-    }
-}
 }
 }
 }
@@ -129,8 +129,6 @@ RowLayout {
         title: qsTr("Result")
         Layout.alignment: Qt.AlignHCenter
         ColumnLayout {
-
-
             /*
             Row {
                 Button {
@@ -166,6 +164,39 @@ RowLayout {
         }
     }
 }
+}
+
+RowLayout {
+    Layout.alignment: Qt.AlignHCenter
+    GroupBox {
+        title: qsTr("Export to JSON")
+        Layout.alignment: Qt.AlignHCenter
+        ColumnLayout {
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                Button {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Export data")
+                    enabled: false
+                }
+            }
+        }
+    }
+    GroupBox {
+        title: qsTr("Export to CSV")
+        Layout.alignment: Qt.AlignHCenter
+        ColumnLayout {
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                Button {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Export data")
+                    enabled: false
+                }
+            }
+        }
+    }
+
 }
 }
 

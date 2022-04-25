@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 
-// More info: https://doc.qt.io/qt-5/qml-qtquick-controls2-scrollbar.html
+// More info: https: //doc.qt.io/qt-5/qml-qtquick-controls2-scrollbar.html
 Page {
     title: qsTr("Rectangle Page")
     Rectangle {

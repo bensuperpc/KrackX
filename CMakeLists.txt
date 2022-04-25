@@ -54,6 +54,7 @@ add_executable(krackx_exe
     source/gta_sa_ui.h source/gta_sa_ui.cpp
     source/TableModel.h
     source/utils.h
+    source/compilation.hpp source/compilation.cpp
 )
 
 qt_add_qml_module(krackx_exe

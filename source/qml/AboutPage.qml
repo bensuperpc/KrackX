@@ -83,9 +83,7 @@ Page {
                     }
                     Text {
                         text: qsTr(
-                                  "Build date: " + about_compilation.return_BuildDate(
-                                      ) + " : " + about_compilation.return_BuildTime(
-                                      ))
+                                  "Build date: " + about_compilation.return_BuildDate())
                         color: "white"
                         font.bold: true
                         font.pointSize: 10

@@ -101,7 +101,7 @@ Page {
                     }
                     Row {
                         Label {
-                            text: qsTr("CPU core :")
+                            text: qsTr("CPU core: ")
                         }
                         Slider {
                             id: cpucorecount_slider
@@ -130,7 +130,7 @@ Page {
             /*
             Image {
                 fillMode: Image.PreserveAspectFit
-                source: "qrc:images/qt-logo@4x.png"
+                source: "qrc: images/qt-logo@4x.png"
                 MouseArea {
                     onClicked: {
 
@@ -138,7 +138,7 @@ Page {
                 }
             }
             */
-            //https://stackoverflow.com/questions/23667088/qtquick-dynamic-images-and-c/
+            //https: //stackoverflow.com/questions/23667088/qtquick-dynamic-images-and-c/
         }
 
         ScrollIndicator.vertical: ScrollIndicator {}
