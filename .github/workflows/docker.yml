@@ -36,3 +36,6 @@ jobs:
 
       - name: "make base"
         run: docker run --rm -v "$PWD":/usr/src/myapp --workdir /usr/src/myapp ${{ matrix.image.image_name }}:${{ matrix.image.image_tag }} make base
+
+      - name: "make base-clang"
+        run: docker run --rm -v "$PWD":/usr/src/myapp --workdir /usr/src/myapp ${{ matrix.image.image_name }}:${{ matrix.image.image_tag }} make base-clang

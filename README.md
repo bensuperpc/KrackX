@@ -1,6 +1,12 @@
 # krackx
 
-This is the krackx project.
+The goal of this project is to make a software to crack passwords.
+Currently it only supports searching for alternative cheat codes in GTA SA.
+
+The next steps:
+- CUDA (and maybe OpenCL)
+- ZIP, 7z ect...
+- Dictionary attack
 
 # Building and installing
 
@@ -12,7 +18,4 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 
 # Licensing
 
-<!--
-Please go to https://choosealicense.com/ and choose a license that fits your
-needs. GNU GPLv3 is a pretty nice option ;-)
--->
+[MIT License](LICENSE)
