@@ -18,8 +18,10 @@ include(cmake/variables.cmake)
 # ---- Declare library ----
 
 find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
+# find_package (Threads REQUIRED)
+
 # find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
-find_package(OpenMP 4.0)
+find_package(OpenMP 2.0)
 
 # Download ThreadPool
 include(FetchContent)
@@ -105,6 +107,8 @@ target_compile_definitions(krackx_exe
 target_link_libraries(krackx_exe PRIVATE krackx_lib)
 
 target_link_libraries(krackx_exe PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+
+# target_link_libraries(krackx_exe PRIVATE Threads::Threads)
     
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(krackx_exe PRIVATE OpenMP::OpenMP_CXX)

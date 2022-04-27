@@ -31,6 +31,11 @@ base:
 	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
 	ninja -C build/$@
 
+base-clang:
+	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
+	-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+	ninja -C build/$@
+
 release:
 	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
 	ninja -C build/$@

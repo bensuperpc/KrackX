@@ -79,25 +79,28 @@ GroupBox {
     title: qsTr("Settings")
     ColumnLayout {
         RowLayout {
-            CheckBox {
+            RadioButton {
                 id: enableOpenMP
-                text: qsTr("Enable OpenMP")
-                // checked: myApp.enableSpecialCharacter
-                checked: (gta_sa.builtWithOpenMP ? true: false)
+                checked: gta_sa.use_openmp
                 enabled: gta_sa.builtWithOpenMP
+                text: qsTr("OpenMP")
                 onToggled: {
-                    if (enableOpenMP.checkState)
-                    {
-                        nbrThreadValue.value = gta_sa.max_thread_support()
-                    } else {
-                    nbrThreadValue.value = 1
+                    gta_sa.set_use_openmp(enableOpenMP.checked)
                 }
-                // myApp.enableSpecialCharacter = enableSpecialCharacter.checkState
             }
-        }
+            RadioButton {
+                id: enableSTDTHREAD
+                enabled: true
+                checked: !gta_sa.builtWithOpenMP
+                text: qsTr("std::thread")
+                onToggled: {
+                    gta_sa.set_use_openmp(enableOpenMP.checked)
+                }
+            }
+        
     }
     RowLayout {
-        enabled: (gta_sa.builtWithOpenMP ? enableOpenMP.checkState: false)
+        // enabled: (gta_sa.builtWithOpenMP ? enableOpenMP.checkState: false)
         Label {
             text: qsTr("CPU core: ")
         }

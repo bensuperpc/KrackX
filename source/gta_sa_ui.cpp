@@ -11,7 +11,7 @@ void GTA_SA_UI::setMinRangeValue(uint64_t value)
   if (value == _minRangeValue)
     return;
   _minRangeValue = value;
-  gta_sa.min_range = value;
+  // gta_sa.min_range = value;
   emit minRangeValueChanged(value);
 }
 
@@ -21,7 +21,7 @@ void GTA_SA_UI::setMaxRangeValue(uint64_t value)
   if (value == _maxRangeValue)
     return;
   _maxRangeValue = value;
-  gta_sa.max_range = value;
+  // gta_sa.max_range = value;
   emit maxRangeValueChanged(value);
 }
 
@@ -31,6 +31,7 @@ void GTA_SA_UI::setNbrThreadValue(uint64_t value)
   if (value == _nbrThreadValue)
     return;
   _nbrThreadValue = value;
+  // gta_sa.num_thread = value;
   emit nbrThreadValueChanged(value);
 }
 
@@ -43,10 +44,18 @@ void GTA_SA_UI::setButtonValue(QString value)
   emit buttonValueChanged(value);
 }
 
+void GTA_SA_UI::set_use_openmp(bool value)
+{
+  std::cout << __FUNCTION_NAME__ << ": " << value << std::endl;
+  if (value == _use_openmp)
+    return;
+  _use_openmp = value;
+  // gta_sa.use_openmp = value;
+  emit use_openmp_changed(value);
+}
+
 void GTA_SA_UI::runOpThread()
 {
-  this->gta_sa.num_thread = this->nbrThreadValue();
-
   // Clear old data
   this->gta_sa.clear();
   this->tableModel.clear();

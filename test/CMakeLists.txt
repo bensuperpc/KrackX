@@ -41,7 +41,6 @@ endfunction()
 if(NOT WIN32)
   include(FetchContent)
 
-  # Externally provided libraries
   FetchContent_Declare(
     googletest
     FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps

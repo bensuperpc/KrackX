@@ -78,17 +78,15 @@ public:
       std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>>
       results = {};
 
+  const uint64_t max_thread_support() const
+  {
 #if defined(_OPENMP)
-  uint64_t max_thread_support() const
-  {
     return static_cast<uint64_t>(omp_get_max_threads());
-  }
 #else
-  uint64_t max_thread_support() const
-  {
     return std::thread::hardware_concurrency();
-  }
 #endif
+  }
+
   uint64_t num_thread = max_thread_support();
 
   uint64_t min_range = 0;  // Alphabetic sequence range min

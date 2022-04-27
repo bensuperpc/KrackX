@@ -26,6 +26,9 @@ class GTA_SA_UI : public QObject
   Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY
                  buttonValueChanged)
 
+  Q_PROPERTY(bool use_openmp READ use_openmp WRITE set_use_openmp NOTIFY
+                 use_openmp_changed)
+
   Q_PROPERTY(bool builtWithOpenMP READ builtWithOpenMP CONSTANT)
 
   // Q_PROPERTY(bool value READ value WRITE enableOpenMPValue NOTIFY
@@ -51,27 +54,25 @@ public:
     return _nbrThreadValue;
   };
 
+  bool use_openmp() const
+  {
+    return _use_openmp;
+  };
+
   QString buttonValue() const
   {
     return _buttonValue;
   };
 
-  Q_INVOKABLE void runOp();
+  Q_INVOKABLE
+  void runOp();
   void runOpThread();
 
-#if defined(_OPENMP)
   Q_INVOKABLE
   uint64_t max_thread_support()
   {
-    return static_cast<uint64_t>(omp_get_max_threads());
+    return gta_sa.max_thread_support();
   }
-#else
-  Q_INVOKABLE
-  uint64_t max_thread_support()
-  {
-    return std::thread::hardware_concurrency();
-  }
-#endif
 
 #if defined(_OPENMP)
   bool builtWithOpenMP() const
@@ -90,6 +91,7 @@ public slots:
   void setMaxRangeValue(uint64_t value);
 
   void setNbrThreadValue(uint64_t value);
+  void set_use_openmp(bool value);
 
   void setButtonValue(QString value);
 
@@ -98,14 +100,16 @@ signals:
   void maxRangeValueChanged(uint64_t value);
 
   void nbrThreadValueChanged(uint64_t value);
+  void use_openmp_changed(bool value);
 
   void buttonValueChanged(QString value);
 
 private:
-  uint64_t _minRangeValue {0};
-  uint64_t _maxRangeValue {0};
+  uint64_t& _minRangeValue = gta_sa.min_range;
+  uint64_t& _maxRangeValue = gta_sa.max_range;
   QString _buttonValue = "Launch Bruteforce";
-  uint64_t _nbrThreadValue = max_thread_support();
+  uint64_t& _nbrThreadValue = gta_sa.num_thread;
+  bool& _use_openmp = gta_sa.use_openmp;
 };
 
 #endif  // GTA_SA_UI_H

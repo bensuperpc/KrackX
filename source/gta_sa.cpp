@@ -11,7 +11,7 @@ void GTA_SA::clear()
 void GTA_SA::run()
 {
 #if !defined(_OPENMP)
-  if (use_openmp) {
+  if (this->use_openmp) {
     std::cout << "OpenMP is not enabled, please compile with -fopenmp flag or "
                  "change use_openmp to false, fall back to std::thread."
                  "Doesn't impact performance most of the time."
@@ -19,6 +19,16 @@ void GTA_SA::run()
     use_openmp = false;
   }
 #endif
+
+  if (this->use_openmp) {
+    std::cout << "Running with OpenMP" << std::endl;
+  } else {
+    std::cout << "Running with std::thread" << std::endl;
+  }
+
+  std::cout << "Max thread support: " << this->max_thread_support()
+            << std::endl;
+  std::cout << "Running with: " << this->num_thread << " threads" << std::endl;
 
   std::array<char, 29> tmp1 = {0};
   std::array<char, 29> tmp2 = {0};
@@ -41,7 +51,7 @@ void GTA_SA::run()
   std::cout << "" << std::endl;
 
   this->begin_time = std::chrono::high_resolution_clock::now();
-  if (use_openmp) {
+  if (this->use_openmp) {
 #if defined(_OPENMP)
     omp_set_num_threads(num_thread);
 #endif
@@ -80,7 +90,7 @@ void GTA_SA::run()
 
   this->end_time = std::chrono::high_resolution_clock::now();
 
-  std::sort(results.begin(), results.end());  // Sort results
+  std::sort(this->results.begin(), this->results.end());  // Sort results
 
   constexpr auto display_val = 18;
 
@@ -88,7 +98,7 @@ void GTA_SA::run()
             << std::setw(display_val) << "Code" << std::setw(display_val + 8)
             << "JAMCRC value" << std::endl;
 
-  for (auto& result : results) {
+  for (auto& result : this->results) {
     std::cout << std::setw(display_val + 3) << std::get<0>(result)
               << std::setw(display_val) << std::get<1>(result)
               << std::setw(display_val) << "0x" << std::hex
@@ -138,7 +148,7 @@ void GTA_SA::runner(const std::uint64_t& i)
 
     const auto index = it - std::begin(GTA_SA::cheat_list);
 
-    results.emplace_back(std::make_tuple(
+    this->results.emplace_back(std::make_tuple(
         i,
         std::string(tmp.data()),
         crc,
