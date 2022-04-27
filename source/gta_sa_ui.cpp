@@ -52,7 +52,7 @@ void GTA_SA_UI::runOpThread()
   this->tableModel.clear();
 
   // Launch operation
-  this->gta_sa.runner();
+  this->gta_sa.run();
 
   // Store results in TableView Data
   for (const auto& result : this->gta_sa.results) {

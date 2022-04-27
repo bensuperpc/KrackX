@@ -21,6 +21,16 @@ find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
 # find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
 find_package(OpenMP 4.0)
 
+# Download ThreadPool
+include(FetchContent)
+FetchContent_Declare(
+    thread-pool
+    FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps
+    URL      https://github.com/bshoshany/thread-pool/archive/refs/tags/v2.0.0.zip
+    URL_HASH SHA512=c59114dfc64f1e0837780c4b5d6815dcaeeeeae99388799d9375826cbde24acabb576922228fa7bf7c9a334d434eb8727e2deb45e289c944278d153617877e8a
+)
+FetchContent_MakeAvailable(thread-pool)
+
 add_library(
     krackx_lib OBJECT
     source/gta_sa.h source/gta_sa.cpp
@@ -33,6 +43,8 @@ target_include_directories(
 )
 
 # set_target_properties(krackx_lib PROPERTIES AUTOMOC OFF)
+
+target_include_directories(krackx_lib PUBLIC "${thread-pool_SOURCE_DIR}")
 
 target_compile_features(krackx_lib PUBLIC cxx_std_17)
 
@@ -85,7 +97,6 @@ set_target_properties(
 )
 
 target_compile_features(krackx_exe PRIVATE cxx_std_17)
-
 
 # Qt6::WebEngineQuic
 target_compile_definitions(krackx_exe

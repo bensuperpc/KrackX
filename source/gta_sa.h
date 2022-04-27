@@ -1,5 +1,5 @@
-#ifndef GTA_SA_H
-#define GTA_SA_H
+#ifndef _GTA_SA_H_
+#define _GTA_SA_H_
 
 #include <algorithm>  // std::find
 #include <array>  // std::array
@@ -11,6 +11,8 @@
 #include <tuple>  // std::pair
 #include <utility>  // std::make_pair
 #include <vector>  // std::vector
+
+#include "thread_pool.hpp"
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #  include <string_view>  // std::string_view
@@ -29,9 +31,9 @@
 
 #if !defined(_OPENMP)
 #  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("No openMP ! Only use 1 thread.")
+#    pragma message("No openMP ! Use std::thread.")
 #  else
-#    warning No openMP ! Only use 1 thread.
+#    warning No openMP ! Use std::thread.
 #  endif
 #endif
 
@@ -39,7 +41,8 @@ class GTA_SA
 {
 public:
   GTA_SA();
-  void runner();
+  void runner(const std::uint64_t&);
+  void run();
   void clear();
 /**
  * @brief To get JAMCRC with boost libs
@@ -81,20 +84,21 @@ public:
     return static_cast<uint64_t>(omp_get_max_threads());
   }
 #else
-  /*
-      uint64_t max_thread_support() const { return
-     std::thread::hardware_concurrency(); }
-  */
   uint64_t max_thread_support() const
   {
-    return 1;
+    return std::thread::hardware_concurrency();
   }
-
 #endif
   uint64_t num_thread = max_thread_support();
 
   uint64_t min_range = 0;  // Alphabetic sequence range min
   uint64_t max_range = 0;
+
+#if defined(_OPENMP)
+  bool use_openmp = true;  // Use openmp instead of std::thread
+#else
+  bool use_openmp = false;  // Use std::thread instead of openmp
+#endif
 
   std::chrono::high_resolution_clock::time_point begin_time =
       std::chrono::high_resolution_clock::now();

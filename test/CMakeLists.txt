@@ -44,11 +44,13 @@ if(NOT WIN32)
   # Externally provided libraries
   FetchContent_Declare(
     googletest
+    FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG main)
 
   FetchContent_Declare(
     googlebenchmark
+    FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps
     GIT_REPOSITORY https://github.com/google/benchmark.git
     GIT_TAG main)
 
@@ -96,7 +98,7 @@ if(NOT WIN32)
   #include(GoogleTest)
   #gtest_discover_tests(jamcrc_test)
 else()
-  message(WARNING "Disable tests, only supported on Linux")
+  message(WARNING "Disable tests, only supported on Linux and macOS")
 endif()
 
 # ---- End-of-file commands ----

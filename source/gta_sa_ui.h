@@ -1,5 +1,5 @@
-#ifndef GTA_SA_UI_H
-#define GTA_SA_UI_H
+#ifndef _GTA_SA_UI_H_
+#define _GTA_SA_UI_H_
 
 #include <QEventLoop>
 #include <QObject>
@@ -66,16 +66,10 @@ public:
     return static_cast<uint64_t>(omp_get_max_threads());
   }
 #else
-  /*
-  Q_INVOKABLE
-      uint64_t max_thread_support() { return
-  std::thread::hardware_concurrency();
-  }
-  */
   Q_INVOKABLE
   uint64_t max_thread_support()
   {
-    return 1;
+    return std::thread::hardware_concurrency();
   }
 #endif
 
