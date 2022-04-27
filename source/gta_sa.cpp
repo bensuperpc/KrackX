@@ -50,7 +50,7 @@ void GTA_SA::run()
             << " Alphabetic sequence" << std::endl;
   std::cout << "" << std::endl;
 
-  this->begin_time = std::chrono::high_resolution_clock::now();
+  
   if (this->use_openmp) {
 #if defined(_OPENMP)
     omp_set_num_threads(num_thread);
