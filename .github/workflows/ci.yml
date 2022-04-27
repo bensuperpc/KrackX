@@ -1,5 +1,10 @@
 name: Continuous Integration
 
+on:
+  push:
+    branches:
+    - test
+
 #on:
 #  push:
 #    branches:
