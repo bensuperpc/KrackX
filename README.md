@@ -1,7 +1,7 @@
 # krackx
 
 The goal of this project is to make a software to crack passwords.
-Currently it only supports searching for alternative cheat codes in GTA SA.
+Currently it only supports searching for alternative cheat codes in [GTA SA](https://github.com/bensuperpc/GTA_SA_cheat_finder).
 
 The next steps:
 - CUDA (and maybe OpenCL)
