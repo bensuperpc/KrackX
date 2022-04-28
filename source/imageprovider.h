@@ -9,8 +9,7 @@
 class ImageProvider : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(
-      QImage image MEMBER m_image READ image WRITE setImage NOTIFY imageChanged)
+  Q_PROPERTY(QImage image MEMBER m_image READ image WRITE setImage NOTIFY imageChanged)
 
   QImage m_image;
 

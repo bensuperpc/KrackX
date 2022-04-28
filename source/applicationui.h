@@ -13,23 +13,19 @@ class Applicationui : public QObject
   Q_OBJECT
 
   // For Settings
-  Q_PROPERTY(bool enableNumber READ enableNumber WRITE setEnableNumber NOTIFY
-                 enableNumberChanged)
-  Q_PROPERTY(bool enableSmallAlphabet READ enableSmallAlphabet WRITE
-                 setEnableSmallAlphabet NOTIFY enableSmallAlphabetChanged)
-  Q_PROPERTY(bool enableBigAlphabet READ enableBigAlphabet WRITE
-                 setEnableBigAlphabet NOTIFY enableBigAlphabetChanged)
-  Q_PROPERTY(bool enableSpecialCharacter READ enableSpecialCharacter WRITE
-                 setEnableSpecialCharacter NOTIFY enableSpecialCharacterChanged)
-  Q_PROPERTY(bool enableUTF8 READ enableUTF8 WRITE setEnableUTF8 NOTIFY
-                 enableUTF8Changed)
+  Q_PROPERTY(bool enableNumber READ enableNumber WRITE setEnableNumber NOTIFY enableNumberChanged)
+  Q_PROPERTY(
+      bool enableSmallAlphabet READ enableSmallAlphabet WRITE setEnableSmallAlphabet NOTIFY enableSmallAlphabetChanged)
+  Q_PROPERTY(bool enableBigAlphabet READ enableBigAlphabet WRITE setEnableBigAlphabet NOTIFY enableBigAlphabetChanged)
+  Q_PROPERTY(bool enableSpecialCharacter READ enableSpecialCharacter WRITE setEnableSpecialCharacter NOTIFY
+                 enableSpecialCharacterChanged)
+  Q_PROPERTY(bool enableUTF8 READ enableUTF8 WRITE setEnableUTF8 NOTIFY enableUTF8Changed)
 
   // For textbox
   Q_PROPERTY(QString author READ author WRITE setAuthor NOTIFY authorChanged)
 
   // For combobox
-  Q_PROPERTY(QStringList comboList READ comboList WRITE setComboList NOTIFY
-                 comboListChanged)
+  Q_PROPERTY(QStringList comboList READ comboList WRITE setComboList NOTIFY comboListChanged)
   Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 
 public:

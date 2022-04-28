@@ -2,11 +2,7 @@
 
 MyDataModel::MyDataModel()
 {
-  QObject::connect(this,
-                   &MyDataModel::newPointAdded,
-                   this,
-                   &MyDataModel::addNewPoint,
-                   Qt::QueuedConnection);
+  QObject::connect(this, &MyDataModel::newPointAdded, this, &MyDataModel::addNewPoint, Qt::QueuedConnection);
 }
 
 void MyDataModel::handleNewPoint(const QPointF& point)
@@ -33,9 +29,7 @@ int MyDataModel::columnCount(const QModelIndex& parent) const
   return 2;
 }
 
-QVariant MyDataModel::headerData(int section,
-                                 Qt::Orientation orientation,
-                                 int role) const
+QVariant MyDataModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
   Q_UNUSED(orientation)
   Q_UNUSED(role)

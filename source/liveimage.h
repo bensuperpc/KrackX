@@ -10,8 +10,7 @@ class LiveImage : public QQuickPaintedItem
 {
   Q_OBJECT
   Q_PROPERTY(QImage image MEMBER m_image WRITE setImage)
-  Q_PROPERTY(bool enable_rescale READ enable_rescale WRITE set_enable_rescale
-                 NOTIFY enable_rescale_changed)
+  Q_PROPERTY(bool enable_rescale READ enable_rescale WRITE set_enable_rescale NOTIFY enable_rescale_changed)
 private:
   // Just storage for the image
   QImage m_image;

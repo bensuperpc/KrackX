@@ -115,11 +115,10 @@ const std::string compiler()
 const std::string compiler_ver()
 {
 #if defined(__GNUC__)
-  return std::to_string(__GNUC__) + "." + std::to_string(__GNUC_MINOR__) + "."
-      + std::to_string(__GNUC_PATCHLEVEL__);
+  return std::to_string(__GNUC__) + "." + std::to_string(__GNUC_MINOR__) + "." + std::to_string(__GNUC_PATCHLEVEL__);
 #elif defined(__clang__)
-  return std::to_string(__clang_major__) + "." + std::to_string(__clang_minor__)
-      + "." + std::to_string(__clang_patchlevel__);
+  return std::to_string(__clang_major__) + "." + std::to_string(__clang_minor__) + "."
+      + std::to_string(__clang_patchlevel__);
 #elif defined(_MSC_VER) || defined(_MSC_FULL_VER)
   return std::to_string(_MSC_FULL_VER);
 #elif defined(__INTEL_COMPILER)
@@ -203,8 +202,7 @@ const std::string arduino()
   return std::string("Fio");
 #  elif defined(ARDUINO_AVR_GEMMA)
   return std::string("Gemma");
-#  elif defined(ARDUINO_AVR_LEONARDO) || defined(__AVR_ATmega32U4__) \
-      || defined(__AVR_ATmega16U4__)
+#  elif defined(ARDUINO_AVR_LEONARDO) || defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
   return std::string("Leonardo");
 #  elif defined(ARDUINO_AVR_LILYPAD)
   return std::string("Lilypad");
@@ -228,8 +226,7 @@ const std::string arduino()
   return std::string("Robot Ctrl");
 #  elif defined(ARDUINO_AVR_ROBOT_MOTOR)
   return std::string("Robot Motor");
-#  elif defined(ARDUINO_AVR_UNO) || defined(__AVR_ATmega328P__) \
-      || defined(__AVR_ATmega168__)
+#  elif defined(ARDUINO_AVR_UNO) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
   return std::string("Uno");
 #  elif defined(ARDUINO_AVR_YUN)
   return std::string("Yun");

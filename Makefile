@@ -25,7 +25,7 @@ PARALLEL := 4
 
 build: base
 
-all: release debug minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base
+all: release debug minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base base-clang
 
 base:
 	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
@@ -79,7 +79,7 @@ lint:
 	cmake -P cmake/spell.cmake
 
 format:
-	time find . -regex '.*\.\(cpp\|cxx\|hpp\|hxx\|c\|h\|cu\|cuh\|tpp\)' -not -path 'build/*' | parallel clang-format -style=file -i {} \;
+	time find . -regex '.*\.\(cpp\|cxx\|hpp\|hxx\|c\|h\|cu\|cuh\|cuhpp\|tpp\)' -not -path 'build/*' | parallel clang-format -style=file -i {} \;
 
 clean:
 	rm -rf build

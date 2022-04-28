@@ -14,8 +14,7 @@ void LiveImage::paint(QPainter* painter)
   }
   if (this->enable_rescale() == true) {
     const auto bounding_rect = boundingRect();  // QRectF
-    const auto scaled =
-        m_image.scaledToHeight(bounding_rect.height());  // QImage
+    const auto scaled = m_image.scaledToHeight(bounding_rect.height());  // QImage
     auto center = bounding_rect.center() - scaled.rect().center();  // QPointF
 
     if (center.x() < 0)

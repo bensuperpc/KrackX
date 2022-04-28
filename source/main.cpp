@@ -39,18 +39,15 @@ public:
   {
   }
 
-  QPixmap requestPixmap(const QString& id,
-                        QSize* size,
-                        const QSize& requestedSize) override
+  QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize) override
   {
     int width = 100;
     int height = 50;
 
     if (size)
       *size = QSize(width, height);
-    QPixmap pixmap(
-        requestedSize.width() > 0 ? requestedSize.width() : width,
-        requestedSize.height() > 0 ? requestedSize.height() : height);
+    QPixmap pixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
+                   requestedSize.height() > 0 ? requestedSize.height() : height);
     pixmap.fill(QColor(id).rgba());
     return pixmap;
   }
@@ -64,15 +61,13 @@ QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 QtWebEngineQuick::initialize();
 */
 
-#if ((QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)) \
-     && (QT_VERSION < QT_VERSION_CHECK(6, 0, 0)))
+#if ((QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)) && (QT_VERSION < QT_VERSION_CHECK(6, 0, 0)))
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-  QApplication::setHighDpiScaleFactorRoundingPolicy(
-      Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+  QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 
   // QGuiApplication app(argc, argv);
@@ -115,8 +110,7 @@ QtWebEngineQuick::initialize();
   QTimer::singleShot(1500,
                      [&provider]()
                      {
-                       std::string str =
-                           "/run/media/bensuperpc/MainT7/1649100112.png";
+                       std::string str = "/run/media/bensuperpc/MainT7/1649100112.png";
                        provider.setImage(str);
                      });
 
@@ -135,8 +129,7 @@ QtWebEngineQuick::initialize();
 
   // some more context properties
   // appui.addContextProperty(context);
-  context->setContextProperty("myModel",
-                              QVariant::fromValue(appui.comboList()));
+  context->setContextProperty("myModel", QVariant::fromValue(appui.comboList()));
   // engine.rootContext()->setContextProperty("qtversion", QString(qVersion()));
   context->setContextProperty("qtversion", QString(qVersion()));
 
