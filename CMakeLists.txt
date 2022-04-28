@@ -7,7 +7,7 @@ project(
     VERSION 0.1.0
     DESCRIPTION "Krack something"
     HOMEPAGE_URL "https://github.com/bensuperpc"
-    LANGUAGES C CXX
+    LANGUAGES C CXX CUDA
 )
 
 set(CMAKE_AUTOMOC ON)
@@ -23,6 +23,13 @@ find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
 # find_package(Qt6 6.2 COMPONENTS WebEngineQuick)
 find_package(OpenMP 2.0)
 
+set(CUDA_SEPARABLE_COMPILATION ON)
+set(POSITION_INDEPENDENT_CODE ON)
+set(CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+set(CMAKE_CUDA_ARCHITECTURES 75)
+
+find_package(CUDA 11.0)
+
 # Download ThreadPool
 include(FetchContent)
 FetchContent_Declare(
@@ -32,11 +39,23 @@ FetchContent_Declare(
     URL_HASH SHA512=c59114dfc64f1e0837780c4b5d6815dcaeeeeae99388799d9375826cbde24acabb576922228fa7bf7c9a334d434eb8727e2deb45e289c944278d153617877e8a
 )
 FetchContent_MakeAvailable(thread-pool)
-
-add_library(
-    krackx_lib OBJECT
-    source/gta_sa.h source/gta_sa.cpp
-)
+if (CUDA_FOUND)
+  add_library(
+      krackx_lib OBJECT
+      source/gta_sa.h 
+      source/gta_sa.cpp
+      source/cuda_kernel/kernel.cu
+      source/cuda_kernel/kernel.cuhpp
+      source/cuda_kernel/kernel.h
+      source/cuda_kernel/kernel.hpp
+  )
+else()
+  add_library(
+      krackx_lib OBJECT
+      source/gta_sa.h 
+      source/gta_sa.cpp
+  )
+endif()
 
 target_include_directories(
     krackx_lib ${warning_guard}
@@ -45,6 +64,12 @@ target_include_directories(
 )
 
 # set_target_properties(krackx_lib PROPERTIES AUTOMOC OFF)
+if (CUDA_FOUND)
+  target_include_directories(krackx_lib PUBLIC ${CUDA_INCLUDE_DIRS})
+  target_link_libraries(krackx_lib PUBLIC ${CUDA_LIBRARIES})
+
+  target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/kernel")
+endif()
 
 target_include_directories(krackx_lib PUBLIC "${thread-pool_SOURCE_DIR}")
 

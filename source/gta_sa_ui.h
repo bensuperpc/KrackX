@@ -15,19 +15,14 @@
 class GTA_SA_UI : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(uint64_t minRangeValue READ minRangeValue WRITE setMinRangeValue
-                 NOTIFY minRangeValueChanged)
-  Q_PROPERTY(uint64_t maxRangeValue READ maxRangeValue WRITE setMaxRangeValue
-                 NOTIFY maxRangeValueChanged)
+  Q_PROPERTY(uint64_t minRangeValue READ minRangeValue WRITE setMinRangeValue NOTIFY minRangeValueChanged)
+  Q_PROPERTY(uint64_t maxRangeValue READ maxRangeValue WRITE setMaxRangeValue NOTIFY maxRangeValueChanged)
 
-  Q_PROPERTY(uint64_t nbrThreadValue READ nbrThreadValue WRITE setNbrThreadValue
-                 NOTIFY nbrThreadValueChanged)
+  Q_PROPERTY(uint64_t nbrThreadValue READ nbrThreadValue WRITE setNbrThreadValue NOTIFY nbrThreadValueChanged)
 
-  Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY
-                 buttonValueChanged)
+  Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY buttonValueChanged)
 
-  Q_PROPERTY(bool use_openmp READ use_openmp WRITE set_use_openmp NOTIFY
-                 use_openmp_changed)
+  Q_PROPERTY(bool use_openmp READ use_openmp WRITE set_use_openmp NOTIFY use_openmp_changed)
 
   Q_PROPERTY(bool builtWithOpenMP READ builtWithOpenMP CONSTANT)
 
