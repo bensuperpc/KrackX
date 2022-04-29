@@ -114,7 +114,7 @@ GroupBox {
             text: qsTr("CPU core: ")
         }
         Slider {
-            id: nbrThreadValue
+            id: nbr_thread_value
             value: gta_sa.nbrThreadValue
             stepSize: 1
             from: 1
@@ -125,13 +125,37 @@ GroupBox {
         Binding {
             target: gta_sa
             property: "nbrThreadValue"
-            value: nbrThreadValue.value
+            value: nbr_thread_value.value
         }
         Label {
             text: (gta_sa.nbrThreadValue
-            >= 10) ? gta_sa.nbrThreadValue: "0" + gta_sa.nbrThreadValue
+            >= 10) ? gta_sa.nbrThreadValue: " " + gta_sa.nbrThreadValue
         }
     }
+    RowLayout {
+        Label {
+            text: qsTr("Block size: ")
+        }
+        Slider {
+            id: cuda_block_size_slider
+            enabled: gta_sa.builtWithCUDA
+            value: 1024
+            stepSize: 64
+            from: 64
+            to: 1024
+            snapMode: Slider.SnapAlways
+        }
+        Binding {
+            target: gta_sa
+            property: "cuda_block_size"
+            value: cuda_block_size_slider.value
+        }
+        Label {
+            text: (gta_sa.cuda_block_size
+                >= 100) ? gta_sa.cuda_block_size: " " + gta_sa.cuda_block_size
+        }
+    }
+
 }
 }
 }

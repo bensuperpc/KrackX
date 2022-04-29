@@ -22,10 +22,10 @@ void GTA_SA::run()
 
 #if !defined(BUILD_WITH_CUDA)
   if (this->calc_mode == 2) {
-    std::cout << "CUDA is not enabled, please compile with CUDA" << std::endl;
-    "or select another calculation mode (OpenMP or std::thread), fall back to std::thread."
-    "Less performant than CUDA."
-        << std::endl;
+    std::cout << "CUDA is not enabled, please compile with CUDA"
+                 "or select another calculation mode (OpenMP or std::thread), fall back to std::thread."
+                 "Less performant than CUDA."
+              << std::endl;
     calc_mode = 1;
   }
 #endif
@@ -111,10 +111,7 @@ void GTA_SA::run()
     cudaStream_t stream;
     cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
-    cudaDeviceSetLimit(cudaLimitMallocHeapSize, 512 * 1024 * 1024);
-
-    // Max 1024 threads per block with CUDA 2.0 and above
-    auto block_size = 1024;
+    cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
     // Calculate length of the array with max_range and min_range
     auto array_length = (this->max_range - this->min_range) / 32000000 + 1;
@@ -138,32 +135,43 @@ void GTA_SA::run()
       index_results[i] = 0;
     }
 
-    size_t grid_size = (int)ceil((float)(max_range - min_range) / block_size);
+    size_t grid_size = (int)ceil((float)(this->max_range - this->min_range) / this->cuda_block_size);
 
     // std::cout << "Grid size: " << grid_size << std::endl;
-    // std::cout << "Block size: " << block_size << std::endl;
+    // std::cout << "Block size: " << cuda_block_size << std::endl;
 
     cudaStreamSynchronize(stream);
-
-    auto cuda_begin_time = std::chrono::high_resolution_clock::now();
-    my::cuda::launch_kernel(
-        grid_size, block_size, stream, jamcrc_results, index_results, array_length, min_range, max_range);
+    my::cuda::launch_kernel(grid_size,
+                            cuda_block_size,
+                            stream,
+                            jamcrc_results,
+                            index_results,
+                            array_length,
+                            this->min_range,
+                            this->max_range);
     cudaStreamSynchronize(stream);
-    auto cuda_end_time = std::chrono::high_resolution_clock::now();
-
-    std::cout << "CUDA Time: "
-              << std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count()
-              << " sec" << std::endl;  // Display time
-
-    std::cout << "This program execute: " << std::fixed
-              << (static_cast<double>(this->max_range - this->min_range)
-                  / std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count())
-            / 1000000000
-              << " GOps/sec with CUDA" << std::endl;
 
     for (int i = 0; i < array_length; ++i) {
       if (jamcrc_results[i] != index_results[i]) {
-        std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
+        // std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
+
+        std::array<char, 29> tmpCUDA = {0};
+
+        GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
+        std::reverse(tmpCUDA.data(), tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
+
+#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
+       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
+
+        const auto&& it = std::find(
+            std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+#  else
+        const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+#  endif
+
+        const auto index = it - std::begin(GTA_SA::cheat_list);
+        this->results.emplace_back(std::make_tuple(
+            index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], this->cheat_list_name.at(index)));
       }
     }
 
@@ -193,7 +201,7 @@ void GTA_SA::run()
     std::cout << std::setw(display_val + 3) << std::get<0>(result) << std::setw(display_val) << std::get<1>(result)
               << std::setw(display_val) << "0x" << std::hex << std::get<2>(result) << std::dec << std::endl;
   }
-  std::cout << "CPU Time: "
+  std::cout << "Time: "
             << std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count()
             << " sec" << std::endl;  // Display time
 
@@ -201,7 +209,7 @@ void GTA_SA::run()
             << (static_cast<double>(this->max_range - this->min_range)
                 / std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count())
           / 1000000
-            << " MOps/sec with CPU" << std::endl;  // Display perf
+            << " MOps/sec" << std::endl;  // Display perf
 }
 
 void GTA_SA::runner(const std::uint64_t& i)

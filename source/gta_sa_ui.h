@@ -19,6 +19,7 @@ class GTA_SA_UI : public QObject
   Q_PROPERTY(uint64_t maxRangeValue READ maxRangeValue WRITE setMaxRangeValue NOTIFY maxRangeValueChanged)
 
   Q_PROPERTY(uint64_t nbrThreadValue READ nbrThreadValue WRITE setNbrThreadValue NOTIFY nbrThreadValueChanged)
+  Q_PROPERTY(uint64_t cuda_block_size READ cuda_block_size WRITE set_cuda_block_size NOTIFY cuda_block_size_changed)
 
   Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY buttonValueChanged)
 
@@ -48,6 +49,11 @@ public:
   uint64_t nbrThreadValue() const
   {
     return _nbrThreadValue;
+  };
+
+  uint64_t cuda_block_size() const
+  {
+    return _cuda_block_size;
   };
 
   uint64_t calc_mode() const
@@ -85,6 +91,8 @@ public slots:
   void setMaxRangeValue(uint64_t value);
 
   void setNbrThreadValue(uint64_t value);
+  void set_cuda_block_size(uint64_t value);
+
   void set_calc_mode(u_int64_t value);
 
   void setButtonValue(QString value);
@@ -94,6 +102,7 @@ signals:
   void maxRangeValueChanged(uint64_t value);
 
   void nbrThreadValueChanged(uint64_t value);
+  void cuda_block_size_changed(uint64_t value);
   void calc_mode_changed(uint64_t value);
 
   void buttonValueChanged(QString value);
@@ -103,6 +112,7 @@ private:
   uint64_t& _maxRangeValue = gta_sa.max_range;
   QString _buttonValue = "Launch Bruteforce";
   uint64_t& _nbrThreadValue = gta_sa.num_thread;
+  uint64_t& _cuda_block_size = gta_sa.cuda_block_size;
   uint64_t& _calc_mode = gta_sa.calc_mode;
 };
 

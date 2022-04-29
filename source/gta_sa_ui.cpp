@@ -35,6 +35,16 @@ void GTA_SA_UI::setNbrThreadValue(uint64_t value)
   emit nbrThreadValueChanged(value);
 }
 
+void GTA_SA_UI::set_cuda_block_size(uint64_t value)
+{
+  std::cout << __FUNCTION_NAME__ << ": " << value << std::endl;
+  if (value == _cuda_block_size)
+    return;
+  _cuda_block_size = value;
+  // gta_sa.cuda_block_size = value;
+  emit cuda_block_size_changed(value);
+}
+
 void GTA_SA_UI::setButtonValue(QString value)
 {
   std::cout << __FUNCTION_NAME__ << ": " << value.toStdString() << std::endl;

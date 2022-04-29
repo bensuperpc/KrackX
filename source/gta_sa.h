@@ -73,10 +73,6 @@
 #  include "cuda_kernel/kernel.hpp"
 #endif
 
-#ifndef BLOCK_SIZE
-#  define BLOCK_SIZE 16
-#endif
-
 class GTA_SA
 {
 public:
@@ -126,8 +122,11 @@ public:
 
   uint64_t num_thread = max_thread_support();
 
+  // Max 1024 threads per block with CUDA 2.0 and above
+  uint64_t cuda_block_size = 1024;
+
   uint64_t min_range = 0;  // Alphabetic sequence range min
-  uint64_t max_range = 600000000;
+  uint64_t max_range = 0;
 
 #if defined(_OPENMP)
   uint64_t calc_mode = 1;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA
