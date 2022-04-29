@@ -99,7 +99,7 @@ GroupBox {
             }
             RadioButton {
                 id: enableCUDA
-                enabled: true
+                enabled: gta_sa.builtWithCUDA
                 checked: (gta_sa.calc_mode == 2 ? true : false)
                 text: qsTr("CUDA")
                 onToggled: {

@@ -135,6 +135,18 @@ public:
   uint64_t calc_mode = 0;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA
 #endif
 
+#if defined(_OPENMP)
+  static constexpr bool builtWithOpenMP = true;
+#else
+  static constexpr bool builtWithOpenMP = false;
+#endif
+
+#if defined(BUILD_WITH_CUDA)
+  static constexpr bool builtWithCUDA = true;
+#else
+  static constexpr bool builtWithCUDA = false;
+#endif
+
   std::chrono::high_resolution_clock::time_point begin_time = std::chrono::high_resolution_clock::now();
 
   std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();

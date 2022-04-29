@@ -25,6 +25,7 @@ class GTA_SA_UI : public QObject
   Q_PROPERTY(uint64_t calc_mode READ calc_mode WRITE set_calc_mode NOTIFY calc_mode_changed)
 
   Q_PROPERTY(bool builtWithOpenMP READ builtWithOpenMP CONSTANT)
+  Q_PROPERTY(bool builtWithCUDA READ builtWithCUDA CONSTANT)
 
   // Q_PROPERTY(bool value READ value WRITE enableOpenMPValue NOTIFY
   // enableOpenMPValueChanged) Q_PROPERTY(bool value READ value WRITE
@@ -69,17 +70,15 @@ public:
     return gta_sa.max_thread_support();
   }
 
-#if defined(_OPENMP)
   bool builtWithOpenMP() const
   {
-    return true;
+    return gta_sa.builtWithOpenMP;
   };
-#else
-  bool builtWithOpenMP() const
+
+  bool builtWithCUDA() const
   {
-    return false;
+    return gta_sa.builtWithCUDA;
   };
-#endif
 
 public slots:
   void setMinRangeValue(uint64_t value);

@@ -11,7 +11,7 @@ void GTA_SA::clear()
 void GTA_SA::run()
 {
 #if !defined(_OPENMP)
-  if (this->calc_mode == 0) {
+  if (this->calc_mode == 1) {
     std::cout << "OpenMP is not enabled, please compile with -fopenmp flag" << std::endl;
     "or select another calculation mode (CUDA or std::thread), fall back to std::thread."
     "Doesn't impact performance most of the time."
@@ -24,7 +24,7 @@ void GTA_SA::run()
   if (this->calc_mode == 2) {
     std::cout << "CUDA is not enabled, please compile with CUDA" << std::endl;
     "or select another calculation mode (OpenMP or std::thread), fall back to std::thread."
-    "Doesn't impact performance most of the time."
+    "Less performant than CUDA."
         << std::endl;
     calc_mode = 1;
   }
@@ -86,14 +86,12 @@ void GTA_SA::run()
 #    pragma omp parallel for schedule(auto) shared(results)
 // firstprivate(tmp, crc)
 #  endif
-#else
-    std::int64_t i = 0;
-#endif
-
     for (i = min_range; i <= max_range; i++) {
       runner(i);
     }
-
+#else
+    std::cout << "OpenMP is not supported" << std::endl;
+#endif
   } else if (calc_mode == 2) {
 #if defined(BUILD_WITH_CUDA)
     // int device = -1;
@@ -175,6 +173,8 @@ void GTA_SA::run()
     cudaStreamDestroy(stream);
     cudaStreamDestroy(st_high);
     cudaStreamDestroy(st_low);
+#else
+    std::cout << "CUDA is not supported" << std::endl;
 #endif
   } else {
     std::cout << "Unknown calculation mode" << std::endl;
