@@ -121,10 +121,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
     // Generate the array
     find_string_inv_kernel(array, id, size);
 
-    uint32_t* result = (uint32_t*)malloc(sizeof(uint32_t));
-    if (result == NULL) {
-      return;
-    }
+    uint32_t result = 0;
     // printf("array: %s\n", array);
     // printf("size %d\n", size);
     // Calculate the CRC
@@ -133,7 +130,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
 
     bool found = false;
     for (uint32_t i = 0; i < 87; i++) {
-      if (*result == crc32_lookup[i]) {
+      if (result == crc32_lookup[i]) {
         found = true;
         break;
       }
@@ -148,7 +145,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
 
     //__syncthreads();
 
-    crc_result[0] = *result;
+    crc_result[0] = result;
     index_result[0] = id;
 
     // free(crc_result);
@@ -164,11 +161,11 @@ __host__ void my::cuda::launch_kernel(size_t gridSize,
                                       uint64_t a,
                                       uint64_t b)
 {
-  printf("array_size %d, a %d, b %d\n", array_size, a, b);
+  // printf("array_size %d, a %d, b %d\n", array_size, a, b);
   runner_kernel<<<gridSize, blockSize, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
-__device__ void find_string_inv_kernel(uchar* array, uint64_t n, uint64_t &terminator_index)
+__device__ void find_string_inv_kernel(uchar* array, uint64_t n, uint64_t& terminator_index)
 {
   const uint32_t string_size_alphabet = 27;
 
@@ -191,11 +188,11 @@ __device__ void find_string_inv_kernel(uchar* array, uint64_t n, uint64_t &termi
   terminator_index = i;
 }
 
-__device__ void jamcrc_kernel(const void* data, uint32_t* result, uint64_t length, uint32_t previousCrc32)
+__device__ void jamcrc_kernel(const void* data, uint32_t& result, uint64_t length, uint32_t previousCrc32)
 {
   uint32_t crc = ~previousCrc32;
   unsigned char* current = (unsigned char*)data;
   while (length--)
     crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
-  *result = crc;
+  result = crc;
 }

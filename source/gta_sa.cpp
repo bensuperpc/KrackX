@@ -82,6 +82,27 @@ void GTA_SA::run()
   }
   this->end_time = std::chrono::high_resolution_clock::now();
 
+  std::sort(this->results.begin(), this->results.end());  // Sort results
+
+  constexpr auto display_val = 18;
+
+  std::cout << std::setw(display_val + 3) << "Iter. N°" << std::setw(display_val) << "Code"
+            << std::setw(display_val + 8) << "JAMCRC value" << std::endl;
+
+  for (auto& result : this->results) {
+    std::cout << std::setw(display_val + 3) << std::get<0>(result) << std::setw(display_val) << std::get<1>(result)
+              << std::setw(display_val) << "0x" << std::hex << std::get<2>(result) << std::dec << std::endl;
+  }
+  std::cout << "Time: "
+            << std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count()
+            << " sec" << std::endl;  // Display time
+
+  std::cout << "This program execute: " << std::fixed
+            << (static_cast<double>(this->max_range - this->min_range)
+                / std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count())
+          / 1000000
+            << " MOps/sec" << std::endl;  // Display perf
+
 #if defined(BUILD_WITH_CUDA)
   // int device = -1;
   // cudaGetDevice(&device);
@@ -124,11 +145,23 @@ void GTA_SA::run()
 
   size_t grid_size = (int)ceil((float)(max_range - min_range) / block_size);
 
-  std::cout << "Grid size: " << grid_size << std::endl;
-  std::cout << "Block size: " << block_size << std::endl;
+  // std::cout << "Grid size: " << grid_size << std::endl;
+  // std::cout << "Block size: " << block_size << std::endl;
 
+  auto cuda_begin_time = std::chrono::high_resolution_clock::now();
   my::cuda::launch_kernel(
       grid_size, block_size, stream, jamcrc_results, index_results, array_length, min_range, max_range);
+  auto cuda_end_time = std::chrono::high_resolution_clock::now();
+
+  std::cout << "CUDA Time: "
+            << std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count()
+            << " sec" << std::endl;  // Display time
+
+  std::cout << "This program execute: " << std::fixed
+            << (static_cast<double>(this->max_range - this->min_range)
+                / std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count())
+          / 1000000000
+            << " GOps/sec with CUDA" << std::endl;
 
   cudaStreamSynchronize(stream);
 
@@ -144,27 +177,6 @@ void GTA_SA::run()
   cudaStreamDestroy(st_low);
 
 #endif
-
-  std::sort(this->results.begin(), this->results.end());  // Sort results
-
-  constexpr auto display_val = 18;
-
-  std::cout << std::setw(display_val + 3) << "Iter. N°" << std::setw(display_val) << "Code"
-            << std::setw(display_val + 8) << "JAMCRC value" << std::endl;
-
-  for (auto& result : this->results) {
-    std::cout << std::setw(display_val + 3) << std::get<0>(result) << std::setw(display_val) << std::get<1>(result)
-              << std::setw(display_val) << "0x" << std::hex << std::get<2>(result) << std::dec << std::endl;
-  }
-  std::cout << "Time: "
-            << std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count()
-            << " sec" << std::endl;  // Display time
-
-  std::cout << "This program execute: " << std::fixed
-            << (static_cast<double>(this->max_range - this->min_range)
-                / std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count())
-          / 1000000
-            << " MOps/sec" << std::endl;  // Display perf
 }
 
 void GTA_SA::runner(const std::uint64_t& i)
