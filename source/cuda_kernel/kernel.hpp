@@ -55,6 +55,8 @@ void vecMult(size_t gridSize, size_t blockSize, cudaStream_t& stream, int* a, in
 void matrixMultiplySimple(dim3 gridSize, dim3 blockSize, int* a, int* b, int* c, size_t n);
 void matrixMultiplySimple(dim3 gridSize, dim3 blockSize, cudaStream_t& stream, int* a, int* b, int* c, size_t n);
 
+void launch_kernel(size_t gridSize, size_t blockSize, cudaStream_t& stream, uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b);
+
 }  // namespace cuda
 }  // namespace my
 

@@ -23,10 +23,6 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-extern "C" {
-// Can be remove if use "external *Function*" in .c/cpp file
-#include "kernel.h"
-}
 #include "kernel.cuhpp"
 #include "kernel.hpp"
 
@@ -62,12 +58,6 @@ __host__ void my::cuda::JAMCRC_byte_tableless2(const dim3& grid,
   JAMCRC_byte_tableless2_kernel<<<grid, threads, 0, stream>>>(data, length, previousCrc32, resultCrc32);
 }
 
-extern "C" __host__ void JAMCRC_byte_tableless2(
-    const dim3& grid, const dim3& threads, uchar* data, ulong length, uint previousCrc32, uint* resultCrc32)
-{
-  JAMCRC_byte_tableless2_kernel<<<grid, threads>>>(data, length, previousCrc32, resultCrc32);
-}
-
 __global__ void vecMult_kernel(int* a, int* b, int* c, size_t n)
 {
   // Get our global thread ID
@@ -87,11 +77,6 @@ __host__ void my::cuda::vecMult(
     size_t gridSize, size_t blockSize, cudaStream_t& stream, int* a, int* b, int* c, size_t n)
 {
   vecMult_kernel<<<gridSize, blockSize, 0, stream>>>(a, b, c, n);
-}
-
-extern "C" __host__ void vecMult(size_t gridSize, size_t blockSize, int* a, int* b, int* c, size_t n)
-{
-  vecMult_kernel<<<gridSize, blockSize>>>(a, b, c, n);
 }
 
 __global__ void matrixMultiplySimple_kernel(int* a, int* b, int* c, size_t width)
@@ -120,7 +105,90 @@ __host__ void my::cuda::matrixMultiplySimple(
   matrixMultiplySimple_kernel<<<gridSize, blockSize, 0, stream>>>(a, b, c, n);
 }
 
-extern "C" __host__ void matrixMultiplySimple(dim3 gridSize, dim3 blockSize, int* a, int* b, int* c, size_t n)
+
+__global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
-  matrixMultiplySimple_kernel<<<gridSize, blockSize>>>(a, b, c, n);
+  uint64_t id = blockIdx.x * blockDim.x + threadIdx.x;
+
+    //  crc_result[1] = 4;
+    // index_result[1] = 5;
+
+  if (id < b) {
+    // Allocate memory for the array
+    uchar* array = (uchar*)malloc(29 * sizeof(uchar));
+    if (array == NULL) {
+      return;
+    }
+
+    // Generate the array
+    find_string_inv_kernel(array, id);
+
+
+    uint32_t* result = (uint32_t*)malloc(29 * sizeof(uint32_t));
+    if (array == NULL) {
+      return;
+    }
+
+    *result = 0;
+
+    // Calculate the CRC
+    jamcrc_kernel(array, result, 29, 0);
+
+    bool found = false;
+    for (uint32_t i = 0; i < 87; i++) {
+      if (*result == crc32_lookup[i]) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      return;
+    }
+
+    __syncthreads();
+
+    crc_result[0] = *result;
+    index_result[0] = id;
+
+    free(array);
+    free(crc_result);
+  }
+}
+
+__host__ void my::cuda::launch_kernel(
+    size_t gridSize, size_t blockSize, cudaStream_t& stream, uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
+{
+  runner_kernel<<<gridSize, blockSize, 0, stream>>>(crc_result, index_result, array_size, a, b);
+}
+
+
+__device__ void find_string_inv_kernel(uchar* array, uint64_t n)
+{
+  const uint32_t string_size_alphabet = 27;
+  
+  const uchar alpha[string_size_alphabet] = {'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z'};
+  // If n < 27
+  if (n < 26) {
+    array[0] = alpha[n];
+    array[1] = '\0';
+    return;
+  }
+  // If n > 27
+  uint64_t i = 0;
+  while (n > 0) {
+    array[i] = alpha[(--n) % 26];
+    n /= 26;
+    ++i;
+  }
+  array[1] = i;
+}
+
+__device__ void jamcrc_kernel(const void* data, uint32_t* result, uint64_t length, uint32_t previousCrc32)
+{
+  uint32_t crc = ~previousCrc32;
+  unsigned char* current = (unsigned char*) data;
+  while (length--)
+    crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
+  *result = crc;
 }

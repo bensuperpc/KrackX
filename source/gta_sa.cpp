@@ -101,53 +101,43 @@ void GTA_SA::run()
   // cudaStreamAttachMemAsync(stream1, &x);
   cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
+  cudaDeviceSetLimit(cudaLimitMallocHeapSize, 512*1024*1024);
+
   auto block_size = 512;
   auto array_length = 32;
-  auto array_size = array_length * sizeof(int);
+  auto jamcrc_results_size = array_length * sizeof(uint32_t);
+  auto index_results_size = array_length * sizeof(uint64_t);
 
-  int *MatA, *MatB, *MatC;
+  uint32_t * jamcrc_results;
+  uint64_t * index_results;
 
-  cudaMallocManaged(&MatA, array_size, cudaMemAttachGlobal);
-  cudaMallocManaged(&MatB, array_size, cudaMemAttachGlobal);
-  cudaMallocManaged(&MatC, array_size, cudaMemAttachGlobal);
+  cudaMallocManaged(&jamcrc_results, jamcrc_results_size, cudaMemAttachGlobal);
+  cudaMallocManaged(&index_results, index_results_size, cudaMemAttachGlobal);
 
   // cudaStreamSynchronize(stream);
 
-  cudaMemPrefetchAsync(MatA, array_size, cuda_device, stream);
-  cudaMemPrefetchAsync(MatB, array_size, cuda_device, stream);
-  cudaMemPrefetchAsync(MatC, array_size, cuda_device, stream);
+  cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, cuda_device, stream);
+  cudaMemPrefetchAsync(index_results, index_results_size, cuda_device, stream);
 
   for (int i = 0; i < array_length; ++i) {
-    MatA[i] = 8;
-    MatB[i] = 4;
-    MatC[i] = 0;
+    jamcrc_results[i] = 0;
+    index_results[i] = 0;
   }
-
-  // dim3 threads(block_size, block_size);
-  // dim3 grid(array_length / threads.x, array_length / threads.y);
-  // my::cuda::matrixMultiplySimple(grid, threads, stream, MatA, MatB, MatC, 32);
 
   size_t grid = (int)ceil((float)array_length / block_size);
   size_t threads = block_size;
-  my::cuda::vecMult(grid, threads, stream, MatA, MatB, MatC, 32);
+  // my::cuda::vecMult(grid, threads, stream, MatA, MatB, MatC, 32);
+
+  my::cuda::launch_kernel(grid, threads, stream, jamcrc_results, index_results, array_length, min_range, max_range);
 
   cudaStreamSynchronize(stream);
 
   for (int i = 0; i < array_length; ++i) {
-    std::cout << MatA[i] << std::endl;
+    std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
   }
 
-  for (int i = 0; i < array_length; ++i) {
-    std::cout << MatB[i] << std::endl;
-  }
-
-  for (int i = 0; i < array_length; ++i) {
-    std::cout << MatC[i] << std::endl;
-  }
-
-  cudaFree(MatA);
-  cudaFree(MatB);
-  cudaFree(MatC);
+  cudaFree(jamcrc_results);
+  cudaFree(index_results);
 
   cudaStreamDestroy(stream);
   cudaStreamDestroy(st_high);

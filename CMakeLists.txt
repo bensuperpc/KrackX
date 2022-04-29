@@ -52,7 +52,6 @@ if (CUDA_FOUND)
       source/gta_sa.cpp
       source/cuda_kernel/kernel.cu
       source/cuda_kernel/kernel.cuhpp
-      source/cuda_kernel/kernel.h
       source/cuda_kernel/kernel.hpp
   )
 else()
