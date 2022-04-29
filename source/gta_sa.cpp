@@ -101,20 +101,18 @@ void GTA_SA::run()
   // cudaStreamAttachMemAsync(stream1, &x);
   cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
-  cudaDeviceSetLimit(cudaLimitMallocHeapSize, 512*1024*1024);
+  cudaDeviceSetLimit(cudaLimitMallocHeapSize, 512 * 1024 * 1024);
 
-  auto block_size = 512;
+  auto block_size = 1024;
   auto array_length = 32;
   auto jamcrc_results_size = array_length * sizeof(uint32_t);
   auto index_results_size = array_length * sizeof(uint64_t);
 
-  uint32_t * jamcrc_results;
-  uint64_t * index_results;
+  uint32_t* jamcrc_results;
+  uint64_t* index_results;
 
   cudaMallocManaged(&jamcrc_results, jamcrc_results_size, cudaMemAttachGlobal);
   cudaMallocManaged(&index_results, index_results_size, cudaMemAttachGlobal);
-
-  // cudaStreamSynchronize(stream);
 
   cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, cuda_device, stream);
   cudaMemPrefetchAsync(index_results, index_results_size, cuda_device, stream);
@@ -124,11 +122,13 @@ void GTA_SA::run()
     index_results[i] = 0;
   }
 
-  size_t grid = (int)ceil((float)array_length / block_size);
-  size_t threads = block_size;
-  // my::cuda::vecMult(grid, threads, stream, MatA, MatB, MatC, 32);
+  size_t grid_size = (int)ceil((float)(max_range - min_range) / block_size);
 
-  my::cuda::launch_kernel(grid, threads, stream, jamcrc_results, index_results, array_length, min_range, max_range);
+  std::cout << "Grid size: " << grid_size << std::endl;
+  std::cout << "Block size: " << block_size << std::endl;
+
+  my::cuda::launch_kernel(
+      grid_size, block_size, stream, jamcrc_results, index_results, array_length, min_range, max_range);
 
   cudaStreamSynchronize(stream);
 
@@ -174,6 +174,9 @@ void GTA_SA::runner(const std::uint64_t& i)
                           i);  // Generate Alphabetic sequence from uint64_t
                                // value, A=1, Z=27, AA = 28, AB = 29
   uint32_t crc = GTA_SA::jamcrc(tmp.data());  // JAMCRC
+
+  // #pragma omp critical
+  // std::cout << "str:" << tmp.data() << " crc: " << crc << std::endl;
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
      || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
