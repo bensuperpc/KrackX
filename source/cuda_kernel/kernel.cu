@@ -23,8 +23,7 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#include "kernel.cuhpp"
-#include "kernel.hpp"
+#include "cuda_kernel/kernel.cuhpp"
 
 __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
