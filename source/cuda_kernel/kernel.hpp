@@ -41,14 +41,14 @@ namespace my
 {
 namespace cuda
 {
-void launch_kernel(size_t gridSize,
-                   size_t blockSize,
-                   cudaStream_t& stream,
-                   uint32_t* crc_result,
-                   uint64_t* index_result,
-                   uint64_t array_size,
-                   uint64_t a,
-                   uint64_t b);
+__host__ void launch_kernel(size_t gridSize,
+                            size_t blockSize,
+                            cudaStream_t& stream,
+                            uint32_t* crc_result,
+                            uint64_t* index_result,
+                            uint64_t array_size,
+                            uint64_t a,
+                            uint64_t b);
 
 }  // namespace cuda
 }  // namespace my
