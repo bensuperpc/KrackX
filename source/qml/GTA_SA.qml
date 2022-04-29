@@ -80,21 +80,30 @@ GroupBox {
     ColumnLayout {
         RowLayout {
             RadioButton {
-                id: enableOpenMP
-                checked: gta_sa.use_openmp
-                enabled: gta_sa.builtWithOpenMP
-                text: qsTr("OpenMP")
+                id: enableSTDTHREAD
+                enabled: true
+                checked: (gta_sa.calc_mode == 0 ? true : false)
+                text: qsTr("std::thread")
                 onToggled: {
-                    gta_sa.set_use_openmp(enableOpenMP.checked)
+                    gta_sa.set_calc_mode(0)
                 }
             }
             RadioButton {
-                id: enableSTDTHREAD
-                enabled: true
-                checked: !gta_sa.builtWithOpenMP
-                text: qsTr("std::thread")
+                id: enableOpenMP
+                checked: (gta_sa.calc_mode == 1 ? true : false)
+                enabled: gta_sa.builtWithOpenMP
+                text: qsTr("OpenMP")
                 onToggled: {
-                    gta_sa.set_use_openmp(enableOpenMP.checked)
+                    gta_sa.set_calc_mode(1)
+                }
+            }
+            RadioButton {
+                id: enableCUDA
+                enabled: true
+                checked: (gta_sa.calc_mode == 2 ? true : false)
+                text: qsTr("CUDA")
+                onToggled: {
+                    gta_sa.set_calc_mode(2)
                 }
             }
         

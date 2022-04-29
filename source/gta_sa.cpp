@@ -11,19 +11,33 @@ void GTA_SA::clear()
 void GTA_SA::run()
 {
 #if !defined(_OPENMP)
-  if (this->use_openmp) {
-    std::cout << "OpenMP is not enabled, please compile with -fopenmp flag or "
-                 "change use_openmp to false, fall back to std::thread."
-                 "Doesn't impact performance most of the time."
-              << std::endl;
-    use_openmp = false;
+  if (this->calc_mode == 0) {
+    std::cout << "OpenMP is not enabled, please compile with -fopenmp flag" << std::endl;
+    "or select another calculation mode (CUDA or std::thread), fall back to std::thread."
+    "Doesn't impact performance most of the time."
+        << std::endl;
+    calc_mode = 1;
   }
 #endif
 
-  if (this->use_openmp) {
-    std::cout << "Running with OpenMP" << std::endl;
+#if !defined(BUILD_WITH_CUDA)
+  if (this->calc_mode == 2) {
+    std::cout << "CUDA is not enabled, please compile with CUDA" << std::endl;
+    "or select another calculation mode (OpenMP or std::thread), fall back to std::thread."
+    "Doesn't impact performance most of the time."
+        << std::endl;
+    calc_mode = 1;
+  }
+#endif
+
+  if (calc_mode == 0) {
+    std::cout << "Running with std::thread mode" << std::endl;
+  } else if (calc_mode == 1) {
+    std::cout << "Running with OpenMP mode" << std::endl;
+  } else if (calc_mode == 2) {
+    std::cout << "Running with CUDA mode" << std::endl;
   } else {
-    std::cout << "Running with std::thread" << std::endl;
+    std::cout << "Unknown calculation mode" << std::endl;
   }
 
   std::cout << "Max thread support: " << this->max_thread_support() << std::endl;
@@ -46,12 +60,22 @@ void GTA_SA::run()
   std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence" << std::endl;
   std::cout << "" << std::endl;
 
-  if (this->use_openmp) {
+  this->begin_time = std::chrono::high_resolution_clock::now();
+  if (calc_mode == 0) {
+    thread_pool pool(num_thread);
+    pool.parallelize_loop(min_range,
+                          max_range,
+                          [&](const std::uint64_t& min_range, const std::uint64_t& max_range)
+                          {
+                            for (std::uint64_t i = min_range; i <= max_range; i++) {
+                              runner(i);
+                            }
+                          });
+  } else if (calc_mode == 1) {
 #if defined(_OPENMP)
     omp_set_num_threads(num_thread);
 #endif
 
-    this->begin_time = std::chrono::high_resolution_clock::now();
 #if defined(_OPENMP)
 #  ifdef _MSC_VER
     std::int64_t i = 0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
@@ -69,17 +93,93 @@ void GTA_SA::run()
     for (i = min_range; i <= max_range; i++) {
       runner(i);
     }
+
+  } else if (calc_mode == 2) {
+#if defined(BUILD_WITH_CUDA)
+    // int device = -1;
+    // cudaGetDevice(&device);
+
+    const uint32_t cuda_device = 0;
+
+    if (cudaSetDevice(cuda_device) != cudaSuccess) {
+      std::cout << "Error on cudaSetDevice" << std::endl;
+    }
+
+    int priority_high, priority_low;
+    cudaDeviceGetStreamPriorityRange(&priority_low, &priority_high);
+    cudaStream_t st_high, st_low;
+    cudaStreamCreateWithPriority(&st_high, cudaStreamNonBlocking, priority_high);
+    cudaStreamCreateWithPriority(&st_low, cudaStreamNonBlocking, priority_low);
+    cudaStream_t stream;
+    cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
+
+    cudaDeviceSetLimit(cudaLimitMallocHeapSize, 512 * 1024 * 1024);
+
+    // Max 1024 threads per block with CUDA 2.0 and above
+    auto block_size = 1024;
+
+    // Calculate length of the array with max_range and min_range
+    auto array_length = (this->max_range - this->min_range) / 32000000 + 1;
+    auto jamcrc_results_size = array_length * sizeof(uint32_t);
+    auto index_results_size = array_length * sizeof(uint64_t);
+
+    uint32_t* jamcrc_results = 0;
+    uint64_t* index_results = 0;
+
+    cudaMallocManaged(&jamcrc_results, jamcrc_results_size, cudaMemAttachGlobal);
+    cudaMallocManaged(&index_results, index_results_size, cudaMemAttachGlobal);
+
+    cudaStreamAttachMemAsync(stream, &jamcrc_results);
+    cudaStreamAttachMemAsync(stream, &index_results_size);
+
+    cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, cuda_device, stream);
+    cudaMemPrefetchAsync(index_results, index_results_size, cuda_device, stream);
+
+    for (int i = 0; i < array_length; ++i) {
+      jamcrc_results[i] = 0;
+      index_results[i] = 0;
+    }
+
+    size_t grid_size = (int)ceil((float)(max_range - min_range) / block_size);
+
+    // std::cout << "Grid size: " << grid_size << std::endl;
+    // std::cout << "Block size: " << block_size << std::endl;
+
+    cudaStreamSynchronize(stream);
+
+    auto cuda_begin_time = std::chrono::high_resolution_clock::now();
+    my::cuda::launch_kernel(
+        grid_size, block_size, stream, jamcrc_results, index_results, array_length, min_range, max_range);
+    cudaStreamSynchronize(stream);
+    auto cuda_end_time = std::chrono::high_resolution_clock::now();
+
+    std::cout << "CUDA Time: "
+              << std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count()
+              << " sec" << std::endl;  // Display time
+
+    std::cout << "This program execute: " << std::fixed
+              << (static_cast<double>(this->max_range - this->min_range)
+                  / std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count())
+            / 1000000000
+              << " GOps/sec with CUDA" << std::endl;
+
+    for (int i = 0; i < array_length; ++i) {
+      if (jamcrc_results[i] != index_results[i]) {
+        std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
+      }
+    }
+
+    cudaFree(jamcrc_results);
+    cudaFree(index_results);
+
+    cudaStreamDestroy(stream);
+    cudaStreamDestroy(st_high);
+    cudaStreamDestroy(st_low);
+#endif
   } else {
-    thread_pool pool(num_thread);
-    pool.parallelize_loop(min_range,
-                          max_range,
-                          [&](const std::uint64_t& min_range, const std::uint64_t& max_range)
-                          {
-                            for (std::uint64_t i = min_range; i <= max_range; i++) {
-                              runner(i);
-                            }
-                          });
+    std::cout << "Unknown calculation mode" << std::endl;
   }
+
   this->end_time = std::chrono::high_resolution_clock::now();
 
   std::sort(this->results.begin(), this->results.end());  // Sort results
@@ -93,7 +193,7 @@ void GTA_SA::run()
     std::cout << std::setw(display_val + 3) << std::get<0>(result) << std::setw(display_val) << std::get<1>(result)
               << std::setw(display_val) << "0x" << std::hex << std::get<2>(result) << std::dec << std::endl;
   }
-  std::cout << "Time: "
+  std::cout << "CPU Time: "
             << std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count()
             << " sec" << std::endl;  // Display time
 
@@ -101,85 +201,7 @@ void GTA_SA::run()
             << (static_cast<double>(this->max_range - this->min_range)
                 / std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count())
           / 1000000
-            << " MOps/sec" << std::endl;  // Display perf
-
-#if defined(BUILD_WITH_CUDA)
-  // int device = -1;
-  // cudaGetDevice(&device);
-
-  const uint32_t cuda_device = 0;
-
-  if (cudaSetDevice(cuda_device) != cudaSuccess) {
-    std::cout << "Error on cudaSetDevice" << std::endl;
-  }
-
-  int priority_high, priority_low;
-  cudaDeviceGetStreamPriorityRange(&priority_low, &priority_high);
-  cudaStream_t st_high, st_low;
-  cudaStreamCreateWithPriority(&st_high, cudaStreamNonBlocking, priority_high);
-  cudaStreamCreateWithPriority(&st_low, cudaStreamNonBlocking, priority_low);
-  cudaStream_t stream;
-  // cudaStreamAttachMemAsync(stream1, &x);
-  cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
-
-  cudaDeviceSetLimit(cudaLimitMallocHeapSize, 512 * 1024 * 1024);
-
-  auto block_size = 1024;
-  auto array_length = 32;
-  auto jamcrc_results_size = array_length * sizeof(uint32_t);
-  auto index_results_size = array_length * sizeof(uint64_t);
-
-  uint32_t* jamcrc_results;
-  uint64_t* index_results;
-
-  cudaMallocManaged(&jamcrc_results, jamcrc_results_size, cudaMemAttachGlobal);
-  cudaMallocManaged(&index_results, index_results_size, cudaMemAttachGlobal);
-
-  cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, cuda_device, stream);
-  cudaMemPrefetchAsync(index_results, index_results_size, cuda_device, stream);
-
-  for (int i = 0; i < array_length; ++i) {
-    jamcrc_results[i] = 0;
-    index_results[i] = 0;
-  }
-
-  size_t grid_size = (int)ceil((float)(max_range - min_range) / block_size);
-
-  // std::cout << "Grid size: " << grid_size << std::endl;
-  // std::cout << "Block size: " << block_size << std::endl;
-
-  cudaStreamSynchronize(stream);
-
-  auto cuda_begin_time = std::chrono::high_resolution_clock::now();
-  my::cuda::launch_kernel(
-      grid_size, block_size, stream, jamcrc_results, index_results, array_length, min_range, max_range);
-  cudaStreamSynchronize(stream);
-  auto cuda_end_time = std::chrono::high_resolution_clock::now();
-
-  std::cout << "CUDA Time: "
-            << std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count()
-            << " sec" << std::endl;  // Display time
-
-  std::cout << "This program execute: " << std::fixed
-            << (static_cast<double>(this->max_range - this->min_range)
-                / std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count())
-          / 1000000000
-            << " GOps/sec with CUDA" << std::endl;
-
-  for (int i = 0; i < array_length; ++i) {
-    if (jamcrc_results[i] != index_results[i]) {
-      std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
-    }
-  }
-
-  cudaFree(jamcrc_results);
-  cudaFree(index_results);
-
-  cudaStreamDestroy(stream);
-  cudaStreamDestroy(st_high);
-  cudaStreamDestroy(st_low);
-
-#endif
+            << " MOps/sec with CPU" << std::endl;  // Display perf
 }
 
 void GTA_SA::runner(const std::uint64_t& i)

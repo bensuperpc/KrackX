@@ -127,12 +127,12 @@ public:
   uint64_t num_thread = max_thread_support();
 
   uint64_t min_range = 0;  // Alphabetic sequence range min
-  uint64_t max_range = 0;
+  uint64_t max_range = 600000000;
 
 #if defined(_OPENMP)
-  bool use_openmp = true;  // Use openmp instead of std::thread
+  uint64_t calc_mode = 1;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA
 #else
-  bool use_openmp = false;  // Use std::thread instead of openmp
+  uint64_t calc_mode = 0;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA
 #endif
 
   std::chrono::high_resolution_clock::time_point begin_time = std::chrono::high_resolution_clock::now();

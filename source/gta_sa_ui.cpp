@@ -44,14 +44,14 @@ void GTA_SA_UI::setButtonValue(QString value)
   emit buttonValueChanged(value);
 }
 
-void GTA_SA_UI::set_use_openmp(bool value)
+void GTA_SA_UI::set_calc_mode(uint64_t value)
 {
   std::cout << __FUNCTION_NAME__ << ": " << value << std::endl;
-  if (value == _use_openmp)
+  if (value == _calc_mode)
     return;
-  _use_openmp = value;
-  // gta_sa.use_openmp = value;
-  emit use_openmp_changed(value);
+  _calc_mode = value;
+  // gta_sa.calc_mode = value;
+  emit calc_mode_changed(value);
 }
 
 void GTA_SA_UI::runOpThread()

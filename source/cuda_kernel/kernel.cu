@@ -34,17 +34,13 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
 
     // Allocate memory for the array
     unsigned char array[29] = {0};
-    if (array == NULL) {
-      return;
-    }
 
     uint64_t size = 0;
     // Generate the array
     find_string_inv_kernel(array, id, size);
 
     uint32_t result = 0;
-    // printf("array: %s\n", array);
-    // printf("size %d\n", size);
+
     // Calculate the CRC
     jamcrc_kernel(array, result, size, 0);
 
@@ -58,14 +54,11 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
 
     if (!found) {
       return;
-    } else {
-      // printf("FOUND!\n");
     }
-
 
     //__syncthreads();
 
-    for (uint64_t i = 0; i < array_size; i++) { 
+    for (uint64_t i = 0; i < array_size; i++) {
       if (crc_result[i] == 0 && index_result[i] == 0) {
         crc_result[i] = result;
         index_result[i] = id;
@@ -84,7 +77,6 @@ __host__ void my::cuda::launch_kernel(size_t gridSize,
                                       uint64_t a,
                                       uint64_t b)
 {
-  // printf("array_size %d, a %d, b %d\n", array_size, a, b);
   runner_kernel<<<gridSize, blockSize, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
