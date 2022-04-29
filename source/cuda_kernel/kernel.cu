@@ -110,44 +110,24 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
   uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
   if (id < b && id >= a) {
     // printf("blockIdx %d, blockDim %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
-    crc_result[1] = 4;
-    index_result[1] = 8;
-
-    int32_t array_size = 29;
-
-    /*
-    if (id > 26) {
-      array_size = ceil(logf(id) / logf(26));
-    } else {
-      array_size = 1;
-    }*/
-
-    // printf("array_size %d\n", array_size);
 
     // Allocate memory for the array
-    unsigned char* array = (unsigned char*)malloc(array_size * sizeof(unsigned char));
+    unsigned char array[29] = {0};
     if (array == NULL) {
       return;
     }
+
+    uint64_t size = 0;
     // Generate the array
-    find_string_inv_kernel(array, id);
+    find_string_inv_kernel(array, id, size);
 
     uint32_t* result = (uint32_t*)malloc(sizeof(uint32_t));
     if (result == NULL) {
       return;
     }
-    *result = 0;
     // printf("array: %s\n", array);
-
-    // Calculate the CRC
-
-    int32_t size = 0;
-    for (; size < array_size; size++) {
-      if (array[size] == '\0') {
-        break;
-      }
-    }
     // printf("size %d\n", size);
+    // Calculate the CRC
     jamcrc_kernel(array, result, size, 0);
     // printf("result: %u\n", *result);
 
@@ -171,8 +151,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
     crc_result[0] = *result;
     index_result[0] = id;
 
-    free(array);
-    free(crc_result);
+    // free(crc_result);
   }
 }
 
@@ -189,7 +168,7 @@ __host__ void my::cuda::launch_kernel(size_t gridSize,
   runner_kernel<<<gridSize, blockSize, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
-__device__ void find_string_inv_kernel(uchar* array, uint64_t n)
+__device__ void find_string_inv_kernel(uchar* array, uint64_t n, uint64_t &terminator_index)
 {
   const uint32_t string_size_alphabet = 27;
 
@@ -198,6 +177,7 @@ __device__ void find_string_inv_kernel(uchar* array, uint64_t n)
   if (n < 26) {
     array[0] = alpha[n];
     array[1] = '\0';
+    terminator_index = 1;
     return;
   }
   // If n > 27
@@ -208,6 +188,7 @@ __device__ void find_string_inv_kernel(uchar* array, uint64_t n)
     ++i;
   }
   array[i] = '\0';
+  terminator_index = i;
 }
 
 __device__ void jamcrc_kernel(const void* data, uint32_t* result, uint64_t length, uint32_t previousCrc32)
