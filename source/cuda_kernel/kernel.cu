@@ -29,7 +29,7 @@
 __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
   uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
-  if (id < b && id >= a) {
+  if (id <= b && id >= a) {
     // printf("blockIdx %d, blockDim %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
 
     // Allocate memory for the array
@@ -47,29 +47,31 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
     // printf("size %d\n", size);
     // Calculate the CRC
     jamcrc_kernel(array, result, size, 0);
-    // printf("result: %u\n", *result);
 
     bool found = false;
     for (uint32_t i = 0; i < 87; i++) {
-      if (result == crc32_lookup[i]) {
+      if (result == cheat_list[i]) {
         found = true;
         break;
       }
     }
 
     if (!found) {
-      // printf("NOT FOUND!\n");
       return;
     } else {
       // printf("FOUND!\n");
     }
 
+
     //__syncthreads();
 
-    crc_result[0] = result;
-    index_result[0] = id;
-
-    // free(crc_result);
+    for (uint64_t i = 0; i < array_size; i++) { 
+      if (crc_result[i] == 0 && index_result[i] == 0) {
+        crc_result[i] = result;
+        index_result[i] = id;
+        break;
+      }
+    }
   }
 }
 

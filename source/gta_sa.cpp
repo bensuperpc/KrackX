@@ -167,7 +167,9 @@ void GTA_SA::run()
             << " GOps/sec with CUDA" << std::endl;
 
   for (int i = 0; i < array_length; ++i) {
-    std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
+    if (jamcrc_results[i] != index_results[i]) {
+      std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
+    }
   }
 
   cudaFree(jamcrc_results);
