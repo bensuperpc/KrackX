@@ -148,9 +148,12 @@ void GTA_SA::run()
   // std::cout << "Grid size: " << grid_size << std::endl;
   // std::cout << "Block size: " << block_size << std::endl;
 
+  cudaStreamSynchronize(stream);
+
   auto cuda_begin_time = std::chrono::high_resolution_clock::now();
   my::cuda::launch_kernel(
       grid_size, block_size, stream, jamcrc_results, index_results, array_length, min_range, max_range);
+  cudaStreamSynchronize(stream);
   auto cuda_end_time = std::chrono::high_resolution_clock::now();
 
   std::cout << "CUDA Time: "
@@ -162,8 +165,6 @@ void GTA_SA::run()
                 / std::chrono::duration_cast<std::chrono::duration<double>>(cuda_end_time - cuda_begin_time).count())
           / 1000000000
             << " GOps/sec with CUDA" << std::endl;
-
-  cudaStreamSynchronize(stream);
 
   for (int i = 0; i < array_length; ++i) {
     std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;

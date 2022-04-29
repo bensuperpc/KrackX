@@ -1,4 +1,3 @@
-
 //////////////////////////////////////////////////////////////
 //   ____                                                   //
 //  | __ )  ___ _ __  ___ _   _ _ __   ___ _ __ _ __   ___  //
@@ -13,34 +12,19 @@
 //  Modified: 29, April, 2022                               //
 //  file: kernel.h                                          //
 //  Crypto                                                  //
-//  Source:
-//  https://stackoverflow.com/questions/13553015/cuda-c-linker-error-undefined-reference
-//  //
-//          https://www.olcf.ornl.gov/tutorials/cuda-vector-addition/ //
-//          https://gist.github.com/AndiH/2e2f6cd9bccd64ec73c3b1d2d18284e0
-//          https://stackoverflow.com/a/14038590/10152334
-//          https://www.daniweb.com/programming/software-development/threads/292133/convert-1d-array-to-2d-array
-//          https://www.daniweb.com/programming/software-development/threads/471477/equivalent-iteration-of-2d-and-3d-array-flattened-as-1d-array
-//          http://coliru.stacked-crooked.com/a/7c570672c13ca3bf
-//          https://math.stackexchange.com/questions/63074/is-there-a-3-dimensional-matrix-by-matrix-product
+//  Source:                                                 //
 //  CPU: ALL                                                //
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#ifndef _CUDA_KERNEL_HPP_
-#define _CUDA_KERNEL_HPP_
-
-#include <iostream>
+#ifndef _CUDA_KERNEL_H_
+#define _CUDA_KERNEL_H_
 
 #include <cuda.h>
 #include <cuda_runtime.h>
 
 #include "stdio.h"
 
-namespace my
-{
-namespace cuda
-{
 void launch_kernel(size_t gridSize,
                    size_t blockSize,
                    cudaStream_t& stream,
@@ -49,8 +33,5 @@ void launch_kernel(size_t gridSize,
                    uint64_t array_size,
                    uint64_t a,
                    uint64_t b);
-
-}  // namespace cuda
-}  // namespace my
 
 #endif
