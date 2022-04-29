@@ -105,34 +105,51 @@ __host__ void my::cuda::matrixMultiplySimple(
   matrixMultiplySimple_kernel<<<gridSize, blockSize, 0, stream>>>(a, b, c, n);
 }
 
-
 __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
-  uint64_t id = blockIdx.x * blockDim.x + threadIdx.x;
+  uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
+  if (id < b && id >= a) {
+    // printf("blockIdx %d, blockDim %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
+    crc_result[1] = 4;
+    index_result[1] = 8;
 
-    //  crc_result[1] = 4;
-    // index_result[1] = 5;
+    int32_t array_size = 29;
 
-  if (id < b) {
+    /*
+    if (id > 26) {
+      array_size = ceil(logf(id) / logf(26));
+    } else {
+      array_size = 1;
+    }*/
+
+    // printf("array_size %d\n", array_size);
+
     // Allocate memory for the array
-    uchar* array = (uchar*)malloc(29 * sizeof(uchar));
+    unsigned char* array = (unsigned char*)malloc(array_size * sizeof(unsigned char));
     if (array == NULL) {
       return;
     }
-
     // Generate the array
     find_string_inv_kernel(array, id);
 
-
-    uint32_t* result = (uint32_t*)malloc(29 * sizeof(uint32_t));
-    if (array == NULL) {
+    uint32_t* result = (uint32_t*)malloc(sizeof(uint32_t));
+    if (result == NULL) {
       return;
     }
-
     *result = 0;
+    // printf("array: %s\n", array);
 
     // Calculate the CRC
-    jamcrc_kernel(array, result, 29, 0);
+
+    int32_t size = 0;
+    for (; size < array_size; size++) {
+      if (array[size] == '\0') {
+        break;
+      }
+    }
+    // printf("size %d\n", size);
+    jamcrc_kernel(array, result, size, 0);
+    // printf("result: %u\n", *result);
 
     bool found = false;
     for (uint32_t i = 0; i < 87; i++) {
@@ -143,10 +160,13 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
     }
 
     if (!found) {
+      // printf("NOT FOUND!\n");
       return;
+    } else {
+      printf("FOUND!\n");
     }
 
-    __syncthreads();
+    //__syncthreads();
 
     crc_result[0] = *result;
     index_result[0] = id;
@@ -156,18 +176,24 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
   }
 }
 
-__host__ void my::cuda::launch_kernel(
-    size_t gridSize, size_t blockSize, cudaStream_t& stream, uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
+__host__ void my::cuda::launch_kernel(size_t gridSize,
+                                      size_t blockSize,
+                                      cudaStream_t& stream,
+                                      uint32_t* crc_result,
+                                      uint64_t* index_result,
+                                      uint64_t array_size,
+                                      uint64_t a,
+                                      uint64_t b)
 {
+  printf("array_size %d, a %d, b %d\n", array_size, a, b);
   runner_kernel<<<gridSize, blockSize, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
-
 
 __device__ void find_string_inv_kernel(uchar* array, uint64_t n)
 {
   const uint32_t string_size_alphabet = 27;
-  
-  const uchar alpha[string_size_alphabet] = {'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z'};
+
+  const uchar alpha[string_size_alphabet] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
   // If n < 27
   if (n < 26) {
     array[0] = alpha[n];
@@ -181,13 +207,13 @@ __device__ void find_string_inv_kernel(uchar* array, uint64_t n)
     n /= 26;
     ++i;
   }
-  array[1] = i;
+  array[i] = '\0';
 }
 
 __device__ void jamcrc_kernel(const void* data, uint32_t* result, uint64_t length, uint32_t previousCrc32)
 {
   uint32_t crc = ~previousCrc32;
-  unsigned char* current = (unsigned char*) data;
+  unsigned char* current = (unsigned char*)data;
   while (length--)
     crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
   *result = crc;

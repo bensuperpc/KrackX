@@ -29,13 +29,13 @@ Page {
                     ColumnLayout {
                         RowLayout {
                             Image {
-                                source: "image: //colors/red"
+                                source: "image://colors/red"
                             }
                             Image {
-                                source: "image: //colors/white"
+                                source: "image://colors/white"
                             }
                             Image {
-                                source: "image: //colors/blue"
+                                source: "image://colors/blue"
                             }
                         }
                     }
