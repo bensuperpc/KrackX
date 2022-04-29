@@ -12,10 +12,10 @@ void GTA_SA::run()
 {
 #if !defined(_OPENMP)
   if (this->calc_mode == 1) {
-    std::cout << "OpenMP is not enabled, please compile with -fopenmp flag" << std::endl;
-    "or select another calculation mode (CUDA or std::thread), fall back to std::thread."
-    "Doesn't impact performance most of the time."
-        << std::endl;
+    std::cout << "OpenMP is not enabled, please compile with -fopenmp flag"
+                 "or select another calculation mode (CUDA or std::thread), fall back to std::thread."
+                 "Doesn't impact performance most of the time."
+              << std::endl;
     calc_mode = 1;
   }
 #endif

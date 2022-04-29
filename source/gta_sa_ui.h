@@ -93,7 +93,7 @@ public slots:
   void setNbrThreadValue(uint64_t value);
   void set_cuda_block_size(uint64_t value);
 
-  void set_calc_mode(u_int64_t value);
+  void set_calc_mode(uint64_t value);
 
   void setButtonValue(QString value);
 
