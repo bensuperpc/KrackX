@@ -36,7 +36,6 @@ Page {
                 }
             }
         }
-
         Row {
             spacing: 20
             Button {

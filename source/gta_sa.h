@@ -47,10 +47,10 @@
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #  if __has_include("cuda.h")
 #    include <cuda.h>
-#ifndef BUILD_WITH_CUDA
-#define BUILD_WITH_CUDA
-#    define BUILD_WITH_CUDA
-#endif
+#    ifndef BUILD_WITH_CUDA
+#      define BUILD_WITH_CUDA
+#      define BUILD_WITH_CUDA
+#    endif
 #  else
 #    if _MSC_VER && !__INTEL_COMPILER
 #      pragma message("Can t find cuda.h, disable CUDA module")

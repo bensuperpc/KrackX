@@ -20,42 +20,43 @@ Page {
             rows: 5
 
             component ProportionalRect: Rectangle {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.preferredWidth: Layout.columnSpan
-            Layout.preferredHeight: Layout.rowSpan
-        }
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredWidth: Layout.columnSpan
+                Layout.preferredHeight: Layout.rowSpan
+            }
 
-        ProportionalRect {
-            Layout.columnSpan: 4
-            Layout.rowSpan: 2
+            ProportionalRect {
+                Layout.columnSpan: 4
+                Layout.rowSpan: 2
 
-            color: "red"
-        }
+                color: "red"
+            }
 
-        ProportionalRect {
-            Layout.columnSpan: 1
-            Layout.rowSpan: 2
+            ProportionalRect {
+                Layout.columnSpan: 1
+                Layout.rowSpan: 2
 
-            color: "green"
-        }
+                color: "green"
+            }
 
-        ProportionalRect {
-            Layout.columnSpan: 5
-            Layout.rowSpan: 3
+            ProportionalRect {
+                Layout.columnSpan: 5
+                Layout.rowSpan: 3
 
-            color: "blue"
+                color: "blue"
 
-            /*
+
+                /*
             WebEngineView {
                 anchors.fill: parent
                 url: "https: //www.qt.io"
             }*/
+            }
         }
-    }
 
 
-    /*
+        /*
     ColumnLayout {
         // unique child
         id: columnLayout
@@ -80,9 +81,9 @@ Page {
     }
 }
 */
-ScrollIndicator.vertical: ScrollIndicator {}
-ScrollIndicator.horizontal: ScrollIndicator {}
-ScrollBar.vertical: ScrollBar {}
-ScrollBar.horizontal: ScrollBar {}
-}
+        ScrollIndicator.vertical: ScrollIndicator {}
+        ScrollIndicator.horizontal: ScrollIndicator {}
+        ScrollBar.vertical: ScrollBar {}
+        ScrollBar.horizontal: ScrollBar {}
+    }
 }

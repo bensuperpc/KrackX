@@ -34,3 +34,4 @@ https://stackoverflow.com/questions/55787138/update-qml-tableview-after-button-c
 https://stackoverflow.com/questions/34027727/how-can-i-create-a-qml-gridlayout-with-items-of-proportionate-sizes
 https://stackoverflow.com/questions/30604751/how-to-design-a-multi-level-fluid-layout-in-qml
 https://stackoverflow.com/questions/49745226/create-a-responsive-ui-like-telegram-using-qt-quick-and-qml
+https://doc.qt.io/qt-6/qt-add-qml-module.html

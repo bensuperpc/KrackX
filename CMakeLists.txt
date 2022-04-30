@@ -74,7 +74,7 @@ if (CUDA_FOUND)
   target_include_directories(krackx_lib PUBLIC ${CUDA_INCLUDE_DIRS})
   target_link_libraries(krackx_lib PUBLIC ${CUDA_LIBRARIES})
 
-  target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/kernel")
+  target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda_kernel")
 endif()
 
 target_include_directories(krackx_lib PUBLIC "${thread-pool_SOURCE_DIR}")
@@ -102,9 +102,15 @@ add_executable(krackx_exe
     source/compilation.hpp source/compilation.cpp
 )
 
+
+#set_source_files_properties(source/qml/main.qml  PROPERTIES
+#    QT_RESOURCE_ALIAS main.qml
+#)
+
 qt_add_qml_module(krackx_exe
     URI qml_files
     VERSION 1.0
+    RESOURCE_PREFIX /bensuperpc.com
     QML_FILES 
     source/qml/main.qml 
     source/qml/AboutPage.qml 
@@ -114,6 +120,8 @@ qt_add_qml_module(krackx_exe
     source/qml/counter.qml 
     source/qml/image_test.qml 
     source/qml/GTA_SA.qml
+    RESOURCES
+    img/Profile_400x400.jpg
 )
 
 add_executable(krackx::exe ALIAS krackx_exe)
@@ -144,6 +152,10 @@ target_link_libraries(krackx_exe PRIVATE Qt6::Quick Qt6::Core Qt6::Qml Qt6::Char
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(krackx_exe PRIVATE OpenMP::OpenMP_CXX)
 endif()
+
+# ---- Install rules ----
+
+# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resource/Profile_400x400.jpg ${CMAKE_CURRENT_BINARY_DIR}/resource/Profile_400x400.jpg COPYONLY)
 
 # ---- Install rules ----
 

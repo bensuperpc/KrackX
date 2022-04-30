@@ -56,10 +56,10 @@ public:
 int main(int argc, char* argv[])
 {
   /*
-QCoreApplication::setOrganizationName("QtExamples");
-QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-QtWebEngineQuick::initialize();
-*/
+  QCoreApplication::setOrganizationName("QtExamples");
+  QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+  QtWebEngineQuick::initialize();
+  */
 
 #if ((QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)) && (QT_VERSION < QT_VERSION_CHECK(6, 0, 0)))
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -146,7 +146,7 @@ QtWebEngineQuick::initialize();
 
   engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
 
-  const QUrl url(u"qrc:/qml_files/source/qml/main.qml"_qs);
+  const QUrl url(u"qrc:/bensuperpc.com/qml_files/source/qml/main.qml"_qs);
   QObject::connect(
       &engine,
       &QQmlApplicationEngine::objectCreated,

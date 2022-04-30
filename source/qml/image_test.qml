@@ -42,7 +42,6 @@ Page {
                 }
             }
 
-
             RowLayout {
                 Layout.alignment: Qt.AlignHCenter
                 GroupBox {
@@ -67,7 +66,6 @@ Page {
                 }
             }
         }
-
         ScrollIndicator.vertical: ScrollIndicator {}
         ScrollIndicator.horizontal: ScrollIndicator {}
         ScrollBar.vertical: ScrollBar {}

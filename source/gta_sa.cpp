@@ -111,7 +111,7 @@ void GTA_SA::run()
     cudaStream_t stream;
     cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
-    cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
+    // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
     // Calculate length of the array with max_range and min_range
     auto array_length = (this->max_range - this->min_range) / 20000000 + 1;
@@ -227,7 +227,6 @@ void GTA_SA::runner(const std::uint64_t& i)
      || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
 
   const auto&& it = std::find(std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
-
 #else
   const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
 #endif
