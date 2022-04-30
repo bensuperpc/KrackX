@@ -114,7 +114,7 @@ void GTA_SA::run()
     cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
     // Calculate length of the array with max_range and min_range
-    auto array_length = (this->max_range - this->min_range) / 32000000 + 1;
+    auto array_length = (this->max_range - this->min_range) / 20000000 + 1;
     auto jamcrc_results_size = array_length * sizeof(uint32_t);
     auto index_results_size = array_length * sizeof(uint64_t);
 

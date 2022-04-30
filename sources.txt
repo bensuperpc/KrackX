@@ -31,3 +31,6 @@ https://raymii.org/s/snippets/Cpp_QT_QML_Signals_and_Slots.html
 https://stackoverflow.com/a/55238555/10152334
 
 https://stackoverflow.com/questions/55787138/update-qml-tableview-after-button-click-via-c
+https://stackoverflow.com/questions/34027727/how-can-i-create-a-qml-gridlayout-with-items-of-proportionate-sizes
+https://stackoverflow.com/questions/30604751/how-to-design-a-multi-level-fluid-layout-in-qml
+https://stackoverflow.com/questions/49745226/create-a-responsive-ui-like-telegram-using-qt-quick-and-qml

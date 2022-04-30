@@ -8,143 +8,158 @@ Page {
     title: qsTr("About Page")
     id: page
 
-    Flickable {
+    GridLayout {
+        id: main_grid
         anchors.fill: parent
-        contentHeight: columnLayout.implicitHeight
-        contentWidth: columnLayout.implicitWidth
-        flickableDirection: Flickable.AutoFlickIfNeeded
+        columns: 10
+        rows: 10
 
-        ColumnLayout {
-            // unique child
-            id: columnLayout
-            spacing: 10
-            width: page.width // ensure correct width
-            height: children.height // ensure correct height
+        component ProportionalRect: Rectangle {
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.preferredWidth: Layout.columnSpan
+        Layout.preferredHeight: Layout.rowSpan
+        color: "transparent"
+    }
 
-            GroupBox {
-                title: qsTr("About this app")
-                Layout.alignment: Qt.AlignHCenter
-                Column {
-                    Text {
-                        text: qsTr("Created by: <a href='https://github.com/Bensuperpc'>Bensuperpc</a>")
+    ProportionalRect {
+        Layout.columnSpan: 5
+        Layout.rowSpan: 5
+
+        GroupBox {
+            title: qsTr("App and Compiler")
+            anchors.fill: parent
+            Column {
+                Text {
+                    text: qsTr("Compiler: " + about_compilation.return_Compiler_name(
+                    ))
+                    color: "white"
+                    font.bold: true
+                    fontSizeMode: Text.Fit;
+                    minimumPixelSize: 5;
+                    font.pixelSize: 12
+                }
+                Text {
+                    text: qsTr("Compiler vers: " + about_compilation.return_Compiler_version(
+                    ))
+                    color: "white"
+                    font.bold: true
+                    fontSizeMode: Text.Fit;
+                    minimumPixelSize: 5;
+                    font.pixelSize: 12
+                }
+                Text {
+                    text: qsTr("C++ version: " + about_compilation.return_Cplusplus_used(
+                    ))
+                    color: "white"
+                    font.bold: true
+                    fontSizeMode: Text.Fit;
+                    minimumPixelSize: 5;
+                    font.pixelSize: 12
+                }
+                Text {
+                    text: qsTr(
+                        "Build: " + about_compilation.return_BuildDate())
                         color: "white"
                         font.bold: true
-                        font.pointSize: 10
-                        wrapMode: Text.WordWrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-                        }
-                    }
-                    Text {
-                        text: "Source: <a href='https://github.com/Bensuperpc/KrackX'>Click here</a>"
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                        wrapMode: Text.WordWrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-                        }
+                        fontSizeMode: Text.Fit;
+                        minimumPixelSize: 5;
+                        font.pixelSize: 12
                     }
                 }
             }
-
-            GroupBox {
-                title: qsTr("App and Compiler")
-                Layout.alignment: Qt.AlignHCenter
-                Column {
-                    Text {
-                        text: qsTr("Compiler: " + about_compilation.return_Compiler_name(
-                                       ))
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                    Text {
-                        text: qsTr("Compiler vers: " + about_compilation.return_Compiler_version(
-                                       ))
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                    Text {
-                        text: qsTr("C++ version: " + about_compilation.return_Cplusplus_used(
-                                       ))
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                    Text {
-                        text: qsTr(
-                                  "Build date: " + about_compilation.return_BuildDate())
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                }
-            }
+        }
+        ProportionalRect {
+            Layout.columnSpan: 5
+            Layout.rowSpan: 5
             GroupBox {
                 title: qsTr("Libs")
-                Layout.alignment: Qt.AlignHCenter
+                anchors.fill: parent
                 Column {
                     Text {
                         text: qsTr("Qt version: " + qtversion)
                         color: "white"
                         font.bold: true
-                        font.pointSize: 10
+                        fontSizeMode: Text.Fit;
+                        minimumPixelSize: 5;
+                        font.pixelSize: 12
                     }
 
                     Text {
                         text: qsTr(
-                                  "OpenMP: " + about_compilation.openmpIsEnable(
-                                      ))
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                    Text {
-                        text: qsTr("Nvidia CUDA: " + about_compilation.cudaIsEnable(
-                                       ))
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                    Text {
-                        text: qsTr(
-                                  "OpenCL: " + about_compilation.openclIsEnable(
-                                      ))
-                        color: "white"
-                        font.bold: true
-                        font.pointSize: 10
-                    }
-                }
-            }
-
-
-            /*
-            Image {
-                fillMode: Image.PreserveAspectFit
-                source: "qrc:images/qt-logo@4x.png"
-                MouseArea {
-                    onClicked: {
-
+                            "OpenMP: " + about_compilation.openmpIsEnable(
+                            ))
+                            color: "white"
+                            font.bold: true
+                            fontSizeMode: Text.Fit;
+                            minimumPixelSize: 5;
+                            font.pixelSize: 12
+                        }
+                        Text {
+                            text: qsTr("Nvidia CUDA: " + about_compilation.cudaIsEnable(
+                            ))
+                            color: "white"
+                            font.bold: true
+                            fontSizeMode: Text.Fit;
+                            minimumPixelSize: 5;
+                            font.pixelSize: 12
+                        }
+                        Text {
+                            text: qsTr(
+                                "OpenCL: " + about_compilation.openclIsEnable(
+                                ))
+                                color: "white"
+                                font.bold: true
+                                fontSizeMode: Text.Fit;
+                                minimumPixelSize: 5;
+                                font.pixelSize: 12
+                            }
+                        }
                     }
                 }
+                ProportionalRect {
+                    Layout.columnSpan: 10
+                    Layout.rowSpan: 5
+                    GroupBox {
+                        title: qsTr("About this app")
+                        // Layout.alignment: Qt.AlignHCenter
+                        anchors.fill: parent
+                        Column {
+                            Text {
+                                text: qsTr("Created by: <a href='https://github.com/Bensuperpc'>Bensuperpc</a>")
+                                color: "white"
+                                font.bold: true
+                                fontSizeMode: Text.Fit;
+                                minimumPixelSize: 5;
+                                font.pixelSize: 12
+                                wrapMode: Text.WordWrap
+                                onLinkActivated: Qt.openUrlExternally(link)
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    acceptedButtons: Qt.NoButton
+                                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor: Qt.ArrowCursor
+                                }
+                            }
+                            Text {
+                                text: "Source: <a href='https://github.com/Bensuperpc/KrackX'>Click here</a>"
+                                color: "white"
+                                font.bold: true
+                                fontSizeMode: Text.Fit;
+                                minimumPixelSize: 5;
+                                font.pixelSize: 12
+                                wrapMode: Text.WordWrap
+                                onLinkActivated: Qt.openUrlExternally(link)
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    acceptedButtons: Qt.NoButton
+                                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor: Qt.ArrowCursor
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
-            */
-            //https://stackoverflow.com/questions/23667088/qtquick-dynamic-images-and-c/
         }
-
-        ScrollIndicator.vertical: ScrollIndicator {}
-        ScrollIndicator.horizontal: ScrollIndicator {}
-        ScrollBar.vertical: ScrollBar {}
-        ScrollBar.horizontal: ScrollBar {}
-    }
-}
