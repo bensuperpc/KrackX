@@ -147,16 +147,6 @@ void GTA_SA::run()
     dim3 grid(grid_size, 1, 1);
 
     cudaStreamSynchronize(stream);
-    /*
-    my::cuda::launch_kernel(grid_size,
-                            cuda_block_size,
-                            stream,
-                            jamcrc_results,
-                            index_results,
-                            array_length,
-                            this->min_range,
-                            this->max_range);
-                            */
     my::cuda::launch_kernel(
         grid, threads, stream, jamcrc_results, index_results, array_length, this->min_range, this->max_range);
     cudaStreamSynchronize(stream);
