@@ -41,8 +41,17 @@ namespace my
 {
 namespace cuda
 {
-__host__ void launch_kernel(size_t gridSize,
-                            size_t blockSize,
+__host__ void launch_kernel(size_t grid,
+                            size_t threads,
+                            cudaStream_t& stream,
+                            uint32_t* crc_result,
+                            uint64_t* index_result,
+                            uint64_t array_size,
+                            uint64_t a,
+                            uint64_t b);
+
+__host__ void launch_kernel(dim3& grid,
+                            dim3& threads,
                             cudaStream_t& stream,
                             uint32_t* crc_result,
                             uint64_t* index_result,

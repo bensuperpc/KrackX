@@ -23,7 +23,7 @@
 #define _KERNEL_CUHPP_
 
 #include <cuda.h>
-#include <cuda_kernel/kernel.hpp>
+#include <cuda/kernel.hpp>
 #include <cuda_runtime.h>
 
 /**

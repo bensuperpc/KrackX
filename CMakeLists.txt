@@ -51,9 +51,9 @@ if (CUDA_FOUND)
       krackx_lib OBJECT
       source/gta_sa.h 
       source/gta_sa.cpp
-      source/cuda_kernel/kernel.cu
-      source/cuda_kernel/kernel.cuhpp
-      source/cuda_kernel/kernel.hpp
+      source/cuda/kernel/kernel.cu
+      source/cuda/kernel/kernel.cuhpp
+      source/cuda/kernel.hpp
   )
 else()
   add_library(

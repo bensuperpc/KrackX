@@ -73,7 +73,7 @@
 #endif
 
 #if defined(BUILD_WITH_CUDA)
-#  include "cuda_kernel/kernel.hpp"
+#  include "cuda/kernel.hpp"
 #endif
 
 class GTA_SA

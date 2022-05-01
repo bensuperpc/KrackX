@@ -23,11 +23,13 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#include "cuda_kernel/kernel.cuhpp"
+#include "cuda/kernel/kernel.cuhpp"
 
 __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
-  uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
+  const uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
+  // printf("blockIdx %d, blockDimx %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
+
   if (id <= b && id >= a) {
     // printf("blockIdx %d, blockDim %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
 
@@ -67,8 +69,8 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
   }
 }
 
-__host__ void my::cuda::launch_kernel(size_t gridSize,
-                                      size_t blockSize,
+__host__ void my::cuda::launch_kernel(size_t grid,
+                                      size_t threads,
                                       cudaStream_t& stream,
                                       uint32_t* crc_result,
                                       uint64_t* index_result,
@@ -76,7 +78,19 @@ __host__ void my::cuda::launch_kernel(size_t gridSize,
                                       uint64_t a,
                                       uint64_t b)
 {
-  runner_kernel<<<gridSize, blockSize, 0, stream>>>(crc_result, index_result, array_size, a, b);
+  runner_kernel<<<grid, threads, 0, stream>>>(crc_result, index_result, array_size, a, b);
+}
+
+__host__ void my::cuda::launch_kernel(dim3& grid,
+                                      dim3& threads,
+                                      cudaStream_t& stream,
+                                      uint32_t* crc_result,
+                                      uint64_t* index_result,
+                                      uint64_t array_size,
+                                      uint64_t a,
+                                      uint64_t b)
+{
+  runner_kernel<<<grid, threads, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
 __device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_t& terminator_index)

@@ -135,12 +135,19 @@ void GTA_SA::run()
       index_results[i] = 0;
     }
 
-    size_t grid_size = (int)ceil((float)(this->max_range - this->min_range) / this->cuda_block_size);
+    if ((this->max_range - this->min_range) < this->cuda_block_size) {
+      std::cout << "Number of calculations is less than cuda_block_size, running with std::thread" << std::endl;
+    }
 
-    // std::cout << "Grid size: " << grid_size << std::endl;
-    // std::cout << "Block size: " << cuda_block_size << std::endl;
+    size_t grid_size = (int)ceil((float)(this->max_range - this->min_range) / this->cuda_block_size);
+    std::cout << "CUDA Grid size: " << grid_size << std::endl;
+    std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
+
+    dim3 threads(cuda_block_size, 1, 1);
+    dim3 grid(grid_size, 1, 1);
 
     cudaStreamSynchronize(stream);
+    /*
     my::cuda::launch_kernel(grid_size,
                             cuda_block_size,
                             stream,
@@ -149,12 +156,13 @@ void GTA_SA::run()
                             array_length,
                             this->min_range,
                             this->max_range);
+                            */
+    my::cuda::launch_kernel(
+        grid, threads, stream, jamcrc_results, index_results, array_length, this->min_range, this->max_range);
     cudaStreamSynchronize(stream);
 
     for (int i = 0; i < array_length; ++i) {
       if (jamcrc_results[i] != index_results[i]) {
-        // std::cout << index_results[i] << " : " << jamcrc_results[i] << std::endl;
-
         std::array<char, 29> tmpCUDA = {0};
 
         GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);

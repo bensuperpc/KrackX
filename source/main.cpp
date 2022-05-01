@@ -98,6 +98,7 @@ int main(int argc, char* argv[])
   mapper->setYColumn(1);
 
   ImageProvider provider;
+  ColorImageProvider colorImageProvider;
 
   QTimer::singleShot(500,
                      [&provider]()
@@ -139,7 +140,7 @@ int main(int argc, char* argv[])
    * "MyCounter" */
   context->setContextProperty("MyCounter", &myCounter);
 
-  engine.addImageProvider(QLatin1String("colors"), new ColorImageProvider);
+  engine.addImageProvider(QLatin1String("colors"), &colorImageProvider);
 
   qmlRegisterType<LiveImage>("MyApp.Images", 1, 0, "LiveImage");
   engine.rootContext()->setContextProperty("LiveImageProvider", &provider);
