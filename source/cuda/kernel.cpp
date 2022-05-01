@@ -76,10 +76,6 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& _jamcrc_results,
     index_results[i] = 0;
   }
 
-  if ((max_range - min_range) < cuda_block_size) {
-    std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
-  }
-
   size_t grid_size = (int)ceil((float)(max_range - min_range) / cuda_block_size);
   // std::cout << "CUDA Grid size: " << grid_size << std::endl;
   // std::cout << "CUDA Block size: " << cuda_block_size << std::endl;

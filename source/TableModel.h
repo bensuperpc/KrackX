@@ -26,12 +26,8 @@ public:
   }
   void init()
   {
-    table.append({
-        "Iter. NÂ°",
-        "Code",
-        "JAMCRC value",
-        "GTA Code",
-    });
+    QVector<QString> vect = {"Iter. N°", "Code", "JAMCRC value", "GTA Code"};
+    this->addPerson(vect);
   }
 
   int rowCount(const QModelIndex& = QModelIndex()) const override
@@ -64,18 +60,6 @@ public:
     roles[TableDataRole] = "tabledata";
     roles[HeadingRole] = "heading";
     return roles;
-  }
-
-  Q_INVOKABLE void addPerson()
-  {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    table.append({
-        "Marc",
-        "Fonz",
-        "25",
-        "25",
-    });
-    endInsertRows();
   }
 
   Q_INVOKABLE void addPerson(const QVector<QString>& vect)

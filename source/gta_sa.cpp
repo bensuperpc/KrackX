@@ -92,6 +92,10 @@ void GTA_SA::run()
   } else if (calc_mode == 2) {
 #if defined(BUILD_WITH_CUDA)
 
+    if ((max_range - min_range) < cuda_block_size) {
+      std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
+    }
+
     std::vector<uint32_t> jamcrc_results;
     std::vector<uint64_t> index_results;
 

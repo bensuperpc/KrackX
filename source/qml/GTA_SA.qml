@@ -11,10 +11,13 @@ Page {
 
     Flickable {
         anchors.fill: parent
+        anchors.margins: 10
+        id: flickable
+
         contentHeight: columnLayout.implicitHeight
         contentWidth: columnLayout.implicitWidth
-
         flickableDirection: Flickable.AutoFlickIfNeeded
+
         ColumnLayout {
             id: columnLayout
             spacing: 10
@@ -163,19 +166,11 @@ Page {
                     title: qsTr("Result")
                     Layout.alignment: Qt.AlignHCenter
                     ColumnLayout {
-
-                        /*
-            Row {
-                Button {
-                    text: qsTr("Update List Model")
-                    onClicked: myModel.addPerson()
-                }
-            }*/
                         RowLayout {
                             Layout.alignment: Qt.AlignHCenter
                             TableView {
-                                width: 440
-                                height: 360
+                                width: 480
+                                height: 380
                                 columnSpacing: 1
                                 rowSpacing: 1
                                 clip: true
@@ -183,7 +178,7 @@ Page {
                                 ScrollIndicator.vertical: ScrollIndicator {}
                                 model: myModel
                                 delegate: Rectangle {
-                                    implicitWidth: 110
+                                    implicitWidth: 120
                                     implicitHeight: 20
                                     border.color: "black"
                                     border.width: 2
