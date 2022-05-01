@@ -98,7 +98,7 @@ add_executable(krackx_exe
     source/liveimage.h source/liveimage.cpp
     source/imageprovider.h source/imageprovider.cpp
     source/gta_sa_ui.h source/gta_sa_ui.cpp
-    source/TableModel.h
+    source/TableModel.h source/TableModel.cpp
     source/utils.h
     source/compilation.hpp source/compilation.cpp
 )
