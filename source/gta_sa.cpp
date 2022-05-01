@@ -53,13 +53,10 @@ void GTA_SA::run()
   }
 
   std::cout << "Number of calculations: " << (this->max_range - this->min_range) << std::endl;
-  std::cout << "" << std::endl;
 
   GTA_SA::find_string_inv(tmp1.data(), this->min_range);
   GTA_SA::find_string_inv(tmp2.data(), this->max_range);
   std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence" << std::endl;
-  std::cout << "" << std::endl;
-
   this->begin_time = std::chrono::high_resolution_clock::now();
   if (calc_mode == 0) {
     thread_pool pool(num_thread);
@@ -94,91 +91,38 @@ void GTA_SA::run()
 #endif
   } else if (calc_mode == 2) {
 #if defined(BUILD_WITH_CUDA)
-    // int device = -1;
-    // cudaGetDevice(&device);
 
-    const uint32_t cuda_device = 0;
+    std::vector<uint32_t> jamcrc_results;
+    std::vector<uint64_t> index_results;
 
-    if (cudaSetDevice(cuda_device) != cudaSuccess) {
-      std::cout << "Error on cudaSetDevice" << std::endl;
+    std::cout << "CUDA kernel launched" << std::endl;
+    my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, this->cuda_block_size);
+    std::cout << "CUDA kernel finished" << std::endl;
+
+    if (jamcrc_results.size() != index_results.size()) {
+      std::cout << "CUDA kernel results are not equal" << std::endl;
+      return;
     }
 
-    int priority_high, priority_low;
-    cudaDeviceGetStreamPriorityRange(&priority_low, &priority_high);
-    cudaStream_t st_high, st_low;
-    cudaStreamCreateWithPriority(&st_high, cudaStreamNonBlocking, priority_high);
-    cudaStreamCreateWithPriority(&st_low, cudaStreamNonBlocking, priority_low);
-    cudaStream_t stream;
-    cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
+    for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
+      std::array<char, 29> tmpCUDA = {0};
 
-    // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
-
-    // Calculate length of the array with max_range and min_range
-    auto array_length = (this->max_range - this->min_range) / 20000000 + 1;
-    auto jamcrc_results_size = array_length * sizeof(uint32_t);
-    auto index_results_size = array_length * sizeof(uint64_t);
-
-    uint32_t* jamcrc_results = 0;
-    uint64_t* index_results = 0;
-
-    cudaMallocManaged(&jamcrc_results, jamcrc_results_size, cudaMemAttachGlobal);
-    cudaMallocManaged(&index_results, index_results_size, cudaMemAttachGlobal);
-
-    cudaStreamAttachMemAsync(stream, &jamcrc_results);
-    cudaStreamAttachMemAsync(stream, &index_results_size);
-
-    cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, cuda_device, stream);
-    cudaMemPrefetchAsync(index_results, index_results_size, cuda_device, stream);
-
-    for (int i = 0; i < array_length; ++i) {
-      jamcrc_results[i] = 0;
-      index_results[i] = 0;
-    }
-
-    if ((this->max_range - this->min_range) < this->cuda_block_size) {
-      std::cout << "Number of calculations is less than cuda_block_size, running with std::thread" << std::endl;
-    }
-
-    size_t grid_size = (int)ceil((float)(this->max_range - this->min_range) / this->cuda_block_size);
-    std::cout << "CUDA Grid size: " << grid_size << std::endl;
-    std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
-
-    dim3 threads(cuda_block_size, 1, 1);
-    dim3 grid(grid_size, 1, 1);
-
-    cudaStreamSynchronize(stream);
-    my::cuda::launch_kernel(
-        grid, threads, stream, jamcrc_results, index_results, array_length, this->min_range, this->max_range);
-    cudaStreamSynchronize(stream);
-
-    for (int i = 0; i < array_length; ++i) {
-      if (jamcrc_results[i] != index_results[i]) {
-        std::array<char, 29> tmpCUDA = {0};
-
-        GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
-        std::reverse(tmpCUDA.data(), tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
+      GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
+      std::reverse(tmpCUDA.data(), tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
 
 #  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
        || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
 
-        const auto&& it = std::find(
-            std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+      const auto&& it = std::find(
+          std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
 #  else
-        const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+      const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
 #  endif
 
-        const auto index = it - std::begin(GTA_SA::cheat_list);
-        this->results.emplace_back(std::make_tuple(
-            index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], this->cheat_list_name.at(index)));
-      }
+      const auto index = it - std::begin(GTA_SA::cheat_list);
+      results.emplace_back(
+          std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
     }
-
-    cudaFree(jamcrc_results);
-    cudaFree(index_results);
-
-    cudaStreamDestroy(stream);
-    cudaStreamDestroy(st_high);
-    cudaStreamDestroy(st_low);
 #else
     std::cout << "CUDA is not supported" << std::endl;
 #endif
@@ -187,6 +131,7 @@ void GTA_SA::run()
   }
 
   this->end_time = std::chrono::high_resolution_clock::now();
+  std::cout << "" << std::endl;
 
   std::sort(this->results.begin(), this->results.end());  // Sort results
 
@@ -208,6 +153,7 @@ void GTA_SA::run()
                 / std::chrono::duration_cast<std::chrono::duration<double>>(this->end_time - this->begin_time).count())
           / 1000000
             << " MOps/sec" << std::endl;  // Display perf
+  std::cout << "" << std::endl;
 }
 
 void GTA_SA::runner(const std::uint64_t& i)

@@ -30,12 +30,15 @@
 #ifndef _CUDA_KERNEL_HPP_
 #define _CUDA_KERNEL_HPP_
 
+#include <cmath>
+#include <cstdio>
 #include <iostream>
+#include <vector>
 
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#include "stdio.h"
+// using gta_vec = std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>>;
 
 namespace my
 {
@@ -58,6 +61,12 @@ __host__ void launch_kernel(dim3& grid,
                             uint64_t array_size,
                             uint64_t a,
                             uint64_t b);
+
+__host__ void launch_kernel(std::vector<uint32_t>& _jamcrc_results,
+                            std::vector<uint64_t>& _index_results,
+                            const uint64_t& min_range,
+                            const uint64_t& max_range,
+                            const uint64_t& cuda_block_size);
 
 }  // namespace cuda
 }  // namespace my

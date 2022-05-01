@@ -168,16 +168,13 @@ Page {
                 title: qsTr("Test")
                 // Layout.alignment: Qt.AlignHCenter
                 anchors.fill: parent
-
-
-                /*
                     Image {
                         source: Qt.resolvedUrl("/bensuperpc.com/qml_files/img/Profile_400x400.jpg")
                         anchors.fill: parent
                         sourceSize.width: parent.width
                         sourceSize.height: parent.height
                     }
-
+                    /*
                     Rectangle {
                         width: parent.width
                         height: parent.height

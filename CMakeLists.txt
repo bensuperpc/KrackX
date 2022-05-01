@@ -54,6 +54,7 @@ if (CUDA_FOUND)
       source/cuda/kernel/kernel.cu
       source/cuda/kernel/kernel.cuhpp
       source/cuda/kernel.hpp
+      source/cuda/kernel.cpp
   )
 else()
   add_library(
