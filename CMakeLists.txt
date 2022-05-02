@@ -40,10 +40,11 @@ FetchContent_Declare(
     URL_HASH SHA512=c59114dfc64f1e0837780c4b5d6815dcaeeeeae99388799d9375826cbde24acabb576922228fa7bf7c9a334d434eb8727e2deb45e289c944278d153617877e8a
 )
 FetchContent_MakeAvailable(thread-pool)
+
 if (CUDAToolkit_FOUND)
   add_library(
       krackx_lib OBJECT
-      source/gta_sa.h 
+      source/gta_sa.hpp 
       source/gta_sa.cpp
       source/cuda/kernel/kernel.cu
       source/cuda/kernel/kernel.cuhpp
@@ -53,7 +54,7 @@ if (CUDAToolkit_FOUND)
 else()
   add_library(
       krackx_lib OBJECT
-      source/gta_sa.h 
+      source/gta_sa.hpp 
       source/gta_sa.cpp
   )
 endif()
@@ -79,6 +80,15 @@ target_compile_features(krackx_lib PUBLIC cxx_std_17)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(krackx_lib PRIVATE OpenMP::OpenMP_CXX)
 endif()
+
+
+target_link_libraries(krackx_lib
+    PRIVATE
+        sfml-audio
+        sfml-graphics
+        sfml-system
+        sfml-window
+)
 
 # ---- Declare executable ----
 

@@ -9,7 +9,7 @@ class counter : public QObject
   Q_PROPERTY(long long value READ value WRITE setValue NOTIFY valueChanged)
 public:
   explicit counter(QObject* parent = nullptr);
-  long long value() const
+  const long long value()
   {
     return m_Value;
   };
@@ -18,7 +18,7 @@ public slots:
   void setValue(long long value);
 
 signals:
-  void valueChanged(long long newValue);
+  void valueChanged(long long new_value);
 
 private:
   long long m_Value {0};

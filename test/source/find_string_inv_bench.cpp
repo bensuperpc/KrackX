@@ -5,7 +5,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "gta_sa.h"
+#include "gta_sa.hpp"
 
 static void find_string_inv_bench(benchmark::State& state)
 {

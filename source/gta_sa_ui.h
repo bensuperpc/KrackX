@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "TableModel.h"
-#include "gta_sa.h"
+#include "gta_sa.hpp"
 #include "utils.h"
 
 class GTA_SA_UI : public QObject
@@ -78,12 +78,12 @@ public:
 
   bool builtWithOpenMP() const
   {
-    return gta_sa.builtWithOpenMP;
+    return GTA_SA::builtWithOpenMP;
   };
 
   bool builtWithCUDA() const
   {
-    return gta_sa.builtWithCUDA;
+    return GTA_SA::builtWithCUDA;
   };
 
 public slots:

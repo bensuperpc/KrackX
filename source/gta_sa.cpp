@@ -1,4 +1,4 @@
-#include "gta_sa.h"
+#include "gta_sa.hpp"
 
 GTA_SA::GTA_SA() {}
 
@@ -99,14 +99,7 @@ void GTA_SA::run()
     std::vector<uint32_t> jamcrc_results;
     std::vector<uint64_t> index_results;
 
-    std::cout << "CUDA kernel launched" << std::endl;
     my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, this->cuda_block_size);
-    std::cout << "CUDA kernel finished" << std::endl;
-
-    if (jamcrc_results.size() != index_results.size()) {
-      std::cout << "CUDA kernel results are not equal" << std::endl;
-      return;
-    }
 
     for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
       std::array<char, 29> tmpCUDA = {0};

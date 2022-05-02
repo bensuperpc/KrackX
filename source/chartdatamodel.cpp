@@ -34,18 +34,20 @@ QVariant MyDataModel::headerData(int section, Qt::Orientation orientation, int r
   Q_UNUSED(orientation)
   Q_UNUSED(role)
 
-  if (section == 0)
+  if (section == 0) {
     return "x";
-  else
+  } else {
     return "y";
+  }
 }
 
 QVariant MyDataModel::data(const QModelIndex& index, int role) const
 {
   Q_UNUSED(role)
 
-  if (index.column() == 0)
-    return m_data[index.row()].x();
-  else
-    return m_data[index.row()].y();
+  if (index.column() == 0) {
+    return m_data[static_cast<std::vector<QPointF>::size_type>(index.row())].x();
+  } else {
+    return m_data[static_cast<std::vector<QPointF>::size_type>(index.row())].y();
+  }
 }

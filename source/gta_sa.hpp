@@ -1,5 +1,5 @@
-#ifndef _GTA_SA_H_
-#define _GTA_SA_H_
+#ifndef GTA_SA_HPP
+#define GTA_SA_HPP
 
 #include <algorithm>  // std::find
 #include <array>  // std::array
@@ -112,7 +112,7 @@ public:
   uint64_t num_thread = max_thread_support();
 
   // Max 1024 threads per block with CUDA 2.0 and above
-  uint64_t cuda_block_size = 1024;
+  uint64_t cuda_block_size = 64;
 
   uint64_t min_range = 0;  // Alphabetic sequence range min
   uint64_t max_range = 0;

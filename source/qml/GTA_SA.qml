@@ -140,7 +140,7 @@ Page {
                             Slider {
                                 id: cuda_block_size_slider
                                 enabled: gta_sa.builtWithCUDA
-                                value: 1024
+                                // value: 1024
                                 stepSize: 64
                                 from: 64
                                 to: 1024

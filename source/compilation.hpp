@@ -11,14 +11,12 @@
 
 // More info: https://sourceforge.net/p/predef/wiki/Compilers/
 
-#ifndef _COMPILATION_HPP_
-#define _COMPILATION_HPP_
+#ifndef COMPILATION_HPP
+#define COMPILATION_HPP
 
 #include <string>
 
-namespace my
-{
-namespace compile
+namespace my::compile
 {
 
 const std::string arch();
@@ -35,6 +33,5 @@ const std::string build_date();
 
 const std::string arduino();
 
-}  // namespace compile
-}  // namespace my
+}  // namespace my::compile
 #endif

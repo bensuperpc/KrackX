@@ -5,7 +5,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "gta_sa.h"
+#include "gta_sa.hpp"
 
 // Source: https://github.com/stbrumme/crc32
 static std::unique_ptr<char[]> generate(const std::uint64_t length);

@@ -1,6 +1,6 @@
 #include <string>
 
-#include "gta_sa.h"
+#include "gta_sa.hpp"
 #include "gtest/gtest.h"
 
 TEST(jamcrc, basic1)

@@ -62,8 +62,8 @@ __host__ void launch_kernel(dim3& grid,
                             uint64_t a,
                             uint64_t b);
 
-__host__ void launch_kernel(std::vector<uint32_t>& _jamcrc_results,
-                            std::vector<uint64_t>& _index_results,
+__host__ void launch_kernel(std::vector<uint32_t>& jamcrc_results,
+                            std::vector<uint64_t>& index_results,
                             const uint64_t& min_range,
                             const uint64_t& max_range,
                             const uint64_t& cuda_block_size);

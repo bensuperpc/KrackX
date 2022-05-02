@@ -1,7 +1,7 @@
 #include <array>
 #include <string>
 
-#include "gta_sa.h"
+#include "gta_sa.hpp"
 #include "gtest/gtest.h"
 
 static const auto array_size = 29;
