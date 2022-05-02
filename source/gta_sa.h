@@ -100,7 +100,7 @@ public:
 
   std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results = {};
 
-  const uint64_t max_thread_support() const
+  const uint64_t max_thread_support()
   {
 #if defined(_OPENMP)
     return static_cast<uint64_t>(omp_get_max_threads());

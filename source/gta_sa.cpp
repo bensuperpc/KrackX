@@ -62,15 +62,15 @@ void GTA_SA::run()
     thread_pool pool(num_thread);
     pool.parallelize_loop(min_range,
                           max_range,
-                          [&](const std::uint64_t& min_range, const std::uint64_t& max_range)
+                          [&](const std::uint64_t& _min_range, const std::uint64_t& _max_range)
                           {
-                            for (std::uint64_t i = min_range; i <= max_range; i++) {
+                            for (std::uint64_t i = _min_range; i <= _max_range; i++) {
                               runner(i);
                             }
                           });
   } else if (calc_mode == 1) {
 #if defined(_OPENMP)
-    omp_set_num_threads(num_thread);
+    omp_set_num_threads(static_cast<int>(num_thread));
 #endif
 
 #if defined(_OPENMP)

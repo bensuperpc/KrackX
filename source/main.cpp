@@ -39,15 +39,15 @@ public:
   {
   }
 
-  QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize) override
+  QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requested_size) override
   {
     int width = 100;
     int height = 50;
 
     if (size)
       *size = QSize(width, height);
-    QPixmap pixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
-                   requestedSize.height() > 0 ? requestedSize.height() : height);
+    QPixmap pixmap(requested_size.width() > 0 ? requested_size.width() : width,
+                   requested_size.height() > 0 ? requested_size.height() : height);
     pixmap.fill(QColor(id).rgba());
     return pixmap;
   }
@@ -151,9 +151,9 @@ int main(int argc, char* argv[])
       &engine,
       &QQmlApplicationEngine::objectCreated,
       &app,
-      [url](const QObject* obj, const QUrl& objUrl)
+      [url](const QObject* obj, const QUrl& obj_url)
       {
-        if (!obj && url == objUrl)
+        if (!obj && url == obj_url)
           QCoreApplication::exit(-1);
       },
       Qt::QueuedConnection);

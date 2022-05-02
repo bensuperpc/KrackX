@@ -37,30 +37,31 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& _jamcrc_results,
 {
   // int device = -1;
   // cudaGetDevice(&device);
+  
 
-  const uint32_t cuda_device = 0;
+  int device = 0;
+  cudaGetDevice(&device);
 
-  if (cudaSetDevice(cuda_device) != cudaSuccess) {
-    std::cout << "Error on cudaSetDevice" << std::endl;
-  }
-
+  /*
   int priority_high, priority_low;
   cudaDeviceGetStreamPriorityRange(&priority_low, &priority_high);
   cudaStream_t st_high, st_low;
   cudaStreamCreateWithPriority(&st_high, cudaStreamNonBlocking, priority_high);
   cudaStreamCreateWithPriority(&st_low, cudaStreamNonBlocking, priority_low);
+  */
+
   cudaStream_t stream;
   cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
   // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
   // Calculate length of the array with max_range and min_range
-  auto array_length = (max_range - min_range) / 20000000 + 1;
-  auto jamcrc_results_size = array_length * sizeof(uint32_t);
-  auto index_results_size = array_length * sizeof(uint64_t);
+  int64_t array_length = (max_range - min_range) / 20000000 + 1;
+  int64_t jamcrc_results_size = array_length * sizeof(uint32_t);
+  int64_t index_results_size = array_length * sizeof(uint64_t);
 
-  uint32_t* jamcrc_results = 0;
-  uint64_t* index_results = 0;
+  uint32_t* jamcrc_results = nullptr;
+  uint64_t* index_results = nullptr;
 
   cudaMallocManaged(&jamcrc_results, jamcrc_results_size, cudaMemAttachGlobal);
   cudaMallocManaged(&index_results, index_results_size, cudaMemAttachGlobal);
@@ -68,22 +69,21 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& _jamcrc_results,
   cudaStreamAttachMemAsync(stream, &jamcrc_results);
   cudaStreamAttachMemAsync(stream, &index_results_size);
 
-  cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, cuda_device, stream);
-  cudaMemPrefetchAsync(index_results, index_results_size, cuda_device, stream);
+  cudaMemPrefetchAsync(jamcrc_results, jamcrc_results_size, device, stream);
+  cudaMemPrefetchAsync(index_results, index_results_size, device, stream);
 
-  for (int i = 0; i < array_length; ++i) {
+  for (auto i = 0; i < array_length; ++i) {
     jamcrc_results[i] = 0;
     index_results[i] = 0;
   }
 
-  size_t grid_size = (int)ceil((float)(max_range - min_range) / cuda_block_size);
+  size_t grid_size = (int)ceil(static_cast<double>(max_range - min_range) / cuda_block_size);
   // std::cout << "CUDA Grid size: " << grid_size << std::endl;
   // std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
 
-  dim3 threads(cuda_block_size, 1, 1);
-  dim3 grid(grid_size, 1, 1);
+  dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
+  dim3 grid(static_cast<uint>(grid_size), 1, 1);
 
-  cudaStreamSynchronize(stream);
   my::cuda::launch_kernel(grid, threads, stream, jamcrc_results, index_results, array_length, min_range, max_range);
 
   // my::cuda::launch_kernel();
@@ -101,6 +101,6 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& _jamcrc_results,
   cudaFree(index_results);
 
   cudaStreamDestroy(stream);
-  cudaStreamDestroy(st_high);
-  cudaStreamDestroy(st_low);
+  // cudaStreamDestroy(st_high);
+  // cudaStreamDestroy(st_low);
 }
