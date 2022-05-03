@@ -81,15 +81,6 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(krackx_lib PRIVATE OpenMP::OpenMP_CXX)
 endif()
 
-
-target_link_libraries(krackx_lib
-    PRIVATE
-        sfml-audio
-        sfml-graphics
-        sfml-system
-        sfml-window
-)
-
 # ---- Declare executable ----
 
 # qt_add_executable
