@@ -27,7 +27,7 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#include <cuda/kernel.hpp>
+#include <kernel.hpp>
 
 __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
                                       std::vector<uint64_t>& index_results,

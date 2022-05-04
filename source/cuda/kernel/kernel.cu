@@ -23,7 +23,7 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#include "cuda/kernel/kernel.cuhpp"
+#include "kernel/kernel.cuhpp"
 
 __host__ void my::cuda::launch_kernel(size_t grid,
                                       size_t threads,

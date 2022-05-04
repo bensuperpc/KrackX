@@ -26,7 +26,7 @@ function(add_test_fn TEST_NAME)
   endif()
 
   if (CUDAToolkit_FOUND)
-    target_link_libraries("${TEST_NAME}" PUBLIC CUDA::cudart)
+    target_link_libraries("${TEST_NAME}" PUBLIC CUDA::cudart krackx_cuda_lib)
   endif()
 
   add_test("${TEST_NAME}" "${TEST_NAME}")
@@ -111,6 +111,7 @@ if(NOT WIN32)
 
   #include(GoogleTest)
   #gtest_discover_tests(jamcrc_test)
+
 else()
   message(WARNING "Disable tests, only supported on Linux and macOS")
 endif()

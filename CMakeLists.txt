@@ -42,22 +42,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(thread-pool)
 
 if (CUDAToolkit_FOUND)
-  add_library(
-      krackx_lib OBJECT
-      source/gta_sa.hpp 
-      source/gta_sa.cpp
-      source/cuda/kernel/kernel.cu
-      source/cuda/kernel/kernel.cuhpp
-      source/cuda/kernel.hpp
-      source/cuda/kernel.cpp
-  )
-else()
-  add_library(
-      krackx_lib OBJECT
-      source/gta_sa.hpp 
-      source/gta_sa.cpp
-  )
+  add_subdirectory(source/cuda)
 endif()
+
+add_library(
+    krackx_lib OBJECT
+    source/gta_sa.hpp 
+    source/gta_sa.cpp
+)
 
 target_include_directories(
     krackx_lib ${warning_guard}
@@ -68,7 +60,7 @@ target_include_directories(
 # set_target_properties(krackx_lib PROPERTIES AUTOMOC OFF)
 if (CUDAToolkit_FOUND)
   target_include_directories(krackx_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(krackx_lib PUBLIC CUDA::cudart)
+  target_link_libraries(krackx_lib PUBLIC CUDA::cudart krackx_cuda_lib)
 
   target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda_kernel")
 endif()
