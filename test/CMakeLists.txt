@@ -4,6 +4,12 @@
 
 project(krackxTests LANGUAGES C CXX)
 
+include(CheckLanguage)
+check_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+	enable_language(CUDA)
+endif()
+
 # ---- Tests ----
 
 # add_executable(krackx_test source/krackx_test.cpp)
@@ -18,6 +24,11 @@ function(add_test_fn TEST_NAME)
   if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
     target_link_libraries("${TEST_NAME}" PRIVATE OpenMP::OpenMP_CXX)
   endif()
+
+  if (CUDAToolkit_FOUND)
+    target_link_libraries("${TEST_NAME}" PUBLIC CUDA::cudart)
+  endif()
+
   add_test("${TEST_NAME}" "${TEST_NAME}")
   target_compile_features("${TEST_NAME}" PRIVATE cxx_std_17)
 endfunction()
@@ -83,6 +94,10 @@ if(NOT WIN32)
   set(CMAKE_CXX_CLANG_TIDY "")
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
+
+  # include_directories(${googletest_SOURCE_DIR}/googletest/include/gtest)
+
+  find_package(CUDAToolkit 11.0)
 
   # Add tests
   add_test_fn(find_string_inv_test)

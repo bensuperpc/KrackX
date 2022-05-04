@@ -86,7 +86,6 @@ endif()
 # qt_add_executable
 add_executable(krackx_exe 
     source/main.cpp
-    source/counter.h source/counter.cpp
     source/about_compilation.h source/about_compilation.cpp
     source/applicationui.h source/applicationui.cpp
     source/chartdatamodel.h source/chartdatamodel.cpp
@@ -113,7 +112,6 @@ qt_add_qml_module(krackx_exe
     source/qml/KrackPasswordPage.qml 
     source/qml/mainPage.qml 
     source/qml/SettingsPage.qml 
-    source/qml/counter.qml 
     source/qml/image_test.qml 
     source/qml/GTA_SA.qml
     RESOURCES

@@ -15,7 +15,6 @@
 #include "about_compilation.h"
 #include "applicationui.h"
 #include "chartdatamodel.h"
-#include "counter.h"
 #include "gta_sa_ui.h"
 #include "imageprovider.h"
 #include "liveimage.h"
@@ -76,7 +75,6 @@ int main(int argc, char* argv[])
 
   Applicationui appui;
   about_compilation ac;
-  counter myCounter;
 
   GTA_SA_UI gta_sa_ui;
 
@@ -134,10 +132,6 @@ int main(int argc, char* argv[])
   context->setContextProperty("qtversion", QString(qVersion()));
 
   context->setContextProperty("about_compilation", &ac);
-
-  /* Below line makes myCounter object and methods available in QML as
-   * "MyCounter" */
-  context->setContextProperty("MyCounter", &myCounter);
 
   engine.addImageProvider(QLatin1String("colors"), new ColorImageProvider);
 

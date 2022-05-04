@@ -1,6 +1,7 @@
 #include <string>
 
 #include "gta_sa.hpp"
+// #include "cuda/kernel.hpp"
 #include "gtest/gtest.h"
 
 TEST(jamcrc, basic1)
@@ -12,6 +13,11 @@ TEST(jamcrc, basic1)
 
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0xffffffff, GTA_SA::jamcrc(str));
+
+  auto str_size = str.size();
+  uint32_t previousCrc32 = 0xffffffff;
+
+  // EXPECT_EQ(0xffffffff, my::cuda::jamcrc(str.data(), str_size, previousCrc32));
 }
 
 TEST(jamcrc, basic2)

@@ -104,3 +104,44 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   // cudaStreamDestroy(st_high);
   // cudaStreamDestroy(st_low);
 }
+
+__host__ uint32_t jamcrc(const void* data, uint64_t& length, uint32_t& previousCrc32)
+{
+  uint cuda_block_size = 32;
+
+  int device = 0;
+  cudaGetDevice(&device);
+  cudaStream_t stream;
+  cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
+
+  // Calculate length of the array with max_range and min_range
+  uint64_t data_size = length * sizeof(void*);
+
+  uint32_t* data_cuda = nullptr;
+
+  cudaMallocManaged(&data_cuda, data_size, cudaMemAttachGlobal);
+
+  cudaStreamAttachMemAsync(stream, &data_cuda);
+
+  cudaMemPrefetchAsync(data_cuda, data_size, device, stream);
+
+  // std::copy(data, data + length, data_cuda);
+  memcpy(data_cuda, data, data_size);
+
+  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(data_size) / cuda_block_size));
+
+  dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
+  dim3 grid(static_cast<uint>(grid_size), 1, 1);
+
+  uint32_t result = 0;
+
+  my::cuda::jamcrc_wrapper(grid, threads, stream, device, data_cuda, result, length, previousCrc32);
+
+  cudaStreamSynchronize(stream);
+  cudaDeviceSynchronize();
+
+  cudaFree(data_cuda);
+  cudaStreamDestroy(stream);
+
+  return result;
+}

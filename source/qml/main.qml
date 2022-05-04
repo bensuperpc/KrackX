@@ -251,14 +251,6 @@ ApplicationWindow {
                     }
                 }
                 ItemDelegate {
-                    text: qsTr("Counter")
-                    width: parent.width // toute la largeur du tiroir
-                    onClicked: {
-                        stackView.push("counter.qml")
-                        drawer.close() // et on referme le tiroir
-                    }
-                }
-                ItemDelegate {
                     width: parent.width
                     height: menu_separator3.height
                     anchors.horizontalCenter: parent.horizontalCenter

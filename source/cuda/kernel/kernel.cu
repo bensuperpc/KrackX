@@ -64,10 +64,9 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
     // Generate the array
     find_string_inv_kernel(array, id, size);
 
-    uint32_t result = 0;
-
     // Calculate the CRC
-    jamcrc_kernel(array, result, size, 0);
+    uint32_t previousCrc32 = 0;
+    uint32_t result = jamcrc_kernel(array, size, previousCrc32);
 
     bool found = false;
     for (uint32_t i = 0; i < 87; i++) {
@@ -116,11 +115,34 @@ __device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_
   terminator_index = i;
 }
 
-__device__ void jamcrc_kernel(const void* data, uint32_t& result, uint64_t length, uint32_t previousCrc32)
+__host__ void my::cuda::jamcrc_wrapper(dim3& grid,
+                                       dim3& threads,
+                                       cudaStream_t& stream,
+                                       const int& device,
+                                       const void* data,
+                                       uint32_t& result,
+                                       uint64_t& length,
+                                       const uint32_t& previousCrc32)
+{
+  jamcrc_kernel_wrapper<<<grid, threads, device, stream>>>(data, result, length, previousCrc32);
+}
+
+__global__ void jamcrc_kernel_wrapper(const void* data,
+                                      uint32_t& result,
+                                      uint64_t& length,
+                                      const uint32_t& previousCrc32)
+{
+  const uint64_t id = blockIdx.x * blockDim.x + threadIdx.x;
+  if (id <= 0) {
+    result = jamcrc_kernel(data, length, previousCrc32);
+  }
+}
+
+__device__ uint32_t jamcrc_kernel(const void* data, uint64_t& length, const uint32_t& previousCrc32)
 {
   uint32_t crc = ~previousCrc32;
   unsigned char* current = (unsigned char*)data;
   while (length--)
     crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
-  result = crc;
+  return crc;
 }

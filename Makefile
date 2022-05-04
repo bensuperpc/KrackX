@@ -28,49 +28,49 @@ build: base
 all: release debug minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base base-clang
 
 base:
-	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) -Dkrackx_DEVELOPER_MODE=ON
 	ninja -C build/$@
 
 base-clang:
 	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
-	-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+	-Dkrackx_DEVELOPER_MODE=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 	ninja -C build/$@
 
 release:
-	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
 release-clang:
-	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
+	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
 debug:
-	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Debug
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
 debug-clang:
-	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
+	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=Debug \
 	-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
 coverage:
-	cmake -B build/$@ -S . -G Ninja --preset=dev-coverage -DCMAKE_BUILD_TYPE=Coverage -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	cmake -B build/$@ -S . -G Ninja --preset=dev-coverage -DCMAKE_BUILD_TYPE=Coverage
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 	ninja -C build/$@ coverage
 
 minsizerel:
-	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=MinSizeRel
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
 relwithdebinfo:
-	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)
+	cmake -B build/$@ -S . -G Ninja --preset=dev -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	ninja -C build/$@
 	ctest --verbose --parallel $(PARALLEL) --test-dir build/$@
 
