@@ -18,20 +18,23 @@
 #                                                            #
 ##############################################################
 
-cmake_minimum_required(VERSION 3.12)
-project(my_cuda LANGUAGES CUDA CXX C)
+cmake_minimum_required(VERSION 3.14)
+project(
+    krackx_cuda_lib
+    VERSION 0.1.0
+    DESCRIPTION "Krack cuda lib"
+    HOMEPAGE_URL "https://github.com/bensuperpc"
+    LANGUAGES C CXX CUDA
+)
 
 find_package(CUDAToolkit 11.0)
 
-
-
 set(SRCS
-    kernel/kernel.cu
-    kernel.cpp
+    kernel.cu
 	)
 	
 set(HEADERS
-    kernel/kernel.cuhpp
+    kernel.cuh
     kernel.hpp
     )
 

@@ -1,7 +1,7 @@
 #include <string>
 
+#include "cuda/kernel.hpp"
 #include "gta_sa.hpp"
-// #include "cuda/kernel.hpp"
 #include "gtest/gtest.h"
 
 TEST(jamcrc, basic1)
@@ -18,6 +18,8 @@ TEST(jamcrc, basic1)
   uint32_t previousCrc32 = 0xffffffff;
 
   // EXPECT_EQ(0xffffffff, my::cuda::jamcrc(str.data(), str_size, previousCrc32));
+  EXPECT_EQ(0xffffffff, my::cuda::jamcrcv2(str.data(), str_size, previousCrc32));
+  dummy_gpu();
 }
 
 TEST(jamcrc, basic2)

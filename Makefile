@@ -19,6 +19,7 @@
 #//////////////////////////////////////////////////////////////
 
 CXX_STANDARD := 17
+DEVELOPER_MODE := OFF
 PARALLEL := 4
 
 .PHONY: all release debug coverage minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang lint format
@@ -28,12 +29,13 @@ build: base
 all: release debug minsizerel relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base base-clang
 
 base:
-	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) -Dkrackx_DEVELOPER_MODE=ON
+	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD)  \
+	-Dkrackx_DEVELOPER_MODE=$(DEVELOPER_MODE)
 	ninja -C build/$@
 
 base-clang:
 	cmake -B build/$@ -S . -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
-	-Dkrackx_DEVELOPER_MODE=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+	-Dkrackx_DEVELOPER_MODE=$(DEVELOPER_MODE) -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 	ninja -C build/$@
 
 release:

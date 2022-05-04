@@ -59,6 +59,7 @@
 #endif
 
 #if defined(BUILD_WITH_CUDA)
+//#  include "cuda/kernel.hpp"
 #  include "cuda/kernel.hpp"
 #endif
 

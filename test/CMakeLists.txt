@@ -26,7 +26,7 @@ function(add_test_fn TEST_NAME)
   endif()
 
   if (CUDAToolkit_FOUND)
-    target_link_libraries("${TEST_NAME}" PUBLIC CUDA::cudart krackx_cuda_lib)
+    target_link_libraries("${TEST_NAME}" PRIVATE krackx_cuda_lib)
   endif()
 
   add_test("${TEST_NAME}" "${TEST_NAME}")
@@ -36,8 +36,13 @@ endfunction()
 function(add_bench_fn BENCH_NAME)
   add_executable("${BENCH_NAME}" "source/${BENCH_NAME}.cpp")
   target_link_libraries("${BENCH_NAME}" PRIVATE krackx_lib benchmark::benchmark_main)
+
   if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
     target_link_libraries("${BENCH_NAME}" PRIVATE OpenMP::OpenMP_CXX)
+  endif()
+
+  if (CUDAToolkit_FOUND)
+    target_link_libraries("${BENCH_NAME}" PRIVATE krackx_cuda_lib)
   endif()
 
   if(NOT CMAKE_BUILD_TYPE MATCHES Debug AND NOT CMAKE_BUILD_TYPE MATCHES Coverage)

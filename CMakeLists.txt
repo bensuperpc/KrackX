@@ -60,7 +60,8 @@ target_include_directories(
 # set_target_properties(krackx_lib PROPERTIES AUTOMOC OFF)
 if (CUDAToolkit_FOUND)
   target_include_directories(krackx_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(krackx_lib PUBLIC CUDA::cudart krackx_cuda_lib)
+  target_link_libraries(krackx_lib PRIVATE CUDA::cudart)
+  target_link_libraries(krackx_lib PRIVATE krackx_cuda_lib)
 
   target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda_kernel")
 endif()

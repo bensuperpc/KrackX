@@ -1,4 +1,5 @@
 
+
 //////////////////////////////////////////////////////////////
 //   ____                                                   //
 //  | __ )  ___ _ __  ___ _   _ _ __   ___ _ __ _ __   ___  //
@@ -19,30 +20,22 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#ifndef KERNEL_CUHPP
-#define KERNEL_CUHPP
+#ifndef CUDA_KERNEL_CUH
+#define CUDA_KERNEL_CUH
 
 #include <cuda.h>
-#include <kernel.hpp>
 #include <cuda_runtime.h>
 
-/**
- * @brief
- *
- * @param data
- * @param length
- * @param previousCrc32
- * @param resultCrc32
- * @return __global__
- */
-__device__ uint32_t jamcrc_kernel(const void* data, uint64_t& length, const uint32_t& previousCrc32);
-__global__ void jamcrc_kernel_wrapper(const void* data,
-                                      uint32_t& result,
-                                      uint64_t& length,
-                                      const uint32_t& previousCrc32);
+__global__ void dummy_gpu_kernel();
 
-__device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_t& terminator_index);
-__global__ void runner_kernel(
+__device__ uint32_t jamcrc_kernelv2(const void* data, uint64_t& length, const uint32_t& previousCrc32);
+__global__ void jamcrc_kernel_wrapperv2(const void* data,
+                                        uint32_t& result,
+                                        uint64_t& length,
+                                        const uint32_t& previousCrc32);
+
+__device__ void find_string_inv_kernelv2(unsigned char* array, uint64_t n, uint64_t& terminator_index);
+__global__ void runner_kernelv2(
     uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b);
 
 __device__ const uint32_t crc32_lookup[256] = {
