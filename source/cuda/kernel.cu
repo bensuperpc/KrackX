@@ -23,45 +23,42 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#include <cuda_runtime.h>
-
 #include "kernel.cuh"
 #include "kernel.hpp"
 
-__host__ void dummy_gpu()
+__host__ void jamcrc_wrapper(dim3* grid,
+                             dim3* threads,
+                             cudaStream_t* stream,
+                             const int device,
+                             const void* data,
+                             const uint64_t length,
+                             uint32_t* result,
+                             const uint32_t previousCrc32)
 {
-  dummy_gpu_kernel<<<128, 128>>>();
+  jamcrc_kernel_wrapper<<<*grid, *threads, device, *stream>>>(data, result, length, previousCrc32);
 }
 
-__global__ void dummy_gpu_kernel()
+__global__ void jamcrc_kernel_wrapper(const void* data,
+                                      uint32_t* result,
+                                      const uint64_t length,
+                                      const uint32_t previousCrc32)
 {
-  // do something
-}
+  const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
 
-__host__ void jamcrc_wrapperv2(dim3& grid,
-                               dim3& threads,
-                               cudaStream_t& stream,
-                               const int& device,
-                               const void* data,
-                               uint32_t& result,
-                               uint64_t& length,
-                               const uint32_t& previousCrc32)
-{
-  jamcrc_kernel_wrapperv2<<<grid, threads, device, stream>>>(data, result, length, previousCrc32);
-}
+  // const uint64_t idy = blockIdx.y * blockDim.y + threadIdx.y;
+  // const uint64_t idz = blockIdx.z * blockDim.z + threadIdx.z;
 
-__global__ void jamcrc_kernel_wrapperv2(const void* data,
-                                        uint32_t& result,
-                                        uint64_t& length,
-                                        const uint32_t& previousCrc32)
-{
-  const uint64_t id = blockIdx.x * blockDim.x + threadIdx.x;
-  if (id <= 0) {
-    result = jamcrc_kernelv2(data, length, previousCrc32);
+  // printf("blockIdx %d, blockDimx %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
+  // printf("blockIdy %d, blockDimy %d, threadIdy %d\n", blockIdx.y, blockDim.y, threadIdx.y);
+  // printf("blockIdz %d, blockDimz %d, threadIdz %d\n", blockIdx.z, blockDim.z, threadIdx.z);
+  // printf("idx %d\n", idx);
+
+  if (idx == 0) {
+    *result = jamcrc_kernel(data, length, previousCrc32);
   }
 }
 
-__device__ uint32_t jamcrc_kernelv2(const void* data, uint64_t& length, const uint32_t& previousCrc32)
+__device__ uint32_t jamcrc_kernel(const void* data, uint64_t length, const uint32_t previousCrc32)
 {
   uint32_t crc = ~previousCrc32;
   unsigned char* current = (unsigned char*)data;
@@ -70,8 +67,12 @@ __device__ uint32_t jamcrc_kernelv2(const void* data, uint64_t& length, const ui
   return crc;
 }
 
-__host__ uint32_t my::cuda::jamcrcv2(const void* data, uint64_t& length, uint32_t& previousCrc32)
+__host__ uint32_t my::cuda::jamcrc(const void* data, const uint64_t length, const uint32_t previousCrc32)
 {
+  // std::cout << "data: " << reinterpret_cast<const char*>(data) << std::endl;
+  // std::cout << "length: " << length << std::endl;
+  // std::cout << "previousCrc32: " << previousCrc32 << std::endl;
+
   uint cuda_block_size = 32;
 
   int device = 0;
@@ -80,42 +81,49 @@ __host__ uint32_t my::cuda::jamcrcv2(const void* data, uint64_t& length, uint32_
   cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
   // Calculate length of the array with max_range and min_range
-  uint64_t data_size = length * sizeof(void*);
-
+  uint64_t data_size = (length + 1) * sizeof(void*);
   uint32_t* data_cuda = nullptr;
 
+  uint64_t result_size = 1 * sizeof(uint32_t);
+  uint32_t* result_cuda = nullptr;
+
   cudaMallocManaged(&data_cuda, data_size, cudaMemAttachGlobal);
+  cudaMallocManaged(&result_cuda, result_size, cudaMemAttachGlobal);
 
   cudaStreamAttachMemAsync(stream, &data_cuda);
+  cudaStreamAttachMemAsync(stream, &result_cuda);
 
   cudaMemPrefetchAsync(data_cuda, data_size, device, stream);
+  cudaMemPrefetchAsync(result_cuda, result_size, device, stream);
 
   // std::copy(data, data + length, data_cuda);
   memcpy(data_cuda, data, data_size);
+  *result_cuda = 0;
 
   uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(data_size) / cuda_block_size));
+  // std::cout << "grid_size: " << static_cast<double>(data_size) / cuda_block_size << std::endl;
 
   dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
   dim3 grid(static_cast<uint>(grid_size), 1, 1);
 
-  uint32_t result = 0;
-
-  jamcrc_wrapperv2(grid, threads, stream, device, data_cuda, result, length, previousCrc32);
+  jamcrc_kernel_wrapper<<<grid, threads, device, stream>>>(data_cuda, result_cuda, length, previousCrc32);
 
   cudaStreamSynchronize(stream);
   cudaDeviceSynchronize();
 
+  // std::cout << "result_cuda: " << *result_cuda << std::endl;
+
   cudaFree(data_cuda);
   cudaStreamDestroy(stream);
 
-  return result;
+  return *result_cuda;
 }
 
-__host__ void my::cuda::launch_kernelv2(std::vector<uint32_t>& jamcrc_results,
-                                        std::vector<uint64_t>& index_results,
-                                        const uint64_t& min_range,
-                                        const uint64_t& max_range,
-                                        const uint64_t& cuda_block_size)
+__host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
+                                      std::vector<uint64_t>& index_results,
+                                      const uint64_t& min_range,
+                                      const uint64_t& max_range,
+                                      const uint64_t& cuda_block_size)
 {
   // int device = -1;
   // cudaGetDevice(&device);
@@ -165,8 +173,10 @@ __host__ void my::cuda::launch_kernelv2(std::vector<uint32_t>& jamcrc_results,
   dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
   dim3 grid(static_cast<uint>(grid_size), 1, 1);
 
-  my::cuda::launch_kernelv2(
-      grid, threads, stream, jamcrc_results_ptr, index_results_ptr, array_length, min_range, max_range);
+  // my::cuda::launch_kernel_wrapper(grid, threads, stream, jamcrc_results_ptr, index_results_ptr, array_length,
+  // min_range, max_range);
+  runner_kernel<<<grid, threads, 0, stream>>>(
+      jamcrc_results_ptr, index_results_ptr, array_length, min_range, max_range);
 
   // my::cuda::launch_kernel();
   cudaStreamSynchronize(stream);
@@ -187,32 +197,31 @@ __host__ void my::cuda::launch_kernelv2(std::vector<uint32_t>& jamcrc_results,
   // cudaStreamDestroy(st_low);
 }
 
-__host__ void my::cuda::launch_kernelv2(size_t grid,
-                                        size_t threads,
-                                        cudaStream_t& stream,
-                                        uint32_t* crc_result,
-                                        uint64_t* index_result,
-                                        uint64_t array_size,
-                                        uint64_t a,
-                                        uint64_t b)
+__host__ void my::cuda::launch_kernel(size_t grid,
+                                      size_t threads,
+                                      cudaStream_t& stream,
+                                      uint32_t* crc_result,
+                                      uint64_t* index_result,
+                                      uint64_t array_size,
+                                      uint64_t a,
+                                      uint64_t b)
 {
-  runner_kernelv2<<<grid, threads, 0, stream>>>(crc_result, index_result, array_size, a, b);
+  runner_kernel<<<grid, threads, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
-__host__ void my::cuda::launch_kernelv2(dim3& grid,
-                                        dim3& threads,
-                                        cudaStream_t& stream,
-                                        uint32_t* crc_result,
-                                        uint64_t* index_result,
-                                        uint64_t array_size,
-                                        uint64_t a,
-                                        uint64_t b)
+__host__ void my::cuda::launch_kernel(dim3& grid,
+                                      dim3& threads,
+                                      cudaStream_t& stream,
+                                      uint32_t* crc_result,
+                                      uint64_t* index_result,
+                                      uint64_t array_size,
+                                      uint64_t a,
+                                      uint64_t b)
 {
-  runner_kernelv2<<<grid, threads, 0, stream>>>(crc_result, index_result, array_size, a, b);
+  runner_kernel<<<grid, threads, 0, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
-__global__ void runner_kernelv2(
-    uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
+__global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
   const uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
   // printf("blockIdx %d, blockDimx %d, threadIdx %d\n", blockIdx.x, blockDim.x, threadIdx.x);
@@ -225,11 +234,10 @@ __global__ void runner_kernelv2(
 
     uint64_t size = 0;
     // Generate the array
-    find_string_inv_kernelv2(array, id, size);
+    find_string_inv_kernel(array, id, size);
 
     // Calculate the CRC
-    uint32_t previousCrc32 = 0;
-    uint32_t result = jamcrc_kernelv2(array, size, previousCrc32);
+    const uint32_t result = jamcrc_kernel(array, size, 0);
 
     bool found = false;
     for (uint32_t i = 0; i < 87; i++) {
@@ -255,7 +263,7 @@ __global__ void runner_kernelv2(
   }
 }
 
-__device__ void find_string_inv_kernelv2(unsigned char* array, uint64_t n, uint64_t& terminator_index)
+__device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_t& terminator_index)
 {
   const uint32_t string_size_alphabet = 27;
 

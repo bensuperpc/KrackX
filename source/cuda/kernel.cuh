@@ -26,16 +26,15 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-__global__ void dummy_gpu_kernel();
+__device__ uint32_t jamcrc_kernel(const void* data, uint64_t length, const uint32_t previousCrc32);
 
-__device__ uint32_t jamcrc_kernelv2(const void* data, uint64_t& length, const uint32_t& previousCrc32);
-__global__ void jamcrc_kernel_wrapperv2(const void* data,
-                                        uint32_t& result,
-                                        uint64_t& length,
-                                        const uint32_t& previousCrc32);
+__global__ void jamcrc_kernel_wrapper(const void* data,
+                                      uint32_t* result,
+                                      uint64_t length,
+                                      const uint32_t previousCrc32);
 
-__device__ void find_string_inv_kernelv2(unsigned char* array, uint64_t n, uint64_t& terminator_index);
-__global__ void runner_kernelv2(
+__device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_t& terminator_index);
+__global__ void runner_kernel(
     uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b);
 
 __device__ const uint32_t crc32_lookup[256] = {
@@ -67,8 +66,7 @@ __device__ const uint32_t crc32_lookup[256] = {
     0xD70DD2EE, 0x4E048354, 0x3903B3C2, 0xA7672661, 0xD06016F7, 0x4969474D, 0x3E6E77DB, 0xAED16A4A, 0xD9D65ADC,
     0x40DF0B66, 0x37D83BF0, 0xA9BCAE53, 0xDEBB9EC5, 0x47B2CF7F, 0x30B5FFE9, 0xBDBDF21C, 0xCABAC28A, 0x53B39330,
     0x24B4A3A6, 0xBAD03605, 0xCDD70693, 0x54DE5729, 0x23D967BF, 0xB3667A2E, 0xC4614AB8, 0x5D681B02, 0x2A6F2B94,
-    0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D,
-};
+    0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D};
 
 __device__ const uint32_t cheat_list[87] = {
     0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201, 0x2A845345, 0xE1EF01EA, 0x771B83FC,

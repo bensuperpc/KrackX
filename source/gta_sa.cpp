@@ -99,7 +99,7 @@ void GTA_SA::run()
     std::vector<uint32_t> jamcrc_results;
     std::vector<uint64_t> index_results;
 
-    my::cuda::launch_kernelv2(jamcrc_results, index_results, min_range, max_range, this->cuda_block_size);
+    my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, this->cuda_block_size);
 
     for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
       std::array<char, 29> tmpCUDA = {0};
@@ -123,6 +123,7 @@ void GTA_SA::run()
 #else
     std::cout << "CUDA is not supported" << std::endl;
 #endif
+  } else if (calc_mode == 3) {
   } else {
     std::cout << "Unknown calculation mode" << std::endl;
   }

@@ -41,9 +41,9 @@ set(HEADERS
 add_library(krackx_cuda_lib ${SRCS} ${HEADERS})
 
 #if (CUDAToolkit_FOUND)
-target_include_directories(krackx_cuda_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(krackx_cuda_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-target_link_libraries(krackx_cuda_lib PUBLIC CUDA::cudart)
+target_include_directories(krackx_cuda_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(krackx_cuda_lib PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
+target_link_libraries(krackx_cuda_lib PRIVATE CUDA::cudart)
 #endif()
 
 set_target_properties(krackx_cuda_lib

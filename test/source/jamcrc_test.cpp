@@ -1,7 +1,9 @@
 #include <string>
 
-#include "cuda/kernel.hpp"
 #include "gta_sa.hpp"
+#ifdef BUILD_WITH_CUDA
+#  include "cuda/kernel.hpp"
+#endif
 #include "gtest/gtest.h"
 
 TEST(jamcrc, basic1)
@@ -14,12 +16,10 @@ TEST(jamcrc, basic1)
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0xffffffff, GTA_SA::jamcrc(str));
 
-  auto str_size = str.size();
-  uint32_t previousCrc32 = 0xffffffff;
-
-  // EXPECT_EQ(0xffffffff, my::cuda::jamcrc(str.data(), str_size, previousCrc32));
-  EXPECT_EQ(0xffffffff, my::cuda::jamcrcv2(str.data(), str_size, previousCrc32));
-  dummy_gpu();
+#ifdef BUILD_WITH_CUDA
+  EXPECT_NE(0x0, my::cuda::jamcrc(str.data(), str.size(), 0));
+  EXPECT_EQ(0xffffffff, my::cuda::jamcrc(str.data(), str.size(), 0));
+#endif
 }
 
 TEST(jamcrc, basic2)
@@ -31,6 +31,10 @@ TEST(jamcrc, basic2)
 
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0x555fc201, GTA_SA::jamcrc(str));
+#ifdef BUILD_WITH_CUDA
+  EXPECT_NE(0x0, my::cuda::jamcrc(str.data(), str.size(), 0));
+  EXPECT_EQ(0x555fc201, my::cuda::jamcrc(str.data(), str.size(), 0));
+#endif
 }
 
 TEST(jamcrc, basic3)
@@ -42,6 +46,11 @@ TEST(jamcrc, basic3)
 
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0xa7613f99, GTA_SA::jamcrc(str));
+
+#ifdef BUILD_WITH_CUDA
+  EXPECT_NE(0x0, my::cuda::jamcrc(str.data(), str.size(), 0));
+  EXPECT_EQ(0xa7613f99, my::cuda::jamcrc(str.data(), str.size(), 0));
+#endif
 }
 
 TEST(jamcrc, basic4)
@@ -53,6 +62,11 @@ TEST(jamcrc, basic4)
 
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0x1a9aa3d6, GTA_SA::jamcrc(str));
+
+#ifdef BUILD_WITH_CUDA
+  EXPECT_NE(0x0, my::cuda::jamcrc(str.data(), str.size(), 0));
+  EXPECT_EQ(0x1a9aa3d6, my::cuda::jamcrc(str.data(), str.size(), 0));
+#endif
 }
 
 TEST(jamcrc, basic5)
@@ -64,6 +78,11 @@ TEST(jamcrc, basic5)
 
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0x6ba88a6, GTA_SA::jamcrc(str));
+
+#ifdef BUILD_WITH_CUDA
+  EXPECT_NE(0x0, my::cuda::jamcrc(str.data(), str.size(), 0));
+  EXPECT_EQ(0x6ba88a6, my::cuda::jamcrc(str.data(), str.size(), 0));
+#endif
 }
 
 TEST(jamcrc, basic6)
@@ -75,4 +94,9 @@ TEST(jamcrc, basic6)
 
   EXPECT_NE(0x0, GTA_SA::jamcrc(str));
   EXPECT_EQ(0x1a384955, GTA_SA::jamcrc(str));
+
+#ifdef BUILD_WITH_CUDA
+  EXPECT_NE(0x0, my::cuda::jamcrc(str.data(), str.size(), 0));
+  EXPECT_EQ(0x1a384955, my::cuda::jamcrc(str.data(), str.size(), 0));
+#endif
 }

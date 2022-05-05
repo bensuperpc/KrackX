@@ -59,7 +59,6 @@
 #endif
 
 #if defined(BUILD_WITH_CUDA)
-//#  include "cuda/kernel.hpp"
 #  include "cuda/kernel.hpp"
 #endif
 
@@ -119,9 +118,9 @@ public:
   uint64_t max_range = 0;
 
 #if defined(_OPENMP)
-  uint64_t calc_mode = 1;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA
+  uint64_t calc_mode = 1;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA, 3 = OpenCL
 #else
-  uint64_t calc_mode = 0;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA
+  uint64_t calc_mode = 0;  // 0 = std::thread, 1 = OpenMP, 2 = CUDA, 3 = OpenCL
 #endif
 
 #if defined(_OPENMP)
