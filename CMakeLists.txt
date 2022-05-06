@@ -24,8 +24,6 @@ include(cmake/variables.cmake)
 # ---- Enable ccache ----
 include(cmake/ccache.cmake)
 
-include(cmake/color.cmake)
-
 # ---- Declare library ----
 
 find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia REQUIRED)
