@@ -8,7 +8,7 @@
 #include "gta_sa.hpp"
 
 #ifdef BUILD_WITH_CUDA
-#  include "cuda/kernel.hpp"
+#  include "cuda/wrapper.hpp"
 #endif
 
 // Source: https://github.com/stbrumme/crc32

@@ -31,6 +31,8 @@ find_package(OpenMP 2.0)
 
 find_package(CUDAToolkit 11.0)
 
+#find_package(OpenCL 2.0)
+
 # Download ThreadPool
 include(FetchContent)
 FetchContent_Declare(
@@ -44,6 +46,10 @@ FetchContent_MakeAvailable(thread-pool)
 if (CUDAToolkit_FOUND)
   add_subdirectory(source/cuda)
 endif()
+
+#if (OpenCL_FOUND)
+#  add_subdirectory(source/opencl)
+#endif()
 
 add_library(
     krackx_lib OBJECT
@@ -63,7 +69,7 @@ if (CUDAToolkit_FOUND)
   target_link_libraries(krackx_lib PRIVATE CUDA::cudart)
   target_link_libraries(krackx_lib PRIVATE krackx_cuda_lib)
 
-  target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda_kernel")
+  # target_include_directories(krackx_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda")
 endif()
 
 target_include_directories(krackx_lib PUBLIC "${thread-pool_SOURCE_DIR}")

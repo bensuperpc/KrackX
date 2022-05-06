@@ -174,8 +174,7 @@ ApplicationWindow {
 
         Flickable {
             //Fix issue with wrong Flickable size in !inPortrait
-            // contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
-            contentHeight: idContentColumn.height
+            contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
             anchors.fill: parent
             clip: true
             Column {

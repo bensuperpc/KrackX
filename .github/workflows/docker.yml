@@ -40,3 +40,12 @@ jobs:
       - name: "make base-clang"
         if: always()
         run: docker run --rm -v "$PWD":/usr/src/myapp --workdir /usr/src/myapp ${{ matrix.image.image_name }}:${{ matrix.image.image_tag }} make base-clang
+
+      - name: "make release"
+        if: always()
+        run: docker run --rm -v "$PWD":/usr/src/myapp --workdir /usr/src/myapp ${{ matrix.image.image_name }}:${{ matrix.image.image_tag }} make release
+
+      - name: "make release-clang"
+        if: always()
+        run: docker run --rm -v "$PWD":/usr/src/myapp --workdir /usr/src/myapp ${{ matrix.image.image_name }}:${{ matrix.image.image_tag }} make release-clang
+

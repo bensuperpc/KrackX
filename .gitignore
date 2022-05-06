@@ -82,3 +82,5 @@ Thumbs.db
 # --------
 *.dll
 *.exe
+
+source/opencl/*

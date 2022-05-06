@@ -70,8 +70,8 @@
       "name": "flags-unix",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wshadow -Wformat=2 -Wundef",
-        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wshadow -Wformat=2 -Wundef"
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wshadow -Wformat=2 -Wundef -Wfloat-equal -Wstrict-overflow=5 -Wswitch-default -Wunreachable-code -Wcast-align -Wmissing-include-dirs",
+        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wshadow -Wformat=2 -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wfloat-equal -Wpointer-arith -Wstrict-overflow=5 -Wswitch-default -Wunreachable-code -Wcast-align"
       }
     },
     {
@@ -94,6 +94,15 @@
     {
       "name": "ci-unix",
       "generator": "Unix Makefiles",
+      "hidden": true,
+      "inherits": ["flags-unix", "flags-cuda", "ci-std", "ci-cuda"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "ci-base",
+      "generator": "Ninja",
       "hidden": true,
       "inherits": ["flags-unix", "flags-cuda", "ci-std", "ci-cuda"],
       "cacheVariables": {
@@ -140,6 +149,24 @@
       "name": "ci-build",
       "binaryDir": "${sourceDir}/build",
       "hidden": true
+    },
+    {
+      "name": "base",
+      "binaryDir": "${sourceDir}/build/base",
+      "inherits": ["ci-base"],
+      "hidden": false
+    },
+    {
+      "name": "base-clang",
+      "binaryDir": "${sourceDir}/build/base-clang",
+      "inherits": ["ci-base"],
+      "hidden": false,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+
     },
     {
       "name": "ci-macos",

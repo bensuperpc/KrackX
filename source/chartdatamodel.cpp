@@ -20,7 +20,7 @@ void MyDataModel::addNewPoint(const QPointF& point)
 int MyDataModel::rowCount(const QModelIndex& parent) const
 {
   Q_UNUSED(parent)
-  return m_data.size();
+  return static_cast<int>(m_data.size());
 }
 
 int MyDataModel::columnCount(const QModelIndex& parent) const

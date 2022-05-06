@@ -4,6 +4,7 @@ Applicationui::Applicationui(QObject* parent)
     : QObject(parent)
 {
 }
+
 void Applicationui::addContextProperty(QQmlContext* context)
 {
   // context->setContextProperty("DataManager", text2);
@@ -95,7 +96,7 @@ void Applicationui::addElement(const QString& element)
 {
   m_comboList.append(element);
   emit comboListChanged();
-  setCount(m_comboList.count());
+  setCount(static_cast<int>(m_comboList.count()));
   emit countChanged();
 
   for (int i = 0; i < m_count; i++) {
@@ -108,7 +109,7 @@ void Applicationui::removeElement(int index)
   if (index < m_comboList.count()) {
     m_comboList.removeAt(index);
     emit comboListChanged();
-    setCount(m_comboList.count());
+    setCount(static_cast<int>(m_comboList.count()));
     emit countChanged();
   }
 

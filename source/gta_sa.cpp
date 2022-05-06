@@ -36,6 +36,8 @@ void GTA_SA::run()
     std::cout << "Running with OpenMP mode" << std::endl;
   } else if (calc_mode == 2) {
     std::cout << "Running with CUDA mode" << std::endl;
+  } else if (calc_mode == 3) {
+    std::cout << "Running with OpenCL mode" << std::endl;
   } else {
     std::cout << "Unknown calculation mode" << std::endl;
   }
@@ -49,6 +51,11 @@ void GTA_SA::run()
   if (this->min_range > this->max_range) {
     std::cout << "Min range value: '" << this->min_range << "' can't be greater than Max range value: '"
               << this->max_range << "'" << std::endl;
+    return;
+  }
+
+  if ((this->max_range - this->min_range) < 1) {
+    std::cout << "Search range is too small." << std::endl;
     return;
   }
 
@@ -116,7 +123,7 @@ void GTA_SA::run()
       const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
 #  endif
 
-      const auto index = it - std::begin(GTA_SA::cheat_list);
+      const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
       results.emplace_back(
           std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
     }
@@ -178,7 +185,7 @@ void GTA_SA::runner(const std::uint64_t& i)
     std::reverse(tmp.data(),
                  tmp.data() + strlen(tmp.data()));  // Invert char array
 
-    const auto index = it - std::begin(GTA_SA::cheat_list);
+    const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
 
     this->results.emplace_back(std::make_tuple(i,
                                                std::string(tmp.data()),
@@ -189,7 +196,7 @@ void GTA_SA::runner(const std::uint64_t& i)
 }
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-auto GTA_SA::jamcrc(std::string_view my_string) -> std::uint32_t
+auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
 #else
 
@@ -199,10 +206,10 @@ auto GTA_SA::jamcrc(std::string_view my_string) -> std::uint32_t
 #    warning C++17 is not enabled, the program will be less efficient with previous standards.
 #  endif
 
-auto GTA_SA::jamcrc(const std::string& my_string) -> std::uint32_t
+auto GTA_SA::jamcrc(const std::string& my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
 #endif
-  auto crc = static_cast<uint32_t>(-1);
+  auto crc = ~previousCrc32;
   const auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
   uint64_t length = my_string.length();
   // process eight bytes at once

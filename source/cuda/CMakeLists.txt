@@ -31,11 +31,12 @@ find_package(CUDAToolkit 11.0)
 
 set(SRCS
     kernel.cu
+    wrapper.cu
 	)
 	
 set(HEADERS
     kernel.cuh
-    kernel.hpp
+    wrapper.hpp
     )
 
 add_library(krackx_cuda_lib ${SRCS} ${HEADERS})

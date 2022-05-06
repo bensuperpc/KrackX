@@ -59,7 +59,7 @@
 #endif
 
 #if defined(BUILD_WITH_CUDA)
-#  include "cuda/kernel.hpp"
+#  include "cuda/wrapper.hpp"
 #endif
 
 class GTA_SA
@@ -75,7 +75,7 @@ public:
  * @return uint32_t with JAMCRC value
  */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-  static auto jamcrc(std::string_view my_string) -> std::uint32_t;
+  static auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
 #else
 
 #  if _MSC_VER && !__INTEL_COMPILER
@@ -84,7 +84,7 @@ public:
 #    warning C++17 is not enabled, the program will be less efficient with previous standards.
 #  endif
 
-  static auto jamcrc(const std::string& my_string) -> std::uint32_t;
+  static auto jamcrc(const std::string& my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
 #endif
 
   /**
@@ -100,12 +100,12 @@ public:
 
   std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results = {};
 
-  const uint64_t max_thread_support()
+  uint64_t max_thread_support()
   {
 #if defined(_OPENMP)
     return static_cast<uint64_t>(omp_get_max_threads());
 #else
-    return std::thread::hardware_concurrency();
+    return static_cast<uint64_t>(std::thread::hardware_concurrency());
 #endif
   }
 
