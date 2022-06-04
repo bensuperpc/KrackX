@@ -14,6 +14,7 @@ The next steps:
 - ZIP, 7z support ect...
 - Dictionary attack
 - Maybe OpenCL
+- Android support again
 
 ## Images
 
