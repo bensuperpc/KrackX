@@ -26,7 +26,7 @@ jobs:
           - { image_name: bensuperpc/dev-environment, image_tag: fedora-latest }
     steps:
       - name: "Checkout Code"
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.2.0
         with:
           submodules: "recursive"
           fetch-depth: 0
